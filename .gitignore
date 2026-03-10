@@ -2,3 +2,9 @@
 *.md
 .env
 .venv
+.pytest_cache
+.vscode
+.pyre_configuration
+tests/
+.coverage
+ucf_rmp_scraper.egg-info/
