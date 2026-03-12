@@ -1,5 +1,4 @@
 *.txt
-*.md
 .env
 .venv
 .pytest_cache
@@ -10,3 +9,4 @@ tests/
 ucf_rmp_scraper.egg-info/
 __pycache__
 *.json
+planning/
