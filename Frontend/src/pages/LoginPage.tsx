@@ -1,11 +1,11 @@
 import PageTitle from "../components/PageTitle";
 import Login from "../components/Login";
 
-function LoginPage() {
+function LoginPage({ onGoToRegister }: { onGoToRegister: () => void }) {
   return (
     <div>
       <PageTitle />
-      <Login />
+      <Login onGoToRegister={onGoToRegister} />
     </div>
   );
 }

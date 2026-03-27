@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-export default function Register()
+export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
 {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    login: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -20,7 +20,7 @@ export default function Register()
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) =>
+  const handleSubmit = async (e: React.FormEvent) =>
   {
     e.preventDefault();
 
@@ -30,9 +30,32 @@ export default function Register()
       return;
     }
 
-    // TEMP TEST
-    console.log("Register Data:", form);
-    setMessage("Registration successful (for now)");
+    try
+    {
+      const res = await fetch('/api/auth/register',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.firstName + " " + form.lastName,
+          email: form.email,
+          password: form.password,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok)
+      {
+        setMessage("Registration successful! You can now log in.");
+      }
+      else
+      {
+        setMessage(data.msg || "Registration failed");
+      }
+    }
+    catch (err)
+    {
+      setMessage("Server error");
+    }
   };
 
   return (
@@ -58,10 +81,10 @@ export default function Register()
         /><br />
 
         <input
-          type="text"
-          name="login"
-          placeholder="Username"
-          value={form.login}
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
           onChange={handleChange}
         /><br />
 
@@ -86,8 +109,7 @@ export default function Register()
 
       <span>{message}</span><br />
 
-      {/* Back to Login */}
-      <button onClick={() => window.location.href = "/"}>
+      <button onClick={onGoToLogin}>
         Back to Login
       </button>
     </div>

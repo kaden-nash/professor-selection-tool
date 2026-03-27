@@ -1,20 +1,49 @@
+import { useState } from 'react';
 
-function Login()
+function Login({ onGoToRegister }: { onGoToRegister: () => void })
 {
-    function doLogin(event:any) : void
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+
+    async function doLogin(event: React.FormEvent): Promise<void>
     {
         event.preventDefault();
-        alert('doIt()');
+        try
+        {
+            const res = await fetch('/api/auth/login',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await res.json();
+            if (res.ok)
+            {
+                localStorage.setItem('token', data.token);
+                setMessage('Login successful!');
+            }
+            else
+            {
+                setMessage(data.msg || 'Login failed');
+            }
+        }
+        catch (err)
+        {
+            setMessage('Server error');
+        }
     }
 
     return(
         <div id="loginDiv">
         <span id="inner-title">LOG IN</span><br />
-        <input type="text" id="loginName" placeholder="Username" /><br />
-        <input type="password" id="loginPassword" placeholder="Password" /><br />
-        <input type="submit" id="loginButton" className="buttons" value = "Log in" onClick={doLogin} /><br />
-        <input type="submit" id="forgotPasswordButton" className="buttons" value = "Forgot Password?" onClick={doLogin} />
-        <span id="loginResult"></span>
+        <form onSubmit={doLogin}>
+            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} /><br />
+            <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /><br />
+            <input type="submit" id="loginButton" className="buttons" value="Log in" />
+        </form>
+        <input type="button" id="registerButton" className="buttons" value="Don't have an account? Register" onClick={onGoToRegister} />
+        <span id="loginResult">{message}</span>
         </div>
     );
 };
