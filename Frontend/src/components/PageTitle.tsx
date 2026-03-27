@@ -1,7 +1,7 @@
 function PageTitle()
 {
     return(
-        <h1 id="title">Professor Selection Tool</h1>
+        <h1 id="title">Knightrate</h1>
     );
 
 }
