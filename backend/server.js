@@ -15,7 +15,7 @@ app.use("/api/auth", require("./routes/auth"));
 // serve react frontend
 app.use(express.static(path.join(__dirname, "../Frontend/dist")));
 
-app.get("*", (req, res) => {
+app.get("/{*splat}", (req, res) => {
   res.sendFile(path.join(__dirname, "../Frontend/dist", "index.html"));
 });
 
