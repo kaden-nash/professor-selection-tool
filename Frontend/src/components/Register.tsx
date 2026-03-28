@@ -32,7 +32,7 @@ export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
 
     try
     {
-      const res = await fetch('https://professor-selection-tool.onrender.com/api/auth/register',
+      const res = await fetch('/api/auth/login',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

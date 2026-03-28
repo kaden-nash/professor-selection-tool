@@ -11,7 +11,7 @@ function Login({ onGoToRegister }: { onGoToRegister: () => void })
         event.preventDefault();
         try
         {
-            const res = await fetch('https://professor-selection-tool.onrender.com/api/auth/login',
+            const res = await fetch('/api/auth/login',
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

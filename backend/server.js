@@ -11,14 +11,19 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
 
+// serve react frontend
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+});
+
 // test route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
 const PORT = process.env.PORT || 5001;
-
-console.log(process.env.MONGO_URI);
 
 // connects to mongoDB
 mongoose.connect(process.env.MONGO_URI)
