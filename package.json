@@ -2,7 +2,7 @@
   "name": "professor-selection-tool",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "build": "cd backend && npm install && cd ../Frontend && npm install && npm run build",
     "start": "node backend/server.js"
   }
 }
