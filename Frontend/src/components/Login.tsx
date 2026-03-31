@@ -35,15 +35,17 @@ function Login({ onGoToRegister }: { onGoToRegister: () => void })
     }
 
     return(
+
         <div id="loginDiv">
-        <h2 className="welcome-text">Welcome Back</h2><br />
-        <h3 className="register-link">Don't have an account yet? Register</h3><br />
+        <h2 className="welcome-text">Welcome Back</h2>
+        <input type="button" id="registerButton" className="buttons" value="Don't have an account? Sign Up" onClick={onGoToRegister} />
         <form onSubmit={doLogin}>
-            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} /><br />
-            <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /><br />
-            <input type="submit" id="loginButton" className="buttons" value="Log in" />
+            <body className="login-body">Email</body>
+            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+            <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+            <input type="submit" id="loginButton" className="buttons" value="Sign in" />
         </form>
-        <input type="button" id="registerButton" className="buttons" value="Don't have an account? Register" onClick={onGoToRegister} />
+        
         <span id="loginResult">{message}</span>
         </div>
     );

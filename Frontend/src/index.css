@@ -43,6 +43,8 @@
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+      flex-direction: column;
+      align-items: center;
   }
 
   #social .button-icon {
@@ -51,15 +53,11 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  min-height: 100vh;
+
   display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  justify-content: center;   /* center horizontally */
+  align-items: center;       /* center vertically */
 }
 
 body {
@@ -108,11 +106,4 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
-}
-
-.square
-{
-  width: 100px;
-  height: 100px;
-  background-color: red;
 }

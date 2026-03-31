@@ -1,7 +1,7 @@
 function PageTitle()
 {
     return(
-        <h1 id="title">KnightRate</h1>
+        <h1 className="title">KnightRate</h1>
     );
 
 }

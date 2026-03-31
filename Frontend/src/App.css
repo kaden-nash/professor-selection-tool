@@ -10,7 +10,6 @@
     border-radius: 10px; /*rounding corner*/
     width: 100%;
     max-width: 400px;
-    align-self: center;
     
     
   }
@@ -37,3 +36,29 @@
     border: none;
     border-radius: 5px;
   }
+
+  .buttons
+  {
+    background-color: var(--primary);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .page {
+  min-height:50vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
