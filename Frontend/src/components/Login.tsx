@@ -38,14 +38,17 @@ function Login({ onGoToRegister }: { onGoToRegister: () => void })
 
         <div id="loginDiv">
         <h2 className="welcome-text">Welcome Back</h2>
-        <input type="button" id="registerButton" className="buttons" value="Don't have an account? Sign Up" onClick={onGoToRegister} />
-        <form onSubmit={doLogin}>
-            <body className="login-body">Email</body>
+
+        <p className="register-text">Don't have an account?{" "}
+            <span className="sign-up-link" onClick={onGoToRegister}>Sign Up</span>
+        </p>
+
+        <form  onSubmit={doLogin}>
             <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
             <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-            <input type="submit" id="loginButton" className="buttons" value="Sign in" />
+            
         </form>
-        
+        <input type="submit" id="loginButton" className="buttons" value="Sign in" />
         <span id="loginResult">{message}</span>
         </div>
     );

@@ -10,8 +10,7 @@
     border-radius: 10px; /*rounding corner*/
     width: 100%;
     max-width: 400px;
-    
-    
+
   }
 
   .welcome-text
@@ -21,11 +20,19 @@
     color: white;
   }
   
-  .register-link
+  .register-text
   {
     font-size: 15px;
     color: white;
+    cursor: default;
+  }
+
+  .sign-up-link
+  {
+    color: var(--primary);
+    font-weight: bold;
     cursor: pointer;
+    text-decoration: underline;
   }
 
   #loginDiv input
@@ -35,30 +42,43 @@
     margin: 10px 0;
     border: none;
     border-radius: 5px;
+    align-self: center;
   }
 
   .buttons
   {
-    background-color: var(--primary);
+    background-color: rgb(39, 37, 37);
     color: white;
     font-weight: bold;
+
     cursor: pointer;
     transition: background-color 0.3s ease;
+    max-width: 200px;    
+    align-self: center;
+    padding: 10px 20px;
+    border-radius: 8px;
   }
 
-  .page {
+  .page 
+  {
   min-height:50vh;
   display: flex;
   flex-direction: column;
-}
+  }
 
-.header {
+.header 
+{
   text-align: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.content {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#loginDiv input
+{
+  margin: 10px -10px;
+  border-radius: 5px;
+
 }
+
+
