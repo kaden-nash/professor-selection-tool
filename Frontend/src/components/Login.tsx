@@ -36,7 +36,8 @@ function Login({ onGoToRegister }: { onGoToRegister: () => void })
 
     return(
         <div id="loginDiv">
-        <span id="inner-title">LOG IN</span><br />
+        <h2 className="welcome-text">Welcome Back</h2><br />
+        <h3 className="register-link">Don't have an account yet? Register</h3><br />
         <form onSubmit={doLogin}>
             <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} /><br />
             <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /><br />
