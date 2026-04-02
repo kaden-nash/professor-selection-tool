@@ -1,3 +1,6 @@
+// entry point to backend
+// connects to mongoDB, registers all routes, starts server
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -10,6 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/professors", require("./routes/professors"));
+app.use("/api/courses",    require("./routes/courses"));
+app.use("/api/users",      require("./routes/users"));
 
 // test route
 app.get("/", (req, res) => {
