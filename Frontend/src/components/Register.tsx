@@ -67,7 +67,7 @@ export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
         <input
           type="text"
           name="firstName"
-          placeholder="First Name"
+          placeholder=" First Name"
           value={form.firstName}
           onChange={handleChange}
         /><br />
@@ -75,7 +75,7 @@ export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
         <input
           type="text"
           name="lastName"
-          placeholder="Last Name"
+          placeholder=" Last Name"
           value={form.lastName}
           onChange={handleChange}
         /><br />
@@ -83,7 +83,7 @@ export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder=" Email"
           value={form.email}
           onChange={handleChange}
         /><br />
@@ -91,7 +91,7 @@ export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder=" Password"
           value={form.password}
           onChange={handleChange}
         /><br />
@@ -99,7 +99,7 @@ export default function Register({ onGoToLogin }: { onGoToLogin: () => void })
         <input
           type="password"
           name="confirmPassword"
-          placeholder="Confirm Password"
+          placeholder="  Confirm Password"
           value={form.confirmPassword}
           onChange={handleChange}
         /><br />
