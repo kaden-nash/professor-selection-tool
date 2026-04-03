@@ -11,14 +11,16 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
 
-// test route
+// test routes
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-const PORT = process.env.PORT || 5001;
+app.get("/ping", (req, res) => {
+  res.send("pong");
+});
 
-console.log(process.env.MONGO_URI);
+const PORT = process.env.PORT || 5001;
 
 // connects to mongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -26,9 +28,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 // starts backend server
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-
