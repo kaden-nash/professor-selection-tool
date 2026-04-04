@@ -38,8 +38,7 @@ function SearchByProfessor()
     }
 
     return(
-        <div className="searchDiv">
-
+        <div className="searchProfessorDiv">
             <form onSubmit={handleSearch}>
                 <input
                     type="text"
@@ -47,7 +46,7 @@ function SearchByProfessor()
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-
+                <br />
                 <button type="submit">Search</button>
             </form>
 

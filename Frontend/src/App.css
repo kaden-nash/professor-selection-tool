@@ -81,17 +81,7 @@
 
 }
 
-/* for the background */
-body {
 
-  margin: 0;
-
-  background-image: url('background.jpg'); /* replace with your image path */
-  background-size: cover;        /* fills screen */
-  background-position: center;   /* keeps it centered */
-  background-repeat: no-repeat;  /* no tiling */
-  min-height: 100vh;
-}
 /* ------------------------------------------------ */
 
 /* Register Styling */
@@ -120,4 +110,118 @@ body {
   align-self: stretch;
 
 }
+
+/* ---------------------------------------------------------------- */
+/* for the background */
+body {
+
+  margin: 0;
+
+  background-image: url('background.jpg'); /* replace with your image path*/
+  background-size: cover;        /*fills screen */
+  background-position: center;   /* keeps it centered */
+  background-repeat: no-repeat;  /* no tiling */
+  min-height: 100vh;
+}
+
+/* ------------------------------------------------------------------- */
+/* Styling of the Header box */
+
+/* centers the header on the page */
+.header-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.page {
+    padding-top: 100px;
+}
+
+/* main container */
+.headerbox {
+  width: 85%;
+  max-width: 1000px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+
+  background-color: rgb(32, 39, 40);
+  border: 2px solid white;
+  border-radius: 14px;
+
+  padding: 12px 25px;
+}
+
+/* logo */
+.logo {
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* nav container */
+.nav 
+{
+  display: flex;
+  gap: 30px;
+}
+
+/* buttons */
+.nav button 
+{
+  background: none;
+  border: none;
+  color: white;
+
+  font-size: 15px;
+  cursor: pointer;
+  padding: 5px 0;
+
+  transition: all 0.2s ease;
+}
+
+/* hover effect */
+button:hover 
+{
+  /* opacity: 0.7; */
+  transform: translateY(-1px);
+  color: #d4af37;
+}
+
+.nav button {
+    position: relative;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* gold text */
+.nav button:hover {
+    color: #d4af37;
+    /* text-shadow: 0 0 6px rgba(236, 195, 62, 0.6); */
+}
+
+/* animated underline */
+.nav button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0%;
+    height: 2px;
+    background-color: #d4af37;
+    transition: width 0.3s ease;
+}
+
+.nav button:hover::after {
+    width: 100%;
+}
+
 
