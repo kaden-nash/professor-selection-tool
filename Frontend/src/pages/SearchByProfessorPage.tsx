@@ -1,15 +1,16 @@
 import PageTitle from "../components/PageTitle";
+import SearchByProfessor from "../components/SearchByProfessor";
 
 function SearchByProfessorPage()
 {
     return(
-        <div className="page">
+        <div className="page">  
             <div className="header">
                 <PageTitle />
             </div>
             <div className="content">
                 <h2>Search by Professor</h2>
-                <SearchByProfessorPage />
+                <SearchByProfessor />
             </div>
         </div>
     );

@@ -46,9 +46,8 @@ function Login({ onGoToRegister }: { onGoToRegister: () => void })
         <form  onSubmit={doLogin}>
             <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
             <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-            
         </form>
-        <input type="submit" id="loginButton" className="buttons" value="Sign in" />
+        <input onClick={doLogin} type="submit" id="loginButton" className="buttons" value="Sign in" />
         <span id="loginResult">{message}</span>
         </div>
     );
