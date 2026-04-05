@@ -1,4 +1,4 @@
-type Page = 'login' | 'register' | 'search' | 'about' | 'starred' | 'settings';
+type Page = 'login' | 'register' | 'searchProfessor' | 'about' | 'starred' | 'settings';
 
 function Header({ setPage }: { setPage: (page: any) => void })
 {
@@ -7,9 +7,9 @@ function Header({ setPage }: { setPage: (page: any) => void })
             <div className="headerbox">
                 <h1 className="title">KnightRate</h1>
 
-                <div className="nav-buttons"> {/* ✅ GROUP THEM */}
+                <div className="nav-buttons"> 
                     <button onClick={() => setPage('about')}>About</button>
-                    <button onClick={() => setPage('search')}>Search</button>
+                    <button onClick={() => setPage('searchProfessor')}>Search</button>
                     <button onClick={() => setPage('starred')}>Starred</button>
                     <button onClick={() => setPage('settings')}>Settings</button>
                 </div>

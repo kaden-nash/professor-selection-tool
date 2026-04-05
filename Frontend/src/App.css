@@ -225,5 +225,43 @@ body {
   z-index: 1000;
 }
 
+/* ------------------------------------------------------------------------------- */
+/* Search */
+.search-type {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  color: #d6d0c6;
+  font-size: 18px;
+}
 
+.search-type label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* Remove default ugly radio button */
+.search-type input[type="radio"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #d6d0c6;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Inner circle when selected */
+.search-type input[type="radio"]:checked::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background-color: #d6d0c6;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function SearchByProfessor()
+function SearchByCourse()
 {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<string[]>([]);
@@ -38,7 +38,7 @@ function SearchByProfessor()
     <div>
         <input
         type="text"
-        placeholder="Search Professor..."
+        placeholder="Search Course..."
         onChange={handleSearchChange}
       />
 
@@ -53,4 +53,4 @@ function SearchByProfessor()
   );
 }
 
-export default SearchByProfessor;
+export default SearchByCourse;

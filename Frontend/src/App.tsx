@@ -6,12 +6,13 @@ import RegisterPage from './pages/RegisterPage';
 import SearchByProfessorPage from './pages/SearchByProfessorPage';
 import AboutPage from './pages/AboutPage';
 import Header from './components/HeaderBox';
+import SearchByCoursePage from './pages/SearchByCoursePage';
 
-type Page = 'login' | 'register' | 'search' | 'starred' | 'settings' | 'about';
+type Page = 'login' | 'register' | 'searchProfessor' | 'searchCourse' | 'starred' | 'settings' | 'about';
 
 function App()
 {
-  const [page, setPage] = useState<Page>('search');
+  const [page, setPage] = useState<Page>('searchProfessor');
 
   return (
     <div>
@@ -21,8 +22,10 @@ function App()
         ? <LoginPage onGoToRegister={() => setPage('register')} />
         : page === 'register'
         ? <RegisterPage onGoToLogin={() => setPage('login')} />
-        : page === 'search'
-        ? <SearchByProfessorPage />
+        : page === 'searchProfessor'
+        ? <SearchByProfessorPage setPage={setPage} />
+        : page === 'searchCourse'
+        ? <SearchByCoursePage setPage={setPage} />
         : page === 'about'
         ? <AboutPage />
         : page === 'starred'
@@ -31,6 +34,7 @@ function App()
         ? <div>Settings Page</div>
         : null}
     </div>
+    
   );
 }
 

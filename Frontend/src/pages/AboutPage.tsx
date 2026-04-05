@@ -1,4 +1,3 @@
-import Header from "../components/HeaderBox";
 
 function AboutPage()
 {
