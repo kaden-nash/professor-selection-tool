@@ -1,25 +1,19 @@
-import PageTitle from "./PageTitle";
+type Page = 'login' | 'register' | 'search' | 'about' | 'starred' | 'settings';
 
-
-type Page = 'leaderboard' | 'register' | 'search' | 'starred' | 'settings';
-
-function Header({ setPage }: { setPage: (page: Page) => void })
+function Header({ setPage }: { setPage: (page: any) => void })
 {
     return(
         <div className="header-wrapper">
             <div className="headerbox">
-                <div className="logo">KnightRate</div>
+                <h1 className="title">KnightRate</h1>
 
-                <div className="nav">
-                    <button onClick={() => setPage('leaderboard')}>Leaderboard</button>
-                    <button onClick={() => setPage('search')}>Search</button>
-                    <button onClick={() => setPage('starred')}>Starred</button>
-                    <button onClick={() => setPage('settings')}>Settings</button>
-                </div>
+                <button onClick={() => setPage('about')}>About</button>
+                <button onClick={() => setPage('search')}>Search</button>
+                <button onClick={() => setPage('starred')}>Starred</button>
+                <button onClick={() => setPage('settings')}>Settings</button>
             </div>
         </div>
     );
 }
-
 
 export default Header;
