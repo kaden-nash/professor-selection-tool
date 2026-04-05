@@ -170,6 +170,12 @@ body {
   transition: all 0.2s ease;
 }
 
+.nav-buttons {
+  margin-left: auto;   
+  display: flex;
+  gap: 35px;           
+}
+
 /* hover effect */
 .headerbox button:hover 
 {

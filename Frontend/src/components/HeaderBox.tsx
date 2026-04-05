@@ -7,10 +7,12 @@ function Header({ setPage }: { setPage: (page: any) => void })
             <div className="headerbox">
                 <h1 className="title">KnightRate</h1>
 
-                <button onClick={() => setPage('about')}>About</button>
-                <button onClick={() => setPage('search')}>Search</button>
-                <button onClick={() => setPage('starred')}>Starred</button>
-                <button onClick={() => setPage('settings')}>Settings</button>
+                <div className="nav-buttons"> {/* ✅ GROUP THEM */}
+                    <button onClick={() => setPage('about')}>About</button>
+                    <button onClick={() => setPage('search')}>Search</button>
+                    <button onClick={() => setPage('starred')}>Starred</button>
+                    <button onClick={() => setPage('settings')}>Settings</button>
+                </div>
             </div>
         </div>
     );
