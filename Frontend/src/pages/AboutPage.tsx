@@ -1,3 +1,5 @@
+import Header from "../components/HeaderBox";
+import About from "../components/About";
 
 function AboutPage()
 {
