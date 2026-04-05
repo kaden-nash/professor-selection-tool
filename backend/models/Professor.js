@@ -46,7 +46,7 @@ const professorSchema = new mongoose.Schema({
 	qualityScore: { type: Number, default: 0 },
 	wouldTakeAgainPercent: { type: Number, default: 0 },
 	archetype: { type: String, enum: ["The Unicorn", "The Mastermind", "The NPC", "The Saboteur"] }
-  },
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Professor", professorSchema);
