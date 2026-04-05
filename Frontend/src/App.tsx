@@ -15,7 +15,7 @@ function App()
 
   return (
     <div>
-      {page !== 'login' && <Header setPage={setPage} />}
+      {page !== 'login' && page !== 'register' && <Header setPage={setPage} />}
       
       {page === 'login'
         ? <LoginPage onGoToRegister={() => setPage('register')} />

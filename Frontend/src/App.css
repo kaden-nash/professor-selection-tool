@@ -130,7 +130,8 @@ body {
 /* main container */
 .headerbox {
   width: 100%;
-  max-width: none;
+  /* max-width: none; */
+  height: 50px;
 
   display: flex;
   justify-content: space-between; 
@@ -149,7 +150,7 @@ body {
   Using this to make it easier to customize */
 .logo {
   color: white;
-  font-size: 20px;
+  font-size: px;
   font-weight: 600;
 }
 
@@ -217,5 +218,6 @@ body {
   justify-content: center; 
   z-index: 1000;
 }
+
 
 
