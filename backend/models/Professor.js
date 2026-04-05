@@ -40,7 +40,7 @@ const professorSchema = new mongoose.Schema({
   levelOfEducation: { type: String, default: "unknown" },
   graduatedFrom: { type: String, default: "unknown" },
   isEmeritus: {type: Boolean, default: false },
-  courses_taught: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }]
+  courses_taught: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
   scores: {
     difficultyScore: { type: Number, default: 0 },
 	qualityScore: { type: Number, default: 0 },

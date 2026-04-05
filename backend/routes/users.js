@@ -58,18 +58,26 @@ router.patch("/me/saved", authMiddleware, async (req, res) => {
     const user = await User.findById(req.user.id);
 
     if (type === "professor") {
-      const index = user.savedProfessors.indexOf(id);
-      if (index === -1) {
+      const alreadySaved = user.savedProfessors.some(
+        (savedId) => savedId.toString() === id
+      );
+      if (!alreadySaved) {
         user.savedProfessors.push(id);  // save
       } else {
-        user.savedProfessors.splice(index, 1);  // unsave
+        user.savedProfessors = user.savedProfessors.filter(
+          (savedId) => savedId.toString() !== id
+        );  // unsave
       }
     } else if (type === "course") {
-      const index = user.savedCourses.indexOf(id);
-      if (index === -1) {
+      const alreadySaved = user.savedCourses.some(
+        (savedId) => savedId.toString() === id
+      );
+      if (!alreadySaved) {
         user.savedCourses.push(id);  // save
       } else {
-        user.savedCourses.splice(index, 1);  // unsave
+        user.savedCourses = user.savedCourses.filter(
+          (savedId) => savedId.toString() !== id
+        );  // unsave
       }
     } else {
       return res.status(400).json({ msg: 'type must be "professor" or "course"' });
