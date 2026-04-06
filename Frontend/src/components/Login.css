@@ -1,0 +1,237 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #06060f;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.92);
+  --text: #f0f0ff;
+  --muted: rgba(240, 240, 255, 0.55);
+  --accent: #5b6fff;
+  --accent2: #9b59ff;
+  --radius: 20px;
+}
+
+/* ── Page ─────────────────────────────────────────────── */
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+}
+
+/* ── Orbs (reuse same aesthetic as Landing) ───────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(91, 111, 255, 0.22) 0%, transparent 70%);
+  top: -80px;
+  right: -80px;
+  animation: pulse 6s ease-in-out infinite alternate;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(155, 89, 255, 0.16) 0%, transparent 70%);
+  bottom: -60px;
+  left: 10%;
+  animation: pulse 8s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.7; }
+  to   { transform: scale(1.15); opacity: 1; }
+}
+
+/* ── Card ─────────────────────────────────────────────── */
+.login-card {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 480px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(24px);
+  padding: 2.8rem 2.6rem 2.4rem;
+  animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  /* animate card height smoothly when fields appear/disappear */
+  transition: padding 0.35s ease;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(32px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.card-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+
+.card-sub {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+/* ── Link buttons ─────────────────────────────────────── */
+.link-btn {
+  background: none;
+  border: none;
+  font-family: "DM Sans", sans-serif;
+  font-size: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.link-btn:hover {
+  color: var(--accent2);
+}
+
+.link-btn.forgot {
+  display: block;
+  margin: 1rem auto 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.link-btn.forgot:hover {
+  color: var(--text);
+}
+
+/* ── Fields ───────────────────────────────────────────── */
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.3s ease,
+              margin 0.35s ease;
+}
+
+.field-wrap.visible {
+  max-height: 100px;
+  opacity: 1;
+}
+
+.field-wrap.hidden {
+  max-height: 0;
+  opacity: 0;
+  gap: 0;
+  pointer-events: none;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  padding-left: 0.25rem;
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  background: var(--input-bg);
+  border: none;
+  border-radius: 99px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  color: #111;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.field-input::placeholder {
+  color: #aaa;
+}
+
+.field-input:focus {
+  box-shadow: 0 0 0 3px rgba(91, 111, 255, 0.4);
+}
+
+/* ── Submit button ────────────────────────────────────── */
+.btn-submit {
+  width: 60%;
+  padding: 0.9rem;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: 99px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(91, 111, 255, 0.3);
+  opacity: 0.92;
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 520px) {
+  .login-card {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .card-title {
+    font-size: 2.2rem;
+  }
+
+  .btn-submit {
+    width: 100%;
+  }
+}

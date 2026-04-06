@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Landing.css";
 
 interface ScoreMetric {
@@ -14,6 +15,8 @@ const metrics: ScoreMetric[] = [
 
 export default function Landing() {
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const lines = headingRef.current?.querySelectorAll<HTMLElement>(".line");
@@ -35,9 +38,8 @@ export default function Landing() {
       <nav className="nav">
         <span className="nav-logo">KnightRate</span>
         <div className="nav-actions">
-          <button className="btn-ghost">Login</button>
-          <button className="btn-solid">Join</button>
-        </div>
+            <button className="btn-ghost" onClick={() => navigate("/login")}>Login</button>
+            <button className="btn-solid" onClick={() => navigate("/login?mode=register")}>Join</button>        </div>
       </nav>
 
       {/* Hero */}
