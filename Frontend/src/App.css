@@ -59,12 +59,60 @@
     border-radius: 8px;
   }
 
-  .page 
-  {
-  min-height:50vh;
+  .page {
+  height: 500px;
+  width: 1000px;
   display: flex;
   flex-direction: column;
-  }
+  justify-content: center;   
+  align-items: center;       
+  text-align: center;
+  background: #0b0b0b;
+  color: #e8e2d6;
+  border-radius: 50px;
+}
+
+.page h2 {
+  font-size: 36px;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.search-type {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+.search-type label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* remove default */
+.search-type input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e8e2d6;
+  border-radius: 50%;
+  position: relative;
+}
+
+/* inner circle */
+.search-type input[type="radio"]:checked::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #e8e2d6;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}
 
 .header 
 {

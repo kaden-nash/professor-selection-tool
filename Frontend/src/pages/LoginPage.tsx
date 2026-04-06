@@ -3,7 +3,7 @@ import Login from "../components/Login";
 
 function LoginPage({ onGoToRegister }: { onGoToRegister: () => void }) {
   return (
-    <div className="page">
+    <div className="loginPage">
       <div className="header">
         <PageTitle />
       </div>
