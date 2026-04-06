@@ -1,15 +1,14 @@
-import { useState } from 'react';
-import './App.css'
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./components/Landing";
 
-function App()
-{
-  const [page, setPage] = useState<'login' | 'register'>('login');
-
-  return page === 'login'
-    ? <LoginPage onGoToRegister={() => setPage('register')} />
-    : <RegisterPage onGoToLogin={() => setPage('login')} />;
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
