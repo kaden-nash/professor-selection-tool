@@ -10,6 +10,7 @@ const professorSchema = new mongoose.Schema({
   avgRating: { type: Number, default: 0 },
   wouldTakeAgainPercent: { type: Number, default: 0 },
   allReviewsScraped: { type: Boolean, default: false },
+
   reviews: [
 	{
 		attendanceMandatory: { type: Boolean, default: null },
@@ -35,17 +36,21 @@ const professorSchema = new mongoose.Schema({
     type: String,
     enum: ["Lecturer", "Research Professor", "Associate Lecturer", "Adjunct"]
   },
+
   fieldOfStudy: { type: String },
   dateJoinedUcf: { type: Date, default: null },
   levelOfEducation: { type: String, default: "unknown" },
   graduatedFrom: { type: String, default: "unknown" },
   isEmeritus: {type: Boolean, default: false },
+  isPolarizing: { type: Boolean, default: false },
   courses_taught: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+
   scores: {
     difficultyScore: { type: Number, default: 0 },
-	qualityScore: { type: Number, default: 0 },
-	wouldTakeAgainPercent: { type: Number, default: 0 },
-	archetype: { type: String, enum: ["The Unicorn", "The Mastermind", "The NPC", "The Saboteur"] }
+    qualityScore: { type: Number, default: 0 },
+    wouldTakeAgainPercent: { type: Number, default: 0 },
+    overallScore: { type: Number, default: 0 },
+    archetype: { type: String, enum: ["The Unicorn", "The Mastermind", "The NPC", "The Saboteur"] }
   }
 }, { timestamps: true });
 
