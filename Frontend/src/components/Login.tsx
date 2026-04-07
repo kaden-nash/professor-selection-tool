@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import "./Login.css";
+import { login, register } from "../services/api";
 
 type Mode = "login" | "register";
 
@@ -13,6 +14,7 @@ interface FormState {
 
 export default function Login() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>(
     searchParams.get("mode") === "register" ? "register" : "login"
   );
@@ -23,15 +25,42 @@ export default function Login() {
     password: "",
     confirm: "",
   });
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // TODO: wire up auth logic
-    console.log(mode, form);
+    setError("");
+    setLoading(true);
+
+    try {
+      if (mode === "login") {
+        const result = await login(form.email, form.password);
+        // Store token in localStorage
+        localStorage.setItem("token", result.token);
+        // Navigate to landing/dashboard
+        navigate("/landing");
+      } else {
+        // Register mode
+        if (form.password !== form.confirm) {
+          setError("Passwords do not match");
+          setLoading(false);
+          return;
+        }
+        await register(form.name, form.email, form.password);
+        // Switch to login after successful registration
+        setMode("login");
+        setForm({ name: "", email: "", password: "", confirm: "" });
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.msg || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const switchMode = (next: Mode) => {
@@ -138,9 +167,12 @@ export default function Login() {
           </div>
         </div>
 
+        {/* Error message */}
+        {error && <p className="error-message">{error}</p>}
+
         {/* Submit */}
-        <button className="btn-submit" onClick={handleSubmit}>
-          {isLogin ? "Sign in" : "Create Account"}
+        <button className="btn-submit" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Please wait..." : (isLogin ? "Sign in" : "Create Account")}
         </button>
 
         {/* Forgot password — login only */}
