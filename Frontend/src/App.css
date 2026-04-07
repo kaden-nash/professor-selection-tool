@@ -67,7 +67,7 @@
   justify-content: center;   
   align-items: center;       
   text-align: center;
-  background: #0b0b0b;
+  /* background: #0b0b0b; */
   color: #e8e2d6;
   border-radius: 50px;
 }
@@ -241,16 +241,15 @@
 
 /* ---------------------------------------------------------------- */
 /* for the background */
-body {
-
+/* body {
   margin: 0;
 
-  background-image: url('background.jpg'); /* replace with your image path*/
-  background-size: cover;        /*fills screen */
-  background-position: center;   /* keeps it centered */
-  background-repeat: no-repeat;  /* no tiling */
+  background-image: url('background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   min-height: 100vh;
-}
+} */
 
 /* ------------------------------------------------------------------- */
 /* Styling of the Header box */
@@ -393,3 +392,61 @@ body {
   left: 2px;
 }
 
+/* -------------------------------------------- */
+/* settings page */
+.settings-page
+{
+    /* background-color: black; */
+    min-height: 100vh;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-title
+{
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.settings-container
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 300px;
+}
+
+.settings-container label
+{
+    font-size: 18px;
+}
+
+.settings-container input
+{
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+.signout-button
+{
+    margin-top: 40px;
+    padding: 12px;
+    background-color: #d6cfc2;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.signout-button:hover
+{
+    background-color: #c4bba9;
+}

@@ -36,11 +36,13 @@ function SearchByProfessor()
 
   return(
     <div>
-        <input
-        type="text"
-        placeholder="Search Professor..."
-        onChange={handleSearchChange}
-      />
+      <div className='professorSearchBox'>
+          <input
+          type="text"
+          placeholder="Search Professor..."
+          onChange={handleSearchChange}
+          />
+      </div>
 
       <button onClick={searchProfessor}>Search</button>
 

@@ -7,6 +7,7 @@ import SearchByProfessorPage from './pages/SearchByProfessorPage';
 import AboutPage from './pages/AboutPage';
 import Header from './components/HeaderBox';
 import SearchByCoursePage from './pages/SearchByCoursePage';
+import SettingsPage from './pages/SettingsPage';
 
 type Page = 'login' | 'register' | 'searchProfessor' | 'searchCourse' | 'starred' | 'settings' | 'about';
 
@@ -31,7 +32,7 @@ function App()
         : page === 'starred'
         ? <div>Starred Page</div>
         : page === 'settings'
-        ? <div>Settings Page</div>
+        ? <SettingsPage />
         : null}
     </div>
     
