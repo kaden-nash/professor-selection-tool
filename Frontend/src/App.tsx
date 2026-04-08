@@ -8,6 +8,7 @@ import SearchResults from "./components/SearchResults";
 import Starred from "./components/Starred";
 import Settings from "./components/Settings";
 import HowItWorks from "./components/HowItWorks";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/about" element={<HowItWorks />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   );
