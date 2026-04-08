@@ -5,7 +5,7 @@ import { register } from "../services/api";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,11 +20,9 @@ export default function Register() {
     setSuccess("");
     setLoading(true);
     try {
-      // Use email prefix as name
-      const name = form.email.split("@")[0];
-      const result = await register(name, form.email, form.password);
+      const result = await register(form.name, form.email, form.password);
       setSuccess(result.msg);
-      setForm({ email: "", password: "" });
+      setForm({ name: "", email: "", password: "" });
     } catch (err: any) {
       setError(err.response?.data?.msg || "An error occurred");
     } finally {
@@ -43,11 +41,25 @@ export default function Register() {
 
         <form onSubmit={handleSubmit}>
           <div className="auth-field">
+            <label className="auth-label">Full Name</label>
+            <input
+              className="auth-input"
+              name="name"
+              type="text"
+              placeholder="John Doe"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
             <label className="auth-label">Email</label>
             <input
               className="auth-input"
               name="email"
               type="email"
+              placeholder="john@example.com"
               value={form.email}
               onChange={handleChange}
               required
@@ -60,6 +72,7 @@ export default function Register() {
               className="auth-input"
               name="password"
               type="password"
+              placeholder="Create a password"
               value={form.password}
               onChange={handleChange}
               required

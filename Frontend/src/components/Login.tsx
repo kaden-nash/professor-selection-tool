@@ -44,6 +44,7 @@ export default function Login() {
               className="auth-input"
               name="email"
               type="email"
+              placeholder="john@example.com"
               value={form.email}
               onChange={handleChange}
               required
@@ -56,6 +57,7 @@ export default function Login() {
               className="auth-input"
               name="password"
               type="password"
+              placeholder="Enter your password"
               value={form.password}
               onChange={handleChange}
               required
@@ -63,13 +65,13 @@ export default function Login() {
           </div>
 
           <div className="auth-forgot-container">
-              <button 
-                type="button" 
-                className="auth-link-small" 
-                onClick={() => navigate("/forgot-password")}
-              >
-                Forgot password?
-              </button>
+            <button 
+              type="button" 
+              className="auth-link-small" 
+              onClick={() => navigate("/forgot-password")}
+            >
+              Forgot password?
+            </button>
           </div>
 
           {error && <p className="auth-error">{error}</p>}
