@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import "./Search.css";
 
 type SearchType = "professor" | "course";
+// Keep FilterType flexible for future expansion
 type FilterType = "name" | "course";
 
 export default function Search() {
@@ -13,6 +14,12 @@ export default function Search() {
   const [query, setQuery] = useState("");
 
   const isProfessor = searchType === "professor";
+
+  const handleTypeChange = (type: SearchType) => {
+    setSearchType(type);
+    setFilter("name"); // Reset filter to default when switching categories
+    setQuery("");      // Clear search to prevent irrelevant results
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,45 +32,29 @@ export default function Search() {
       <Navbar />
 
       <div className="search-body">
-        {/* Toggle professor / course */}
-        <div className="search-type-toggle">
-          <button
-            className={`type-btn ${isProfessor ? "active" : ""}`}
-            onClick={() => { setSearchType("professor"); setFilter("name"); setQuery(""); }}
-          >
-            Professors
-          </button>
-          <button
-            className={`type-btn ${!isProfessor ? "active" : ""}`}
-            onClick={() => { setSearchType("course"); setFilter("name"); setQuery(""); }}
-          >
-            Courses
-          </button>
-        </div>
-
         <h1 className="search-heading">
           {isProfessor ? "Search for UCF professors" : "Search for UCF courses"}
         </h1>
 
-        {/* Radio filter */}
+        {/* Radio filters now controlling the Search Type */}
         <div className="search-filters">
           <label className="radio-label">
             <input
               type="radio"
-              value="name"
-              checked={filter === "name"}
-              onChange={() => setFilter("name")}
+              name="searchType"
+              checked={searchType === "professor"}
+              onChange={() => handleTypeChange("professor")}
             />
-            Name
+            Professors
           </label>
           <label className="radio-label">
             <input
               type="radio"
-              value="course"
-              checked={filter === "course"}
-              onChange={() => setFilter("course")}
+              name="searchType"
+              checked={searchType === "course"}
+              onChange={() => handleTypeChange("course")}
             />
-            Course
+            Courses
           </label>
         </div>
 
@@ -73,11 +64,11 @@ export default function Search() {
             className="search-input"
             type="text"
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder={
-              filter === "name"
-                ? "Enter name here"
-                : "Enter course name or code here"
+              isProfessor
+                ? "Enter professor name..."
+                : "Enter course name or code..."
             }
           />
         </form>

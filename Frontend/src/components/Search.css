@@ -13,42 +13,19 @@
   padding: 5rem 2rem 3rem;
 }
 
-/* Professor / Course toggle */
-.search-type-toggle {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-}
-
-.type-btn {
-  background: none;
-  border: 1.5px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.6);
-  padding: 0.45rem 1.4rem;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-}
-
-.type-btn.active {
-  border-color: #fff;
-  color: #fff;
-  font-weight: 600;
-}
-
 .search-heading {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 700;
-  margin: 0 0 1.5rem;
+  margin: 0 0 2rem; /* Increased margin slightly for better spacing */
   text-align: center;
 }
 
-/* Radio buttons */
+/* Updated Radio filters (Now the primary navigation) */
 .search-filters {
   display: flex;
+  justify-content: flex-start; /* Align with the start of the search bar */
   gap: 2rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   width: 600px;
   max-width: 90vw;
 }
@@ -56,36 +33,52 @@
 .radio-label {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.6rem; /* Slightly more gap for a modern look */
   font-size: 1rem;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.7); /* Slightly dimmed when not selected */
   cursor: pointer;
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.radio-label:hover {
+  color: #fff;
+}
+
+/* Style for when the radio is checked */
+.radio-label:has(input:checked) {
+  color: #fff;
+  font-weight: 500;
 }
 
 .radio-label input[type="radio"] {
-  accent-color: #fff;
-  width: 16px;
-  height: 16px;
+  accent-color: #fff; /* Modern browsers will use white for the fill */
+  width: 18px;
+  height: 18px;
   cursor: pointer;
+  margin: 0;
 }
 
 /* Search input */
 .search-input {
   width: 600px;
   max-width: 90vw;
-  padding: 1rem 1.4rem;
-  background: #555;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
+  padding: 1.1rem 1.4rem; /* Slightly taller for a "search bar" feel */
+  background: #222; /* Darker, more premium background than #555 */
+  border: 1px solid #444; /* Subtle border adds definition */
+  border-radius: 12px; /* Smoother corners */
+  font-size: 1.1rem;
   color: #fff;
   outline: none;
+  transition: all 0.2s ease;
 }
 
 .search-input::placeholder {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .search-input:focus {
-  background: #666;
+  background: #2a2a2a;
+  border-color: #777;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05); /* Soft outer glow */
 }

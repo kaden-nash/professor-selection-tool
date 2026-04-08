@@ -50,6 +50,16 @@ export default function Login() {
             />
           </div>
 
+          <div className="auth-forgot-container">
+              <button 
+                type="button" 
+                className="auth-link-small" 
+                onClick={() => navigate("/forgot-password")}
+              >
+                Forgot password?
+              </button>
+          </div>
+
           <div className="auth-field">
             <label className="auth-label">Password</label>
             <input
