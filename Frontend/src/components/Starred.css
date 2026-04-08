@@ -1,0 +1,225 @@
+/* ── Starred Page ───────────────────────────────────── */
+.starred-page {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.starred-body {
+  padding: 2rem 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.starred-heading {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+}
+
+/* Tabs */
+.starred-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.starred-tab {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  padding: 0.65rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 10px;
+}
+
+.starred-tab.active {
+  background: #555;
+  color: #fff;
+  font-weight: 600;
+}
+
+.starred-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Expanded card */
+.starred-card.expanded {
+  background: rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 1.2rem;
+}
+
+.starred-card-inner {
+  background: #555;
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.starred-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.starred-star {
+  color: rgba(255,255,255,0.3);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.starred-star.active {
+  color: #facc15;
+}
+
+.starred-card-content {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.starred-prof-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100px;
+}
+
+.starred-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+.starred-prof-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.starred-scores {
+  flex: 1;
+}
+
+.score-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+  padding: 0.25rem 0;
+}
+
+.breakdown-label { color: rgba(255,255,255,0.7); }
+.breakdown-val { font-weight: 500; }
+
+.score-breakdown-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  margin: 0.5rem 0;
+}
+
+.score-breakdown-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.total-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #4ade80;
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* Overview */
+.starred-overview {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 0.8rem;
+  margin-top: 0.4rem;
+}
+
+.overview-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+
+.overview-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.8;
+}
+
+/* Collapsed */
+.starred-card.collapsed {
+  background: #555;
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.starred-card.collapsed:hover { background: #666; }
+
+.collapsed-left {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.collapsed-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+.collapsed-name { font-size: 1rem; font-weight: 500; }
+
+.collapsed-score {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #4ade80;
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* Course */
+.starred-course-card {
+  background: #555;
+  border-radius: 10px;
+  padding: 1.1rem 1.4rem;
+  font-size: 1rem;
+}

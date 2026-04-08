@@ -1,0 +1,93 @@
+/* ── How It Works Page ─────────────────────────────── */
+.hiw-page {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.hiw-body {
+  padding: 2.5rem 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hiw-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 0.4rem;
+}
+
+.hiw-sub {
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.95rem;
+  margin: 0 0 2rem;
+}
+
+/* Score rows */
+.hiw-scores {
+  margin-bottom: 1.5rem;
+}
+
+.hiw-score-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.hiw-score-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.hiw-score-desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+}
+
+.hiw-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  margin: 1.5rem 0;
+}
+
+/* Archetypes */
+.hiw-archetype {
+  margin-bottom: 2rem;
+}
+
+.archetype-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+}
+
+.archetype-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.hiw-icon {
+  width: 64px;
+  height: 64px;
+  background: #fff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.archetype-desc {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+  margin: 0;
+  padding-top: 0.3rem;
+}

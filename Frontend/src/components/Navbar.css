@@ -1,0 +1,46 @@
+/* ── App Navbar ─────────────────────────────────────── */
+.app-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 2rem;
+  border: 1.5px solid #fff;
+  border-radius: 10px;
+  margin: 1.2rem 1.5rem;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.app-nav-logo {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -0.3px;
+  padding: 0;
+}
+
+.app-nav-links {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.app-nav-link {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+
+.app-nav-link:hover,
+.app-nav-link.active {
+  opacity: 1;
+  font-weight: 600;
+}

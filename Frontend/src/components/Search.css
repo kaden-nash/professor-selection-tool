@@ -1,0 +1,91 @@
+/* ── Search Page ────────────────────────────────────── */
+.search-page {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.search-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 2rem 3rem;
+}
+
+/* Professor / Course toggle */
+.search-type-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.type-btn {
+  background: none;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.6);
+  padding: 0.45rem 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.type-btn.active {
+  border-color: #fff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.search-heading {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
+/* Radio buttons */
+.search-filters {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.2rem;
+  width: 600px;
+  max-width: 90vw;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  accent-color: #fff;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Search input */
+.search-input {
+  width: 600px;
+  max-width: 90vw;
+  padding: 1rem 1.4rem;
+  background: #555;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #fff;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.search-input:focus {
+  background: #666;
+}

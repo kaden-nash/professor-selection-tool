@@ -1,86 +1,49 @@
-import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Landing.css";
 
-interface ScoreMetric {
-  label: string;
-  val: number;
-}
-
-const metrics: ScoreMetric[] = [
-  { label: "Retake", val: 95 },
-  { label: "Quality", val: 88 },
-  { label: "Difficulty", val: 72 },
-];
-
 export default function Landing() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-    const lines = headingRef.current?.querySelectorAll<HTMLElement>(".line");
-    lines?.forEach((line, i) => {
-      line.style.animationDelay = `${i * 0.15}s`;
-    });
-  }, []);
-
   return (
-    <div className="landing">
-      {/* Noise overlay */}
-      <div className="noise" />
-
-      {/* Gradient orbs */}
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
-
+    <div className="landing-page">
       {/* Nav */}
-      <nav className="nav">
-        <span className="nav-logo">KnightRate</span>
-        <div className="nav-actions">
-            <button className="btn-ghost" onClick={() => navigate("/login")}>Login</button>
-            <button className="btn-solid" onClick={() => navigate("/login?mode=register")}>Join</button>        </div>
+      <nav className="landing-nav">
+        <button className="nav-login-link" onClick={() => navigate("/login")}>Login</button>
+        <button className="nav-join-btn" onClick={() => navigate("/register")}>Join</button>
       </nav>
 
       {/* Hero */}
-      <main className="hero">
+      <section className="hero-section">
         <div className="hero-content">
-          <h1 className="heading" ref={headingRef}>
-            <span className="line">THE SMART WAY</span>
-            <span className="line">TO FIND PROFESSORS</span>
-            <span className="line accent-line">AND COURSES AT UCF.</span>
+          <h1 className="hero-title">
+            THE SMART WAY<br />
+            TO FIND PROFESSORS<br />
+            AND COURSES AT UCF.
           </h1>
-
-          <p className="subtext">
+          <p className="hero-sub">
             Our unique composite scoring algorithm finds the right professors
-            for you — over 10 different metrics calculated into one number.
+            for you – over 10 different metrics calculated into one number.
           </p>
-
-          <button className="btn-cta">
+          <button className="hero-cta" onClick={() => navigate("/register")}>
             Get Started
-            <span className="btn-arrow">→</span>
           </button>
         </div>
+      </section>
 
-        {/* Decorative score card */}
-        <div className="score-card">
-          <div className="score-label">Composite Score</div>
-          <div className="score-value">92.4</div>
-          <div className="score-bars">
-            {metrics.map((item) => (
-              <div className="bar-row" key={item.label}>
-                <span className="bar-label">{item.label}</span>
-                <div className="bar-track">
-                  <div
-                    className="bar-fill"
-                    style={{ "--w": `${item.val}%` } as React.CSSProperties}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
+      {/* How It Works */}
+      <section className="how-section">
+        <h2 className="how-title">HOW IT WORKS</h2>
+        <p className="how-sub">
+          Our application web-scrapes data from the following sources to
+          calculate a unique professor rating:
+        </p>
+        <ul className="how-list">
+          <li>RateMyProfessor</li>
+          <li>SPI Surveys</li>
+          <li>LinkedIn</li>
+          <li>+ more</li>
+        </ul>
+      </section>
     </div>
   );
 }

@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "/opt/homebrew/opt/node@24/bin/npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173,
+      "cwd": "/Users/cavanohoro/Documents/github/professor-selection-tool/Frontend"
+    }
+  ]
+}

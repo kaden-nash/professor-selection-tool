@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import { login } from "../services/api";
+import { register } from "../services/api";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,11 +17,14 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
     try {
-      const result = await login(form.email, form.password);
-      localStorage.setItem("token", result.token);
-      navigate("/search");
+      // Use email prefix as name
+      const name = form.email.split("@")[0];
+      const result = await register(name, form.email, form.password);
+      setSuccess(result.msg);
+      setForm({ email: "", password: "" });
     } catch (err: any) {
       setError(err.response?.data?.msg || "An error occurred");
     } finally {
@@ -31,10 +35,10 @@ export default function Login() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1 className="auth-title">Welcome Back</h1>
+        <h1 className="auth-title">Create Account</h1>
         <p className="auth-sub">
-          Don't have an account yet?{" "}
-          <button className="auth-link" onClick={() => navigate("/register")}>Sign up</button>
+          Already have an account yet?{" "}
+          <button className="auth-link" onClick={() => navigate("/login")}>Log in</button>
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -63,9 +67,10 @@ export default function Login() {
           </div>
 
           {error && <p className="auth-error">{error}</p>}
+          {success && <p className="auth-success">{success}</p>}
 
           <button className="auth-btn" type="submit" disabled={loading}>
-            {loading ? "Please wait..." : "Sign in"}
+            {loading ? "Please wait..." : "Register"}
           </button>
         </form>
       </div>
