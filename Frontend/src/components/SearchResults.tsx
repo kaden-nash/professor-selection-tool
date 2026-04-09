@@ -160,7 +160,7 @@ export default function SearchResults() {
                         </div>
                         <p className="archetype-desc">{ARCHETYPE_DESC[prof.archetype]}</p>
                         <p className="prof-meta"><strong>Last Time Taught:</strong> {prof.lastTimeTaught}</p>
-                        <p className="prof-meta"><strong>Polarizing →</strong> {prof.isPolarizing ? "Yes" : "No"}</p>
+                        <p className="prof-meta"><strong>Controversial →</strong> {prof.isPolarizing ? "Yes" : "No"}</p>
                       </div>
 
                       {/* Right col — scores */}
