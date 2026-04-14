@@ -25,8 +25,8 @@ export default function Landing() {
             at UCF ⚔️
           </h1>
           <p className="hero-sub">
-            Our composite scoring algorithm combines 10+ metrics from RateMyProfessor,
-            SPI Surveys, and more — distilled into one clear number. Search our database of
+            Our composite scoring algorithm combines 10+ metrics from RateMyProfessor
+            and the UCF Course Catalog — distilled into one clear number. Search our database of
             over 2.9k professors.
           </p>
           <div className="hero-actions">
@@ -41,7 +41,7 @@ export default function Landing() {
       <section className="how-section">
         <h2 className="how-title">Built on real data</h2>
         <p className="how-sub">
-          We aggregate data from multiple sources to calculate a unique, trustworthy professor rating.
+          We aggregate data from various sources to calculate a unique, trustworthy professor rating.
         </p>
         <div className="how-sources">
           <div className="how-source-chip">
@@ -50,15 +50,7 @@ export default function Landing() {
           </div>
           <div className="how-source-chip">
             <span className="how-source-icon">📋</span>
-            <span>SPI Surveys</span>
-          </div>
-          <div className="how-source-chip">
-            <span className="how-source-icon">🎓</span>
-            <span>UCF Grade Data</span>
-          </div>
-          <div className="how-source-chip">
-            <span className="how-source-icon">💼</span>
-            <span>LinkedIn</span>
+            <span>UCF Course Catalog</span>
           </div>
         </div>
       </section>
