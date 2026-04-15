@@ -2,15 +2,8 @@ import json
 import os
 import sys
 
-# Ensure professor_scoring's own sub-modules are resolvable when invoked
-# from the project root. This is the single controlled sys.path addition
-# needed because the scoring sub-modules use bare imports (e.g. 'from models').
-_SCORING_DIR = os.path.dirname(os.path.abspath(__file__))
-if _SCORING_DIR not in sys.path:
-    sys.path.insert(0, _SCORING_DIR)
-
-from engine.engine_factory import ScoringEngineFactory  # noqa: E402
-from models import Professor, GlobalStatistics  # noqa: E402
+from .engine.engine_factory import ScoringEngineFactory
+from .models import Professor, GlobalStatistics
 
 
 class ProfessorScoringRunner:

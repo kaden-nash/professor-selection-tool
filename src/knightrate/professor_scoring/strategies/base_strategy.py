@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from models import Professor
+from ..models import Professor
 
 class ScoringStrategy(ABC):
     """Abstract base class for all professor scoring strategies."""

@@ -1,5 +1,5 @@
 from .base_strategy import ScoringStrategy
-from models import Professor
+from ..models import Professor
 
 class WouldTakeAgainScorer(ScoringStrategy):
     """Scores a professor based on the percentage of students that would take them again."""

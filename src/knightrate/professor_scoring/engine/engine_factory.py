@@ -1,22 +1,22 @@
-from engine.scoring_engine import ScoringEngine
-from strategies.difficulty_scorer import RawDifficultyScorer
-from strategies.rating_scorer import RatingScorer
-from strategies.would_take_again_scorer import WouldTakeAgainScorer
-from strategies.tag_friction_scorer import TagFrictionScorer
-from strategies.tag_quality_scorer import TagQualityScorer
-from strategies.top_3_tags_scorer import Top3TagsScorer
-from strategies.time_last_taught_scorer import TimeLastTaughtScorer
-from strategies.polarizing_scorer import PolarizingScorer
+from ..engine.scoring_engine import ScoringEngine
+from ..strategies.difficulty_scorer import RawDifficultyScorer
+from ..strategies.rating_scorer import RatingScorer
+from ..strategies.would_take_again_scorer import WouldTakeAgainScorer
+from ..strategies.tag_friction_scorer import TagFrictionScorer
+from ..strategies.tag_quality_scorer import TagQualityScorer
+from ..strategies.top_3_tags_scorer import Top3TagsScorer
+from ..strategies.time_last_taught_scorer import TimeLastTaughtScorer
+from ..strategies.polarizing_scorer import PolarizingScorer
 
-from strategies.combined_difficulty_scorer import DifficultyScorer
-from strategies.quality_scorer import QualityScorer
-from strategies.overall_scorer import OverallScorer
-from strategies.archetype_scorer import ArchetypeScorer
+from ..strategies.combined_difficulty_scorer import DifficultyScorer
+from ..strategies.quality_scorer import QualityScorer
+from ..strategies.overall_scorer import OverallScorer
+from ..strategies.archetype_scorer import ArchetypeScorer
 
-from global_stats.average_overall_stat import AverageOverallStat
-from global_stats.average_quality_stat import AverageQualityStat
-from global_stats.average_difficulty_stat import AverageDifficultyStat
-from global_stats.average_wta_stat import AverageWouldTakeAgainStat
+from ..global_stats.average_overall_stat import AverageOverallStat
+from ..global_stats.average_quality_stat import AverageQualityStat
+from ..global_stats.average_difficulty_stat import AverageDifficultyStat
+from ..global_stats.average_wta_stat import AverageWouldTakeAgainStat
 
 
 class ScoringEngineFactory:

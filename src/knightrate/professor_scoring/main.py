@@ -1,7 +1,7 @@
 import json
 import os
-from engine.engine_factory import ScoringEngineFactory
-from models import Professor, GlobalStatistics
+from .engine.engine_factory import ScoringEngineFactory
+from .models import Professor, GlobalStatistics
 
 def main():
     """Main execution entry point."""

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from models import Professor
+from ..models import Professor
 
 class StatisticStrategy(ABC):
     """Abstract base class for all global statistics calculators."""

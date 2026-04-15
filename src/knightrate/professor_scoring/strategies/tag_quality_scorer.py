@@ -1,5 +1,5 @@
 from .base_strategy import ScoringStrategy
-from models import Professor
+from ..models import Professor
 
 class TagQualityScorer(ScoringStrategy):
     """Scores a professor based on their quality tags."""

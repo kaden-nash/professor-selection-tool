@@ -1,5 +1,5 @@
 from .base_strategy import ScoringStrategy
-from models import Professor
+from ..models import Professor
 
 class OverallScorer(ScoringStrategy):
     def __init__(self):

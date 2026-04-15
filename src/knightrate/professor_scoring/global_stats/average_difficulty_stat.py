@@ -1,5 +1,5 @@
-from models import Professor
-from global_stats.base_statistic import StatisticStrategy
+from ..models import Professor
+from ..global_stats.base_statistic import StatisticStrategy
 
 class AverageDifficultyStat(StatisticStrategy):
     def __init__(self):

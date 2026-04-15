@@ -1,4 +1,4 @@
-from models import Professor, Scores, GlobalStatistics
+from ..models import Professor, Scores, GlobalStatistics
 
 class ScoringEngine:
     """Engine responsible for applying strategies to records."""

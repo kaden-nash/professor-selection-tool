@@ -1,5 +1,5 @@
 from .base_strategy import ScoringStrategy
-from models import Professor
+from ..models import Professor
 
 class Top3TagsScorer(ScoringStrategy):
     def __init__(self):

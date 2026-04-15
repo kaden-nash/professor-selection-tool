@@ -1,5 +1,5 @@
 from .base_strategy import ScoringStrategy
-from models import Professor
+from ..models import Professor
 
 class RatingScorer(ScoringStrategy):
     """Scores a professor based on their average rating."""
