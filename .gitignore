@@ -11,4 +11,4 @@ __pycache__
 planning (deprecated)/
 *.png 
 linecount.py
-*.egg-info
+*.egg-info/
