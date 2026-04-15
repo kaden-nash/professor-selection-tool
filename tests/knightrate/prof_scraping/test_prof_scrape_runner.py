@@ -1,7 +1,6 @@
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch, ANY
 import signal
-import sys
 
 from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 
@@ -49,7 +48,7 @@ def test_prof_scrape_runner_run_success(mock_components, mock_signal):
     mock_components['monitor'].assert_called_once()
     
     mock_components['engine'].assert_called_once()
-    mock_signal.assert_called_once_with(signal.SIGINT, runner._setup_signal_handler.__code__.co_consts[1] if hasattr(runner._setup_signal_handler.__code__, 'co_consts') else mock.ANY) # can't easily assert nested func without ANY, but we can verify it registers
+    mock_signal.assert_called_once_with(signal.SIGINT, ANY) # can't easily assert nested func without ANY, but we can verify it registers
     
     mock_engine_inst.run.assert_called_once()
 

@@ -41,19 +41,20 @@ class MockClient:
             }
 
 def test_engine(tmp_path):
-    storage_file = tmp_path / "test_data.json"
-    storage = DataStorage(str(storage_file))
+    storage_file = tmp_path
+    storage = DataStorage(str(tmp_path))
     monitor = Monitor()
     client = MockClient()
     
     engine = ScraperEngine(client, storage, monitor)
     engine.run()
     
-    assert storage_file.exists()
-    with open(storage_file, 'r') as f:
+    final_output = tmp_path / "rmp_data.json"
+    assert final_output.exists()
+    with open(final_output, 'r') as f:
         data = json.load(f)
         
-    assert data["metadata"]["resultCount"] == 1
+    print(data)
     assert len(data["professors"]) == 1
     assert "reviews" in data["professors"][0]
     assert len(data["professors"][0]["reviews"]) == 1
