@@ -1,4 +1,3 @@
-import os
 from .scraper.html_fetcher import HtmlFetcher
 from .scraper.parser import Parser
 from .scraper.course_scraper import CourseScraper
