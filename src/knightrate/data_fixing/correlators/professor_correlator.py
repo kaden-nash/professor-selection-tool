@@ -1,8 +1,8 @@
 import json
 from datetime import datetime
 from typing import Any, List, Dict, Optional, Set
-from data_fixing.core.correlator_interface import DataCorrelator
-from data_fixing.models.models import CatalogProfessor, UnifiedProfessor, Course
+from ..core.correlator_interface import DataCorrelator
+from ..models.models import CatalogProfessor, UnifiedProfessor, Course
 
 class ProfessorCorrelator(DataCorrelator):
     """

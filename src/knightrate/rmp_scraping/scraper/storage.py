@@ -2,7 +2,7 @@ import json
 import os
 import threading
 from typing import List, Dict, Any, Tuple
-from scraper.models import Professor, Rating 
+from .models import Professor, Rating 
 
 class DataStorage:
     def __init__(self, output_dir: str | None = None):

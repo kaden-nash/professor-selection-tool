@@ -4,11 +4,11 @@ import sys
 from typing import Optional
 
 from dotenv import load_dotenv
-from rmp_scraping.scraper.client import GraphQLClient
-from rmp_scraping.scraper.rate_limiter import RateLimiter
-from rmp_scraping.scraper.storage import DataStorage
-from rmp_scraping.scraper.monitor import Monitor
-from rmp_scraping.scraper.engine import ScraperEngine
+from .scraper.client import GraphQLClient
+from .scraper.rate_limiter import RateLimiter
+from .scraper.storage import DataStorage
+from .scraper.monitor import Monitor
+from .scraper.engine import ScraperEngine
 
 _RMP_RATE = 5.0
 

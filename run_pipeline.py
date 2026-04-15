@@ -12,11 +12,11 @@ import traceback
 from dataclasses import dataclass
 from typing import Optional
 
-from course_scraping.course_scrape_runner import CourseScrapeRunner
-from prof_scraping.prof_scrape_runner import ProfScrapeRunner
-from rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
-from data_fixing.data_fixing_runner import DataFixingRunner
-from professor_scoring.professor_scoring_runner import ProfessorScoringRunner
+from knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner
+from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
+from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
+from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
+from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
 
 
 @dataclass
@@ -91,14 +91,14 @@ class PipelineRunner:
         print(f"{'=' * 60}\n")
 
     def _build_rmp_runner(self) -> RmpScrapeRunner:
-        return RmpScrapeRunner(output_dir=os.path.join(self._config.root_dir, "rmp_scraping"))
+        return RmpScrapeRunner(output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "rmp_scraping"))
 
     def _build_prof_runner(self) -> ProfScrapeRunner:
-        return ProfScrapeRunner(output_dir=os.path.join(self._config.root_dir, "prof_scraping"))
+        return ProfScrapeRunner(output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "prof_scraping"))
 
     def _build_course_runner(self) -> CourseScrapeRunner:
         return CourseScrapeRunner(
-            output_dir=os.path.join(self._config.root_dir, "course_scraping")
+            output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "course_scraping")
         )
 
 

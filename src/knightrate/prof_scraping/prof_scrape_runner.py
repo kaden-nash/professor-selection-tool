@@ -2,11 +2,11 @@ import os
 import signal
 import sys
 
-from prof_scraping.scraper.client import CatalogClient
-from prof_scraping.scraper.parser import CatalogParser
-from prof_scraping.scraper.storage import DataStorage
-from prof_scraping.scraper.monitor import Monitor
-from prof_scraping.scraper.engine import ScraperEngine, ScraperDependencies
+from .scraper.client import CatalogClient
+from .scraper.parser import CatalogParser
+from .scraper.storage import DataStorage
+from .scraper.monitor import Monitor
+from .scraper.engine import ScraperEngine, ScraperDependencies
 
 
 class ProfScrapeRunner:

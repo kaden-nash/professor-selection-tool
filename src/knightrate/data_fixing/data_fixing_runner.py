@@ -1,10 +1,10 @@
 import os
 from typing import Optional, List, Any
 
-from data_fixing.scrubbers.course_scrubber import CourseScrubber
-from data_fixing.scrubbers.rmp_scrubber import RmpScrubber
-from data_fixing.scrubbers.catalog_scrubber import CatalogScrubber
-from data_fixing.correlators.professor_correlator import ProfessorCorrelator
+from .scrubbers.course_scrubber import CourseScrubber
+from .scrubbers.rmp_scrubber import RmpScrubber
+from .scrubbers.catalog_scrubber import CatalogScrubber
+from .correlators.professor_correlator import ProfessorCorrelator
 
 
 class DataFixingRunner:
@@ -26,13 +26,13 @@ class DataFixingRunner:
         """Constructs all input/output paths relative to root_dir."""
         r = self._root_dir
         return {
-            "courses_raw": os.path.join(r, "course_scraping", "courses.json"),
-            "rmp_raw": os.path.join(r, "rmp_scraping", "rmp_data.json"),
-            "catalog_raw": os.path.join(r, "prof_scraping", "ucf_catalog_professors.json"),
-            "courses_clean": os.path.join(r, "data_fixing", "courses_cleaned.json"),
-            "rmp_clean": os.path.join(r, "data_fixing", "rmp_data_cleaned.json"),
-            "catalog_clean": os.path.join(r, "data_fixing", "ucf_catalog_professors_cleaned.json"),
-            "prof_out": os.path.join(r, "data_fixing", "professor_data.json"),
+            "courses_raw": os.path.join(r, "src", "knightrate", "course_scraping", "courses.json"),
+            "rmp_raw": os.path.join(r, "src", "knightrate", "rmp_scraping", "rmp_data.json"),
+            "catalog_raw": os.path.join(r, "src", "knightrate", "prof_scraping", "ucf_catalog_professors.json"),
+            "courses_clean": os.path.join(r, "src", "knightrate", "data_fixing", "courses_cleaned.json"),
+            "rmp_clean": os.path.join(r, "src", "knightrate", "data_fixing", "rmp_data_cleaned.json"),
+            "catalog_clean": os.path.join(r, "src", "knightrate", "data_fixing", "ucf_catalog_professors_cleaned.json"),
+            "prof_out": os.path.join(r, "src", "knightrate", "data_fixing", "professor_data.json"),
         }
 
     def _run_course_scrubber(self, raw_path: str, clean_path: str) -> Optional[List[Any]]:

@@ -1,8 +1,8 @@
 import json
 import re
 from typing import List, Optional
-from data_fixing.core.scrubber_interface import DataScrubber
-from data_fixing.models.models import Course
+from ..core.scrubber_interface import DataScrubber
+from ..models.models import Course
 
 class CourseScrubber(DataScrubber):
     def __init__(self) -> None:

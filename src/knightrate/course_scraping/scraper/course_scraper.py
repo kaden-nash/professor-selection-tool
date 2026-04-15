@@ -1,7 +1,7 @@
 from urllib.parse import urljoin
 from tqdm import tqdm
-from scraper.html_fetcher import HtmlFetcher
-from scraper.parser import Parser
+from .html_fetcher import HtmlFetcher
+from .parser import Parser
 
 class CourseScraper:
     """Orchestrates fetching and parsing of catalog course data."""

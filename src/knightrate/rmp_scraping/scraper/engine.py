@@ -1,11 +1,11 @@
 import concurrent.futures
 from typing import List, Dict, Any, Optional
 import copy
-from scraper.client import GraphQLClient, GraphQLRequestError  
-from scraper.parser import parse_professors, parse_ratings  
-from scraper.models import Professor
-from scraper.monitor import Monitor  
-from scraper.storage import DataStorage  
+from .client import GraphQLClient, GraphQLRequestError  
+from .parser import parse_professors, parse_ratings  
+from .models import Professor
+from .monitor import Monitor  
+from .storage import DataStorage  
 
 PROFESSOR_QUERY_DICT: Dict[str, Any] = {
     "query": "query TeacherSearchPaginationQuery(\n  $count: Int!\n  $cursor: String\n  $query: TeacherSearchQuery!\n) {\n  search: newSearch {\n    teachers(query: $query, first: $count, after: $cursor) {\n      didFallback\n      edges {\n        cursor\n        node {\n          id\n          legacyId\n          avgRating\n          numRatings\n          wouldTakeAgainPercent\n          avgDifficulty\n          department\n          school {\n            name\n            id\n          }\n          firstName\n          lastName\n          isSaved\n          __typename\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      resultCount\n      filters {\n        field\n        options {\n          value\n          id\n        }\n      }\n    }\n  }\n}",

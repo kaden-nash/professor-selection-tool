@@ -1,7 +1,7 @@
-from scraper.html_fetcher import HtmlFetcher
-from scraper.parser import Parser
-from scraper.course_scraper import CourseScraper
-from storage.data_storage import DataStorage
+from course_scraping.scraper.html_fetcher import HtmlFetcher
+from course_scraping.scraper.parser import Parser
+from course_scraping.scraper.course_scraper import CourseScraper
+from course_scraping.storage.data_storage import DataStorage
 
 def main():
     root_url = "https://www.ucf.edu/catalog/undergraduate/#/courses"

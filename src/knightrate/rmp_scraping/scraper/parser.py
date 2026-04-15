@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, Tuple
-from scraper.models import Professor, Rating  
+from .models import Professor, Rating  
 
 def parse_professors(data: Dict[str, Any]) -> Tuple[List[Professor], Dict[str, Any], int]:
     """

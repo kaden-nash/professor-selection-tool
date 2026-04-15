@@ -21,9 +21,9 @@ class ProfessorScoringRunner:
 
     def run(self) -> None:
         """Runs the full professor scoring pipeline."""
-        input_path = os.path.join(self._root_dir, "data_fixing", "professor_data.json")
-        output_path = os.path.join(self._root_dir, "professor_scoring", "professor_ratings.json")
-        stats_path = os.path.join(self._root_dir, "professor_scoring", "global_statistics.json")
+        input_path = os.path.join(self._root_dir, "src", "knightrate", "data_fixing", "professor_data.json")
+        output_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "professor_ratings.json")
+        stats_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "global_statistics.json")
 
         data = self._load_data(input_path)
         data = self._run_scoring(data)

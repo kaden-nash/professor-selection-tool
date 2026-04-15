@@ -2,8 +2,8 @@ import json
 import re
 from datetime import datetime
 from typing import List, Optional, Tuple
-from data_fixing.core.scrubber_interface import DataScrubber
-from data_fixing.models.models import CatalogProfessor
+from ..core.scrubber_interface import DataScrubber
+from ..models.models import CatalogProfessor
 
 class CatalogScrubber(DataScrubber):
     def __init__(self) -> None:

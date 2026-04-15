@@ -1,5 +1,5 @@
 import os
-from data_fixing.data_fixing_runner import DataFixingRunner
+from .data_fixing_runner import DataFixingRunner
 
 
 def main(root_dir: str | None = None) -> None:

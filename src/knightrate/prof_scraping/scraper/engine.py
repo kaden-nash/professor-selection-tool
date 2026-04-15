@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from scraper.client import CatalogClient
-from scraper.parser import CatalogParser
-from scraper.storage import DataStorage
-from scraper.monitor import Monitor
+from .client import CatalogClient
+from .parser import CatalogParser
+from .storage import DataStorage
+from .monitor import Monitor
 
 
 @dataclass

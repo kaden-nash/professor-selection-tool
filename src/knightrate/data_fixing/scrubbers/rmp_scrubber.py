@@ -1,7 +1,7 @@
 import json
 import re
 from typing import Any, List, Dict
-from data_fixing.core.scrubber_interface import DataScrubber
+from ..core.scrubber_interface import DataScrubber
 
 class RmpScrubber(DataScrubber):
     def __init__(self) -> None:

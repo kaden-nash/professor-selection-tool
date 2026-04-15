@@ -2,11 +2,11 @@ import os
 import argparse
 import signal
 from dotenv import load_dotenv
-from scraper.client import GraphQLClient  
-from scraper.rate_limiter import RateLimiter  
-from scraper.storage import DataStorage  
-from scraper.monitor import Monitor  
-from scraper.engine import ScraperEngine  
+from rmp_scraping.scraper.client import GraphQLClient
+from rmp_scraping.scraper.rate_limiter import RateLimiter
+from rmp_scraping.scraper.storage import DataStorage
+from rmp_scraping.scraper.monitor import Monitor
+from rmp_scraping.scraper.engine import ScraperEngine
 
 def main():
     parser = argparse.ArgumentParser(description="RateMyProfessors Scraper")
@@ -17,15 +17,10 @@ def main():
     parser.add_argument("--limit-reviews", type=int, default=None, help="Limit the number of reviews scraped per professor (for testing).")
     args = parser.parse_args()
 
-    # Load configuration
     load_dotenv()
     
-    # Spec requests global rate limit of 5 req/s across 200 threads
     rate_limiter = RateLimiter(rate=5.0)
-    
     client = GraphQLClient(rate_limiter)
-    
-    # Store data relative to main.py
     storage = DataStorage()
     monitor = Monitor()
     
@@ -35,11 +30,8 @@ def main():
         print("\n[!] Scraping interrupted by user.")
         if hasattr(engine, '_is_cancelled'):
             engine._is_cancelled = True
-        
-        if hasattr(engine, 'futures'):
-            for f in getattr(engine, 'futures', []):
-                f.cancel()
-        
+        for f in getattr(engine, 'futures', []):
+            f.cancel()
         monitor.close()
         os._exit(1)
         
