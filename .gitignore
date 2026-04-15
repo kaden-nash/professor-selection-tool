@@ -6,7 +6,9 @@
 .pyre_configuration
 tests/
 .coverage
-ucf_rmp_scraper.egg-info/
 __pycache__
 *.json
-planning/
+planning (deprecated)/
+*.png 
+linecount.py
+*.egg-info
