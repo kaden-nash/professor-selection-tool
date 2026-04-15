@@ -4,7 +4,6 @@
 .pytest_cache
 .vscode
 .pyre_configuration
-tests/
 .coverage
 __pycache__
 *.json
