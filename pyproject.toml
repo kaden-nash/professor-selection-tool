@@ -22,6 +22,7 @@ dependencies = [
     "requests-mock",
     "pytest",
     "pytest-cov",
+    "pymongo",
     "typing-inspection",
 ]
 
