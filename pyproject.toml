@@ -38,4 +38,4 @@ include = [
 testpaths = ["tests"]
 markers = []
 addopts = "--cov=knightrate --cov-report=term-missing" # command line arguments to be addd onto every execution of pytest
-pythonpath = ["src"] 
+pythonpath = ["src", "."] 
