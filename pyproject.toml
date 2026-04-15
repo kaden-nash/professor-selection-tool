@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build_backend = "setuptools.build_meta"
+
+[project]
+name = "ucf_prof_scraper"
+version = "0.1.0"
+description = "ETL pipeline for University of Central Florida professor reviews"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    {name = "Kaden Nash", email = "kadenrnash05@gmail.com"}
+]
+
+dependencies = [
+    "requests",
+    "beautifulsoup4",
+    "python-dotenv",
+    "playwright",
+    "tqdm",
+    "pydantic",
+    "requests-mock",
+    "pytest",
+    "pytest-cov",
+    "typing-inspection",
+]
+
+[project.optional-dependencies]
+# Extra tools needed for development, but not for running the app
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "course_scraping*",
+    "prof_scraping*",
+    "rmp_scraping*",
+    "data_fixing*",
+    "professor_scoring*",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = []
+addopts = ""
+pythonpath = ["."]
