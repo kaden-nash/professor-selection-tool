@@ -62,7 +62,8 @@ def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
 
     # Mock file I/O
     m_open = mock_open(read_data=json.dumps([mock_professor]))
-    with patch('builtins.open', m_open):
+    with patch('builtins.open', m_open), \
+         patch('knightrate.professor_scoring.professor_scoring_runner.MongoUploader') as mock_uploader:
         runner.run()
         
     # Assertions
@@ -80,6 +81,15 @@ def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
     
     captured = capsys.readouterr()
     assert "Scoring complete" in captured.out
+    
+    # Check MongoUploader
+    mock_uploader.assert_called_once()
+    mock_uploader_inst = mock_uploader.return_value
+    
+    # Check that upload_professor_scores was called with the serialized professor!
+    mock_uploader_inst.upload_professor_scores.assert_called_once()
+    # Check global stats
+    mock_uploader_inst.upload_global_statistics.assert_called_once_with(mock_stats.model_dump())
 
 def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, capsys):
     runner = ProfessorScoringRunner("/root")
@@ -102,7 +112,8 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
         average_would_take_again=70.0
     )
     
-    with patch('builtins.open', m_open):
+    with patch('builtins.open', m_open), \
+         patch('knightrate.professor_scoring.professor_scoring_runner.MongoUploader'):
         runner.run()
         
     # Should handle fallback save paths without dying (the raw string should be written)
@@ -111,3 +122,16 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
     # m_open()[1] would be the first write to data output
     # checking it doesn't crash is enough
     assert mock_engine.process_data.call_count == 2
+
+def test_professor_scoring_runner_send_to_mongodb():
+    runner = ProfessorScoringRunner("/root")
+    
+    prof = Professor(id="prof1", first_name="A", last_name="B")
+    stats = GlobalStatistics(average_overall=4.0)
+    
+    with patch('knightrate.professor_scoring.professor_scoring_runner.MongoUploader') as mock_uploader:
+        runner._send_to_mongodb([prof], stats)
+        
+    mock_inst = mock_uploader.return_value
+    mock_inst.upload_professor_scores.assert_called_once_with([prof.model_dump(by_alias=True)])
+    mock_inst.upload_global_statistics.assert_called_once_with(stats.model_dump())
