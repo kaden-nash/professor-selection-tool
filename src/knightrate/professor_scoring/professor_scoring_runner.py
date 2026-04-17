@@ -14,17 +14,17 @@ class ProfessorScoringRunner:
     def run(self) -> None:
         """Runs the full professor scoring pipeline."""
         input_path = os.path.join(self._root_dir, "src", "knightrate", "data_fixing", "professor_data.json")
-        output_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "professor_ratings.json")
-        stats_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "global_statistics.json")
+        self.output_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "professor_ratings.json")
+        self.stats_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "global_statistics.json")
 
         data = self._load_data(input_path)
         data = self._run_scoring(data)
         global_stats = self._calculate_statistics(data)
 
-        self._save_data(output_path, data)
-        self._save_statistics(stats_path, global_stats)
-        self._send_to_mongodb(data)
-        print(f"Scoring complete. Results saved to {output_path} and {stats_path} and pushed to database.")
+        self._save_data(self.output_path, data)
+        self._save_statistics(self.stats_path, global_stats)
+        self._send_to_mongodb(data, global_stats)
+        print(f"Scoring complete. Results saved to {self.output_path} and {self.stats_path} and pushed to database.")
 
     def _load_data(self, path: str) -> list:
         """Loads the professor JSON data from disk."""
@@ -53,10 +53,15 @@ class ProfessorScoringRunner:
             ]
             json.dump(json_data, f, indent=4)
     
-    def _send_to_mongodb(self, data: list) -> None:
+    def _send_to_mongodb(self, data: list, stats: GlobalStatistics) -> None:
+        json_data = [
+            p.model_dump(by_alias=True) if isinstance(p, Professor) else p for p in data
+        ]
+        stats_dict = stats.model_dump()
+        
         uploader = MongoUploader()
-        uploader.upload_professor_scores("path to final professor_ratings.json")
-        uploader.upload_professor_scores("path to final global_statistics.json")
+        uploader.upload_professor_scores(json_data)
+        uploader.upload_global_statistics(stats_dict)
 
 
     def _save_statistics(self, path: str, stats: GlobalStatistics) -> None:

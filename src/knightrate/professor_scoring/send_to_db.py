@@ -1,4 +1,5 @@
-import json, os
+import os
+
 from pymongo import MongoClient, UpdateOne
 from pymongo.errors import BulkWriteError
 from dotenv import load_dotenv
@@ -8,9 +9,7 @@ class MongoUploader:
         load_dotenv()
         self.db = MongoClient(os.getenv("MONGO_URI"))[os.getenv("MONGO_DB")] # type: ignore
 
-    def upload_professor_scores(self, file_path: str):
-        with open(file_path, "r") as f:
-            data = json.load(f)
+    def upload_professor_scores(self, data: list):
         ops = [
             UpdateOne({"id": item["id"]}, {"$set": item}, upsert=True)
             for item in data
@@ -21,9 +20,7 @@ class MongoUploader:
         except BulkWriteError as e:
             print(e.details)
 
-    def upload_global_statistics(self, file_path: str):
-        with open(file_path, "r") as f:
-            data = json.load(f)
+    def upload_global_statistics(self, data: dict):
         collection = os.getenv("MONGO_COLLECTION_STATISTICS")
         self.db[collection].update_one( # type: ignore
             {"_id": "global_stats"},
