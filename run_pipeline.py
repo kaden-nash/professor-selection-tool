@@ -101,7 +101,6 @@ class PipelineRunner:
             output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "course_scraping")
         )
 
-
 def _parse_args() -> argparse.Namespace:
     """Parses command-line arguments."""
     parser = argparse.ArgumentParser(

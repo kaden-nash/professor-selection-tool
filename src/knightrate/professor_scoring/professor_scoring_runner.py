@@ -1,10 +1,9 @@
 import json
 import os
-import sys
 
 from .engine.engine_factory import ScoringEngineFactory
 from .models import Professor, GlobalStatistics
-
+from .send_to_db import MongoUploader
 
 class ProfessorScoringRunner:
     """Orchestrates the professor scoring pipeline."""
@@ -24,7 +23,8 @@ class ProfessorScoringRunner:
 
         self._save_data(output_path, data)
         self._save_statistics(stats_path, global_stats)
-        print(f"Scoring complete. Results saved to {output_path} and {stats_path}")
+        self._send_to_mongodb(data)
+        print(f"Scoring complete. Results saved to {output_path} and {stats_path} and pushed to database.")
 
     def _load_data(self, path: str) -> list:
         """Loads the professor JSON data from disk."""
@@ -52,6 +52,12 @@ class ProfessorScoringRunner:
                 p.model_dump(by_alias=True) if isinstance(p, Professor) else p for p in data
             ]
             json.dump(json_data, f, indent=4)
+    
+    def _send_to_mongodb(self, data: list) -> None:
+        uploader = MongoUploader()
+        uploader.upload_professor_scores("path to final professor_ratings.json")
+        uploader.upload_professor_scores("path to final global_statistics.json")
+
 
     def _save_statistics(self, path: str, stats: GlobalStatistics) -> None:
         """Saves the global statistics to JSON."""
