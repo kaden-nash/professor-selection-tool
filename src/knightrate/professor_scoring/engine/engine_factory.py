@@ -44,6 +44,11 @@ class ScoringEngineFactory:
         engine.register_strategy(DifficultyScorer())
         engine.register_strategy(QualityScorer())
         engine.register_strategy(OverallScorer())
+        return engine
+    
+    @staticmethod
+    def create_third_round_engine() -> ScoringEngine:
+        engine = ScoringEngine()
         engine.register_strategy(ArchetypeScorer())
         return engine
 

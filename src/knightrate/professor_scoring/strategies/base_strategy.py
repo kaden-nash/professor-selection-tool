@@ -5,7 +5,7 @@ class ScoringStrategy(ABC):
     """Abstract base class for all professor scoring strategies."""
 
     @abstractmethod
-    def analyze(self, professor: Professor) -> dict:
+    def analyze(self, professor: Professor, *args, **kwargs) -> dict:
         """
         Calculates a score for the given professor.
         

@@ -20,6 +20,8 @@ class ProfessorScoringRunner:
         data = self._load_data(input_path)
         data = self._run_scoring(data)
         global_stats = self._calculate_statistics(data)
+        data = self._run_scoring_with_global_stats(data, global_stats)
+
 
         self._save_data(self.output_path, data)
         self._save_statistics(self.stats_path, global_stats)
@@ -39,7 +41,12 @@ class ProfessorScoringRunner:
         data = factory.create_first_round_engine().process_data(data)
         data = factory.create_second_round_engine().process_data(data)
         return data
-
+    
+    def _run_scoring_with_global_stats(self, data: list, global_stats) -> list:
+        factory = ScoringEngineFactory()
+        data = factory.create_third_round_engine().process_data(data, global_stats)
+        return data
+    
     def _calculate_statistics(self, data: list) -> GlobalStatistics:
         """Calculates global statistics from the scored professor data."""
         factory = ScoringEngineFactory()

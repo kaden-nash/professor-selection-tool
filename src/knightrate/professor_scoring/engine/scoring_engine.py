@@ -15,20 +15,20 @@ class ScoringEngine:
         """Adds a new statistical strategy to the engine."""
         self.statistic_strategies.append(strategy)
 
-    def process_data(self, data: list) -> list:
+    def process_data(self, data: list, *args, **kwargs) -> list:
         """Processes a list of mixed data types, scoring Professor objects."""
         for i in range(len(data)):
             if isinstance(data[i], Professor):
-                data[i] = self._score_professor(data[i]) 
+                data[i] = self._score_professor(data[i], *args, **kwargs) 
         return data
 
-    def _score_professor(self, professor: Professor) -> Professor:
+    def _score_professor(self, professor: Professor, *args, **kwargs) -> Professor:
         """Applies all strategies to a single professor."""
         if not professor.scores:
             professor.scores = Scores()
             
         for strategy in self.strategies:
-            strategy_result = strategy.analyze(professor)
+            strategy_result = strategy.analyze(professor, *args, **kwargs)
             current_scores = professor.scores.__dict__.copy()
             current_scores.update(strategy_result)
             professor.scores = Scores(**current_scores)
