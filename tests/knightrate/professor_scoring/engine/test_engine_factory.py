@@ -27,13 +27,17 @@ class TestScoringEngineFactory:
         assert TagQualityScorer in strategy_types
 
     def test_create_second_round_engine(self):
-        factory = ScoringEngineFactory()
-        engine = factory.create_second_round_engine()
+        engine = ScoringEngineFactory.create_second_round_engine()
         assert isinstance(engine, ScoringEngine)
-        assert len(engine.strategies) == 4
-        
+        assert len(engine.strategies) == 3
         strategy_types = [type(s) for s in engine.strategies]
         assert DifficultyScorer in strategy_types
         assert QualityScorer in strategy_types
         assert OverallScorer in strategy_types
+
+    def test_create_third_round_engine(self):
+        engine = ScoringEngineFactory.create_third_round_engine()
+        assert isinstance(engine, ScoringEngine)
+        assert len(engine.strategies) == 1
+        strategy_types = [type(s) for s in engine.strategies]
         assert ArchetypeScorer in strategy_types

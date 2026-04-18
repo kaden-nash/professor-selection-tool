@@ -40,17 +40,19 @@ def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
     
     mock_first_engine = Mock()
     mock_second_engine = Mock()
+    mock_third_engine = Mock()
     mock_stat_engine = Mock()
     
     factory_inst.create_first_round_engine.return_value = mock_first_engine
     factory_inst.create_second_round_engine.return_value = mock_second_engine
+    factory_inst.create_third_round_engine.return_value = mock_third_engine
     factory_inst.create_global_stat_engine.return_value = mock_stat_engine
     
     # Process modifications
     prof_model = Professor(**mock_professor)
     mock_first_engine.process_data.return_value = [prof_model]
     mock_second_engine.process_data.return_value = [prof_model]
-    
+    mock_third_engine.process_data.return_value = [prof_model]
     # Stat modifications
     mock_stats = GlobalStatistics(
         average_overall=50.0,
@@ -73,10 +75,12 @@ def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
     # Check factory calls
     factory_inst.create_first_round_engine.assert_called_once()
     factory_inst.create_second_round_engine.assert_called_once()
+    factory_inst.create_third_round_engine.assert_called_once()
     factory_inst.create_global_stat_engine.assert_called_once()
     
     mock_first_engine.process_data.assert_called_once()
     mock_second_engine.process_data.assert_called_once_with([prof_model])
+    mock_third_engine.process_data.assert_called_once_with([prof_model], mock_stats)
     mock_stat_engine.calculate_statistics.assert_called_once_with([prof_model])
     
     captured = capsys.readouterr()
@@ -101,6 +105,7 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
     mock_engine = Mock()
     factory_inst.create_first_round_engine.return_value = mock_engine
     factory_inst.create_second_round_engine.return_value = mock_engine
+    factory_inst.create_third_round_engine.return_value = mock_engine
     mock_engine.process_data.return_value = ["dummy_return"]
     
     mock_stat_engine = Mock()
@@ -121,7 +126,7 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
     
     # m_open()[1] would be the first write to data output
     # checking it doesn't crash is enough
-    assert mock_engine.process_data.call_count == 2
+    assert mock_engine.process_data.call_count == 3
 
 def test_professor_scoring_runner_send_to_mongodb():
     runner = ProfessorScoringRunner("/root")
