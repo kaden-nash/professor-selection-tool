@@ -1,11 +1,6 @@
-import os
-import signal
-import sys
-
 from .scraper.client import CatalogClient
 from .scraper.parser import CatalogParser
 from .scraper.storage import DataStorage
-from .scraper.monitor import Monitor
 from .scraper.engine import ScraperEngine, ScraperDependencies
 
 
@@ -17,33 +12,21 @@ class ProfScrapeRunner:
 
     def run(self) -> None:
         """Runs the full professor catalog scraping pipeline."""
-        engine, monitor = self._build_engine()
-        self._setup_signal_handler(monitor)
+        engine = self._build_engine()
         try:
             engine.run()
         except Exception as exc:
             print(f"\n[!] An error occurred: {exc}")
-            monitor.close()
-            sys.exit(1)
+            raise exc
 
-    def _build_engine(self) -> tuple:
+    def _build_engine(self) -> ScraperEngine:
         """Wires up all scraper components."""
         client = CatalogClient()
         parser = CatalogParser()
         storage = DataStorage(self._output_dir)
-        monitor = Monitor()
         deps = ScraperDependencies(
             client=client,
             parser=parser,
             storage=storage,
-            monitor=monitor,
         )
-        return ScraperEngine(deps), monitor
-
-    def _setup_signal_handler(self, monitor: Monitor) -> None:
-        """Registers SIGINT handler to close the progress bar on Ctrl+C."""
-        def handler(sig, frame):
-            print("\n[!] Scrape interrupted by user.")
-            monitor.close()
-            sys.exit(1)
-        signal.signal(signal.SIGINT, handler)
+        return ScraperEngine(deps)
