@@ -21,6 +21,7 @@ class CourseScrapeRunner:
             self._persist(courses)
         finally:
             fetcher.close()
+        print("Finished UCF course scraping.")
 
     def _scrape(self, fetcher: HtmlFetcher) -> list:
         """Delegates scraping to CourseScraper and returns results."""

@@ -37,30 +37,40 @@ class ProfessorScoringRunner:
 
     def _run_scoring(self, data: list) -> list:
         """Applies first and second round scoring engines to the data."""
+        print("Scoring professors on first-round metrics...")
         factory = ScoringEngineFactory()
         data = factory.create_first_round_engine().process_data(data)
         data = factory.create_second_round_engine().process_data(data)
+        print("Finished.")
         return data
     
     def _run_scoring_with_global_stats(self, data: list, global_stats) -> list:
+        print("Scoring professors on second-round metrics...")
         factory = ScoringEngineFactory()
         data = factory.create_third_round_engine().process_data(data, global_stats)
+        print("Finished.")
         return data
     
     def _calculate_statistics(self, data: list) -> GlobalStatistics:
         """Calculates global statistics from the scored professor data."""
+        print("Performing global statistics calculations...")
         factory = ScoringEngineFactory()
-        return factory.create_global_stat_engine().calculate_statistics(data)
+        temp = factory.create_global_stat_engine().calculate_statistics(data)
+        print("Finished.")
+        return temp
 
     def _save_data(self, path: str, data: list) -> None:
         """Saves the processed professor data to JSON."""
+        print("Saving scoring data...")
         with open(path, "w", encoding="utf-8") as f:
             json_data = [
                 p.model_dump(by_alias=True) if isinstance(p, Professor) else p for p in data
             ]
             json.dump(json_data, f, indent=4)
+        print("Finished.")
     
     def _send_to_mongodb(self, data: list, stats: GlobalStatistics) -> None:
+        print("Sending data to mongodb cluster...")
         json_data = [
             p.model_dump(by_alias=True) if isinstance(p, Professor) else p for p in data
         ]
@@ -69,6 +79,7 @@ class ProfessorScoringRunner:
         uploader = MongoUploader()
         uploader.upload_professor_scores(json_data)
         uploader.upload_global_statistics(stats_dict)
+        print("Finished.")
 
 
     def _save_statistics(self, path: str, stats: GlobalStatistics) -> None:
