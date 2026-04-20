@@ -24,9 +24,12 @@ class CourseScrapeRunner:
 
     def _scrape(self, fetcher: HtmlFetcher) -> list:
         """Delegates scraping to CourseScraper and returns results."""
+        print("Fetching and processing html...")
         parser = Parser()
         scraper = CourseScraper(fetcher, parser)
-        return scraper.run_scraping(ROOT_URL)
+        courses = scraper.run_scraping(ROOT_URL)
+        print("Finished fetching and processing html.")
+        return courses
 
     def _persist(self, courses: list) -> None:
         """Saves scraped courses to the output directory."""
