@@ -4,7 +4,6 @@ from typing import Any
 class DataScrubber(ABC):
     """
     Abstract base class for all data scrubbers.
-    Ensures a consistent interface.
     """
 
     @abstractmethod

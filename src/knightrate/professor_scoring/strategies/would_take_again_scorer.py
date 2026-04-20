@@ -18,21 +18,19 @@ class WouldTakeAgainScorer(ScoringStrategy):
         """Calculates average would take again scores."""
         yeses = 0
         total_valid = 0
-        counter = 1
         YES_THRESHOLD = 4
         for rev in professor.reviews:
             if rev.would_take_again is not None:
                 total_valid += 1
                 if rev.would_take_again == 1:
                     yeses += 1
-            else: # this offsets the strange occurrence where bad professors have very few reviews where students opt to answer the "would take again" question.
+            else: # this offsets the strange occurrence where bad professors have very few reviews where students opt to answer the "would take again" question by assuming any student that gave a quality rating of 3 or less would not take this professor again.
                 if rev.helpful_rating < YES_THRESHOLD:
                     total_valid += 1
                 
                     
         if total_valid == 0:
             return "Unavailable"
-            # return 0.0
             
         percent_yes = yeses / total_valid
         return round(float(percent_yes) * 100, 2)

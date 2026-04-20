@@ -14,6 +14,7 @@ class DataFixingRunner:
         self._root_dir = root_dir
 
     def run(self) -> None:
+        "Manages scrubbing and correlation."
         print("Beginning data preprocessing...")
         """Runs the complete data fixing pipeline."""
         paths = self._build_paths()

@@ -2,6 +2,8 @@ from ..models import Professor
 from ..global_stats.base_statistic import StatisticStrategy
 
 class AverageQualityStat(StatisticStrategy):
+    """Calculates the average quality score across every professor."""
+    
     def __init__(self):
         self.metric_name = "avgQuality"
 

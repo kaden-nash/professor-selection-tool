@@ -2,7 +2,7 @@ from .base_strategy import ScoringStrategy
 from ..models import Professor
 
 class RawDifficultyScorer(ScoringStrategy):
-    """Scores a professor based on their average difficulty."""
+    """Scores a professor based on their average difficulty. Between 1-5"""
 
     def __init__(self):
         self.metric_name = "rawDifficultyScore"

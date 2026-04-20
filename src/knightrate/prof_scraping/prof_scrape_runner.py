@@ -14,7 +14,9 @@ class ProfScrapeRunner:
         """Runs the full professor catalog scraping pipeline."""
         engine = self._build_engine()
         try:
+            print("Begin scraping professors from UCF course catalog...")
             engine.run()
+            print("Finish scraping professors from UCF course catalog.")
         except Exception as exc:
             print(f"\n[!] An error occurred: {exc}")
             raise exc

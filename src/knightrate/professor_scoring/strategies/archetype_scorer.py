@@ -2,6 +2,8 @@ from .base_strategy import ScoringStrategy
 from ..models import Professor, GlobalStatistics
 
 class ArchetypeScorer(ScoringStrategy):
+    """Calculates archtype. Can be: The Unicorn, The Mastermind, The Saboteur, The NPC"""
+
     def __init__(self):
         self.metric_name = "archetype"
 
@@ -12,6 +14,7 @@ class ArchetypeScorer(ScoringStrategy):
         return {self.metric_name: archetype}
 
     def _get_2x2_archetype(self, q_score: float, d_score: float, global_stats: GlobalStatistics):
+        """Calculates archetype for a single professor."""
         global_avg_difficulty = global_stats.avg_difficulty
         global_avg_quality = global_stats.avg_quality
         arbitrary_value = 5

@@ -3,6 +3,7 @@ from ..models import Professor
 import re
 
 class TimeLastTaughtScorer(ScoringStrategy):
+    """Determines the last time a professor taught based on their most recent reviews and the course catalog."""
 
     def __init__(self):
         self.metric_name = "timeLastTaught"
@@ -17,6 +18,7 @@ class TimeLastTaughtScorer(ScoringStrategy):
         return {self.metric_name: time}
     
     def _get_month_and_year(self, professor: Professor) -> dict[str, int] | str:
+        """Gets the month and year from a review's date string."""
         if not professor.reviews:
             return "Unknown"
         most_recent_review = professor.reviews[0]
@@ -30,13 +32,15 @@ class TimeLastTaughtScorer(ScoringStrategy):
         return {"year": year, "month": month}
 
     def _get_time_last_taught(self, date: dict[str, int]):
-        # summer: between june and august [6-8]
-        # fall: between september and january [9-1]
-        # spinrg: between february and may [2-5]
+        """Categorizes the time last taught into Summer, Spring, or Fall"""
         time = ""
-        if date.get("month", 0) >= 6 and date.get("month", 0) <= 8:
+        FEBRUARY = 2
+        MAY = 5
+        JUNE = 6
+        AUGUST = 8
+        if date.get("month", 0) >= JUNE and date.get("month", 0) <= AUGUST:
             time = "Summer " + str(date.get("year", 0))
-        elif date.get("month", 0) >= 2 and date.get("month", 0) <= 5:
+        elif date.get("month", 0) >= FEBRUARY and date.get("month", 0) <= MAY:
             time = "Spring " + str(date.get("year", 0))
         else:
             time = "Fall " + str(date.get("year", 0))

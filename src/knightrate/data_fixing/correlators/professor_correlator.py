@@ -7,7 +7,6 @@ from ..models.models import CatalogProfessor, UnifiedProfessor, Course
 class ProfessorCorrelator(DataCorrelator):
     """
     Correlates RMP professor data with Catalog professor data by name.
-    Handles duplicate names by correlating earliest start date with earliest review date.
     """
 
     def __init__(self) -> None:
@@ -15,6 +14,7 @@ class ProfessorCorrelator(DataCorrelator):
         self.valid_courses: Dict[str, Course] = {}
 
     def correlate(self, rmp_data: List[Dict[str, Any]], catalog_data: List[CatalogProfessor], courses_data: Optional[List[Course]] = None) -> None:
+        """Orchestrates correlation functions."""
         if courses_data:
             self.valid_courses = {f"{c.course_code}{c.course_number}": c for c in courses_data}
             
@@ -32,6 +32,7 @@ class ProfessorCorrelator(DataCorrelator):
         ]
 
     def _group_catalog_by_name(self, catalog: List[CatalogProfessor]) -> Dict[str, List[CatalogProfessor]]:
+        """Groups professors found in the course catalog data."""
         grouped: Dict[str, List[CatalogProfessor]] = {}
         for cp in catalog:
             key = f"{cp.first_name} {cp.last_name}".lower()
@@ -39,6 +40,7 @@ class ProfessorCorrelator(DataCorrelator):
         return grouped
 
     def _group_rmp_by_name(self, rmp: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+        """Groups professors found in the RMP data."""
         grouped: Dict[str, List[Dict[str, Any]]] = {}
         for rp in rmp:
             first = rp.get("firstName", "")
@@ -48,6 +50,7 @@ class ProfessorCorrelator(DataCorrelator):
         return grouped
 
     def _correlate_name_group(self, rmp_list: List[Dict[str, Any]], cat_list: List[CatalogProfessor]) -> None:
+        """Correlates data for a professor from the course catalog and RMP data."""
         cat_sorted = sorted(cat_list, key=self._get_catalog_start_date)
         rmp_sorted = sorted(rmp_list, key=self._get_rmp_first_review_date)
         
@@ -56,6 +59,7 @@ class ProfessorCorrelator(DataCorrelator):
             self._process_single_match(rmp_prof, cat_prof)
 
     def _process_single_match(self, rmp_prof: Dict[str, Any], cat_prof: Optional[CatalogProfessor]) -> None:
+        """Creates a unique professor object."""
         unified = UnifiedProfessor(rmp_data=rmp_prof)
         if cat_prof:
             unified.merge_catalog_data(cat_prof)
@@ -64,6 +68,7 @@ class ProfessorCorrelator(DataCorrelator):
         self.unified_data.append(unified)
 
     def _extract_courses(self, unified: UnifiedProfessor) -> None:
+        """Get course titles from RMP reviews."""
         reviews = unified.rmp_data.get("reviews", [])
         courses_set = set()
         for r in reviews:
@@ -83,6 +88,7 @@ class ProfessorCorrelator(DataCorrelator):
         unified.courses_taught = sorted(list(courses_set))
 
     def _get_catalog_start_date(self, cp: CatalogProfessor) -> datetime:
+        """Gets professor start date from catalog data."""
         dt_str = cp.date_joined_ucf
         if not dt_str:
             return datetime.max
@@ -92,6 +98,7 @@ class ProfessorCorrelator(DataCorrelator):
             return datetime.max
 
     def _get_rmp_first_review_date(self, rp: Dict[str, Any]) -> datetime:
+        """Tries to estimate start date of professor."""
         first_date = self._parse_explicit_first_date(rp)
         if first_date:
             return first_date
@@ -99,6 +106,7 @@ class ProfessorCorrelator(DataCorrelator):
         return self._find_earliest_rating_date(rp)
 
     def _parse_explicit_first_date(self, rp: Dict[str, Any]) -> Optional[datetime]:
+        """Ensure a valid date from review."""
         if "firstReviewDate" in rp:
             try:
                 return datetime.strptime(rp["firstReviewDate"], "%Y-%m-%d")
@@ -107,6 +115,7 @@ class ProfessorCorrelator(DataCorrelator):
         return None
 
     def _find_earliest_rating_date(self, rp: Dict[str, Any]) -> datetime:
+        """Finds the earliest review date"""
         reviews = rp.get("reviews", [])
         if not reviews or not isinstance(reviews, list):
             return datetime.max

@@ -20,6 +20,7 @@ class TagQualityScorer(ScoringStrategy):
         return {self.metric_name: score}
 
     def _get_tags(self, professor: Professor):
+        """Gets all the tags from every review this professor has."""
         all_tags = []
         for rev in professor.reviews:
             for tag in rev.rating_tags:
@@ -27,6 +28,7 @@ class TagQualityScorer(ScoringStrategy):
         return all_tags
         
     def _get_quality_score(self, tags):
+        """Calculate the quality score based on tags."""
         scores = [self.quality_weights[t] for t in tags if t in self.quality_weights]
         avg = sum(scores) / len(scores) if scores else 0
         return round(float((avg + 1) * 50), 2)

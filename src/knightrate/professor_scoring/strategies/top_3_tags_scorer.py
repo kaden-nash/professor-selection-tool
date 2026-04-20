@@ -2,6 +2,8 @@ from .base_strategy import ScoringStrategy
 from ..models import Professor
 
 class Top3TagsScorer(ScoringStrategy):
+    """Determines the 3 most common tags a professor receives from reviews."""
+
     def __init__(self):
         self.metric_name = "topThreeTags"
 
@@ -10,6 +12,7 @@ class Top3TagsScorer(ScoringStrategy):
         return {self.metric_name: top_three}
     
     def _get_top_three_tags(self, professor: Professor) -> list[str]:
+        """Gets the top 3 tags."""
         all_tags = {}
         for rev in professor.reviews:
             if not rev.rating_tags:

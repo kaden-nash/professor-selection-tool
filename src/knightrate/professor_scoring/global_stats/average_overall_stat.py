@@ -2,6 +2,8 @@ from ..models import Professor
 from ..global_stats.base_statistic import StatisticStrategy
 
 class AverageOverallStat(StatisticStrategy):
+    """Calculates the average overall score across every professor."""
+    
     def __init__(self):
         self.metric_name = "avgOverall"
 

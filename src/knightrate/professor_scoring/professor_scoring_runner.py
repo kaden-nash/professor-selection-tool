@@ -45,6 +45,7 @@ class ProfessorScoringRunner:
         return data
     
     def _run_scoring_with_global_stats(self, data: list, global_stats) -> list:
+        """Applies third round scoring engines to the data."""
         print("Scoring professors on second-round metrics...")
         factory = ScoringEngineFactory()
         data = factory.create_third_round_engine().process_data(data, global_stats)
@@ -70,6 +71,7 @@ class ProfessorScoringRunner:
         print("Finished.")
     
     def _send_to_mongodb(self, data: list, stats: GlobalStatistics) -> None:
+        """Sends scoring data and global statistics to mongodb."""
         print("Sending data to mongodb cluster...")
         json_data = [
             p.model_dump(by_alias=True) if isinstance(p, Professor) else p for p in data

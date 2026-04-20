@@ -3,6 +3,7 @@ from typing import Optional, Dict, Any, List
 
 @dataclass
 class Course:
+    "Represents a course from the UCF course catalog."
     course_code: str
     course_number: str
     course_name: str
@@ -20,6 +21,7 @@ class Course:
 
 @dataclass
 class CatalogProfessor:
+    "Represents a professor from the UCF course catalog."
     last_name: str
     first_name: str
     role: str

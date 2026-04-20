@@ -2,6 +2,8 @@ from ..models import Professor
 from ..global_stats.base_statistic import StatisticStrategy
 
 class AverageDifficultyStat(StatisticStrategy):
+    """Calculates the average difficulty score across every professor."""
+
     def __init__(self):
         self.metric_name = "avgDifficulty"
 

@@ -11,9 +11,6 @@ class TagFrictionScorer(ScoringStrategy):
         "skip class? you won't pass": 0, "lecture heavy": 0,
     }
 
-    # "Online Savvy"
-
-
     def __init__(self):
         self.metric_name = "tagFrictionScore"
 
@@ -23,6 +20,7 @@ class TagFrictionScorer(ScoringStrategy):
         return {self.metric_name: score}
 
     def _get_tags(self, professor: Professor):
+        """Gets all the tags from every review this professor has."""
         all_tags = []
         for rev in professor.reviews:
             for tag in rev.rating_tags:
@@ -30,6 +28,7 @@ class TagFrictionScorer(ScoringStrategy):
         return all_tags
 
     def _get_friction_score(self, tags):
+        """Calculate the friction score based on tags."""
         scores = [self.friction_weights[t] for t in tags if t in self.friction_weights]
         avg = sum(scores) / len(scores) if scores else 0
         return round(float((avg + 1) * 50), 2)

@@ -5,11 +5,14 @@ from pymongo.errors import BulkWriteError
 from dotenv import load_dotenv
 
 class MongoUploader:
+    """Sends data to mongoDB."""
+
     def __init__(self):
         load_dotenv()
         self.db = MongoClient(os.getenv("MONGO_URI"))[os.getenv("MONGO_DB")] # type: ignore
 
     def upload_professor_scores(self, data: list):
+        """Uploads professor scores."""
         ops = [
             UpdateOne({"id": item["id"]}, {"$set": item}, upsert=True)
             for item in data
@@ -21,6 +24,7 @@ class MongoUploader:
             print(e.details)
 
     def upload_global_statistics(self, data: dict):
+        """Uploads global statistics."""
         collection = os.getenv("MONGO_COLLECTION_STATISTICS")
         self.db[collection].update_one( # type: ignore
             {"_id": "global_stats"},

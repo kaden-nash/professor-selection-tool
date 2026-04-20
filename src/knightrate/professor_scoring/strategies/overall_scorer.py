@@ -14,6 +14,7 @@ class OverallScorer(ScoringStrategy):
         return {self.metric_name: overall}
     
     def _get_overall_score(self, quality_score: float, wta_score: float) -> float:
+        """Calculates a composite overall score from the quality score and wta score."""
         wta_percent = (wta_score/100)
         adj = (wta_percent - 0.5) * 20
         final = quality_score + adj

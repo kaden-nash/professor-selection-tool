@@ -4,7 +4,6 @@ from typing import Any
 class DataCorrelator(ABC):
     """
     Abstract base class for data correlators.
-    Ensures a consistent interface.
     """
 
     @abstractmethod
