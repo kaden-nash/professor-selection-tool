@@ -54,7 +54,6 @@ def test_engine(tmp_path):
     with open(final_output, 'r') as f:
         data = json.load(f)
         
-    print(data)
     assert len(data["professors"]) == 1
     assert "reviews" in data["professors"][0]
     assert len(data["professors"][0]["reviews"]) == 1

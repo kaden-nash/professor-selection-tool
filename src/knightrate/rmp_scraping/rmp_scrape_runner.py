@@ -1,6 +1,5 @@
 import os
 import signal
-import sys
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -32,11 +31,13 @@ class RmpScrapeRunner:
         engine = self._build_engine()
         self._setup_signal_handler(engine)
         try:
+            print("Beginning RMP scraping...")
             engine.run()
+            print("Completed RMP scraping.")
         except Exception as exc:
             print(f"\n[!] An error occurred during scraping: {exc}")
             engine.monitor.close()
-            os._exit(1)
+            raise exc
 
     def _build_engine(self) -> ScraperEngine:
         """Wires up all scraper components."""

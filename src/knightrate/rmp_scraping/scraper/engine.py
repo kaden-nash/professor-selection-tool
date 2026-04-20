@@ -216,7 +216,7 @@ class ScraperEngine:
         self._prof_map_ref = {p.id: p for p in self._professors_ref}
         self._completed_professors = 0
         
-        print(f"Fetched {len(professors)} professors. Fetching reviews using 200 concurrent threads...")
+        print(f"Fetched {len(professors)} professors. Now fetching reviews...")
         self.monitor.init_reviews(len(professors))
         
         self._is_cancelled = False
@@ -248,7 +248,7 @@ class ScraperEngine:
         self._prof_map_ref = {p.id: p for p in self._professors_ref}
         self._completed_professors = 0
         
-        print(f"Loaded {len(existing_profs)} professors from JSON. Skipping search phase.")
+        print(f"Loaded {len(existing_profs)} professors from JSON.")
         
         professors_to_process = self._professors_ref
         limit_prof = self.limit_professors
@@ -256,7 +256,7 @@ class ScraperEngine:
             professors_to_process = self._professors_ref[:limit_prof]  
             print(f"Applying limit: Only fetching reviews for the first {limit_prof} professors.")
             
-        print(f"Fetching reviews using 200 concurrent threads...")
+        print(f"Fetching reviews...")
         self.monitor.init_reviews(len(professors_to_process))
         
         self._is_cancelled = False
@@ -275,7 +275,6 @@ class ScraperEngine:
     def retry_failed_requests(self):
         failed_payloads = self.storage.get_failed_requests()
         if not failed_payloads:
-            print("No failed requests found to retry.")
             return
             
         print(f"Loading existing data to merge {len(failed_payloads)} retried requests...")
@@ -305,7 +304,7 @@ class ScraperEngine:
                     if prof_id in prof_map:
                         prof_map[prof_id].reviews.extend(ratings)
                     else:
-                        print(f"Warning: Fetched reviews for unknown professor {prof_id}")
+                        print(f"Warning: Fetched reviews for unknown professor {prof_id}. Start scraping from scratch and get all professors again.")
             except GraphQLRequestError as e:
                 print(f"Retry failed again for {op_name}: {e.last_error}")
                 still_failed.append(e.payload)
