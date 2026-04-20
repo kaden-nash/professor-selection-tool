@@ -31,14 +31,19 @@ class ScraperEngine:
     def _fetch_html(self) -> str:
         """Fetch rendered HTML from the UCF catalog page."""
         print("Fetching UCF catalog page...")
-        return self._deps.client.fetch_html()
+        html = self._deps.client.fetch_html()
+        print("Got UCF catalog page.")
+        return html
 
     def _parse_entries(self, html: str) -> List[str]:
         """Parse professor entries from the rendered HTML."""
         print("Parsing professor entries...")
-        return self._deps.parser.parse(html)
+        entries = self._deps.parser.parse(html)
+        print("Finished parsing.")
+        return entries
 
     def _save_entries(self, entries: List[str]) -> None:
         """Persist professor entries via storage."""
         print("Saving results...")
         self._deps.storage.save(entries)
+        print("Finished saving results.")
