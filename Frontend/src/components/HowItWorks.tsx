@@ -9,7 +9,7 @@ const archetypes = [
   {
     name: "The Unicorn",
     img: unicornImg,
-    desc: "The rarest professor — high scores across the board, easy grader, and beloved by students. GPA savior, top tier teaching, zero stress.",
+    desc: "High quality professor with low difficulty. GPA Savior.",
   },
   {
     name: "The Mastermind",
@@ -19,7 +19,7 @@ const archetypes = [
   {
     name: "The Saboteur",
     img: saboteurImg,
-    desc: "Poor teaching quality paired with harsh grading. Students often feel set up to fail. Proceed with caution.",
+    desc: "Poor teaching quality paired with high difficulty. Students often feel set up to fail.",
   },
   {
     name: "The NPC",
@@ -39,9 +39,9 @@ export default function HowItWorks() {
         {/* Score types */}
         <div className="hiw-scores">
           {[
-            { label: "Retake Score", desc: "How likely students are to take this professor again, based on RMP and survey data." },
-            { label: "Quality Score", desc: "Overall teaching quality derived from RateMyProfessor ratings and SPI survey responses." },
-            { label: "Difficulty Score", desc: "How demanding the professor's coursework is relative to the UCF average." },
+            { label: "Retake Score", desc: "How likely students are to take this professor again." },
+            { label: "Quality Score", desc: "Overall professor quality graded on personality and effectiveness." },
+            { label: "Difficulty Score", desc: "Overall professor difficulty graded on personality and effectiveness." },
           ].map(({ label, desc }) => (
             <div key={label} className="hiw-score-row">
               <span className="hiw-score-label">{label}</span>
