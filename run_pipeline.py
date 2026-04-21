@@ -18,6 +18,7 @@ from knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
 from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
 from knightrate.output_paths import create_output_dirs, RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
+from knightrate.output_paths import RMP_REVIEW_DATA_PATH, RMP_PROF_DATA_PATH, RMP_PROF_ATTRS_PATH, FAILED_REQUEST_PATH, COURSES_PATH, CATALOG_PROFESSORS_PATH
 
 
 @dataclass
@@ -34,6 +35,7 @@ class PipelineConfig:
     reviews_only: bool = False
     limit_profs: int | None = None
     limit_reviews_per_prof: int | None = None
+    clean_scrape: bool = False
 
 @dataclass
 class StageResult:
@@ -53,6 +55,10 @@ class PipelineRunner:
     def run(self) -> None:
         """Executes enabled pipeline stages and prints a summary."""
         create_output_dirs()
+
+        if self._config.clean_scrape:
+            self._wipe_scraping_files()
+
         self._run_optional_stages()
         self._run_required_stages()
         self._print_summary()
@@ -106,6 +112,19 @@ class PipelineRunner:
     def _build_course_runner(self) -> CourseScrapeRunner:
         return CourseScrapeRunner(COURSE_SCRAPING_OUTPUT_DIR)
 
+    def _wipe_scraping_files(self) -> None:
+        """Truncates all incremental scraper output files to prepare for a clean run."""
+        for path in (
+            RMP_REVIEW_DATA_PATH,
+            RMP_PROF_ATTRS_PATH,
+            RMP_PROF_DATA_PATH,
+            FAILED_REQUEST_PATH,
+            CATALOG_PROFESSORS_PATH,
+            COURSES_PATH,
+        ):
+            with open(path, "w"):
+                pass
+
 def _parse_args() -> argparse.Namespace:
     """Parses command-line arguments."""
     parser = argparse.ArgumentParser(
@@ -152,6 +171,11 @@ def _parse_args() -> argparse.Namespace:
         type=int,
         help="Sets a limit on the amount of reviews to scrape per professor. Only applies if --scrape-rmp is also used."
     )
+    parser.add_argument(
+        "--clean-scrape",
+        action="store_true",
+        help="Clears every output file used by the RMP scraper for a fresh run."
+        )
     return parser.parse_args()
 
 
@@ -165,7 +189,8 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         skip_scoring=args.skip_scoring,
         reviews_only=args.reviews_only,
         limit_profs=args.limit_profs,
-        limit_reviews_per_prof=args.limit_reviews
+        limit_reviews_per_prof=args.limit_reviews,
+        clean_scrape=args.clean_scrape
     )
 
 

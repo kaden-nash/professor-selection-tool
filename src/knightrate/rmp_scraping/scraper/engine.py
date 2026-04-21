@@ -139,7 +139,7 @@ class ScraperEngine:
                 break
             self._flush_professors_if_needed(state.buffer)
         self._flush_professors_if_needed(state.buffer, force=True)
-        print("Professor phase complete. Loading stored indexes...")
+        print("\nProfessor phase complete. Loading stored indexes...")
         return self._config.storage.load_all()[0]
 
     def fetch_reviews_for_professor(self, prof: Professor) -> None:

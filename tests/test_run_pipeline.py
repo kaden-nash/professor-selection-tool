@@ -34,6 +34,10 @@ def test_pipeline_config_defaults():
     assert not config.scrape_courses
     assert not config.skip_fix
     assert not config.skip_scoring
+    assert not config.reviews_only
+    assert config.limit_profs is None
+    assert config.limit_reviews_per_prof is None
+    assert not config.clean_scrape
 
 def test_stage_result():
     result = StageResult(stage_name="Test Stage", success=True)
@@ -131,6 +135,7 @@ def test_parse_args():
             reviews_only=True,
             limit_profs=20,
             limit_reviews=10,
+            clean_scrape=True,
         )
         args = _parse_args()
         assert args.scrape_rmp is True
@@ -139,6 +144,7 @@ def test_parse_args():
         assert args.reviews_only is True
         assert args.limit_profs == 20
         assert args.limit_reviews == 10
+        assert args.clean_scrape is True
 
 def test_build_config():
     args = argparse.Namespace(
@@ -150,6 +156,7 @@ def test_build_config():
         reviews_only=True,
         limit_profs=15,
         limit_reviews=7,
+        clean_scrape=True,
     )
     config = _build_config(args)
     assert config.scrape_rmp is True
@@ -160,6 +167,48 @@ def test_build_config():
     assert config.reviews_only is True
     assert config.limit_profs == 15
     assert config.limit_reviews_per_prof == 7
+    assert config.clean_scrape is True
+
+def test_wipe_scraping_files_called_when_clean_scrape(mock_runners, tmp_path):
+    """_wipe_scraping_files is invoked when clean_scrape=True."""
+    config = PipelineConfig(skip_fix=True, skip_scoring=True, clean_scrape=True)
+    runner = PipelineRunner(config)
+    with patch.object(runner, '_wipe_scraping_files') as mock_wipe:
+        runner.run()
+    mock_wipe.assert_called_once()
+
+
+def test_wipe_scraping_files_not_called_without_flag(mock_runners):
+    """_wipe_scraping_files is NOT invoked when clean_scrape=False."""
+    config = PipelineConfig(skip_fix=True, skip_scoring=True, clean_scrape=False)
+    runner = PipelineRunner(config)
+    with patch.object(runner, '_wipe_scraping_files') as mock_wipe:
+        runner.run()
+    mock_wipe.assert_not_called()
+
+
+def test_wipe_scraping_files_truncates_all_files(tmp_path):
+    """_wipe_scraping_files empties every tracked path."""
+    # Create temp files with content so we can confirm truncation
+    temp_files = []
+    for name in ('review', 'attrs', 'prof', 'failed', 'catalog', 'courses'):
+        p = tmp_path / f"{name}.json"
+        p.write_text('{"data": 1}')
+        temp_files.append(p)
+
+    with patch('run_pipeline.RMP_REVIEW_DATA_PATH', temp_files[0]), \
+         patch('run_pipeline.RMP_PROF_ATTRS_PATH', temp_files[1]), \
+         patch('run_pipeline.RMP_PROF_DATA_PATH', temp_files[2]), \
+         patch('run_pipeline.FAILED_REQUEST_PATH', temp_files[3]), \
+         patch('run_pipeline.CATALOG_PROFESSORS_PATH', temp_files[4]), \
+         patch('run_pipeline.COURSES_PATH', temp_files[5]):
+        config = PipelineConfig(skip_fix=True, skip_scoring=True, clean_scrape=True)
+        PipelineRunner(config).run()
+
+    for p in temp_files:
+        assert p.read_text() == "", f"{p.name} was not truncated"
+
+
 
 def test_main():
     with patch('run_pipeline._parse_args') as mock_parse, \
