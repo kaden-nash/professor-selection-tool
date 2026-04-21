@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from .scraper.html_fetcher import HtmlFetcher
 from .scraper.parser import Parser
 from .scraper.course_scraper import CourseScraper
@@ -9,7 +11,7 @@ ROOT_URL = "https://www.ucf.edu/catalog/undergraduate/#/courses"
 class CourseScrapeRunner:
     """Orchestrates the UCF course scraping pipeline."""
 
-    def __init__(self, output_dir: str):
+    def __init__(self, output_dir: Path):
         self._output_dir = output_dir
 
     def run(self) -> None:

@@ -1,10 +1,11 @@
 import json
 import os
+from pathlib import Path
 
 class DataStorage:
     """Handles saving parsed course data to persistent JSON storage."""
 
-    def __init__(self, directory: str = "."):
+    def __init__(self, directory: Path):
         self.directory = directory
 
     def save_courses(self, courses: list[str], filename: str = "courses.json") -> None:

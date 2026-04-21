@@ -1,8 +1,8 @@
-import os
 import signal
 
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
+from pathlib import Path
 
 from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
 
@@ -40,13 +40,13 @@ class TestRmpScrapeRunnerInit:
     """Tests for RmpScrapeRunner.__init__."""
 
     def test_stores_constructor_arguments(self):
-        runner = RmpScrapeRunner("/test", limit_professors=10, limit_reviews=5)
-        assert runner._output_dir == "/test"
+        runner = RmpScrapeRunner(Path("/test"), limit_professors=10, limit_reviews=5)
+        assert runner._output_dir == Path("/test")
         assert runner._limit_professors == 10
         assert runner._limit_reviews == 5
 
     def test_defaults_limits_to_none(self):
-        runner = RmpScrapeRunner("/test")
+        runner = RmpScrapeRunner(Path("/test"))
         assert runner._limit_professors is None
         assert runner._limit_reviews is None
 
@@ -55,7 +55,7 @@ class TestRmpScrapeRunnerRun:
     """Tests for RmpScrapeRunner.run()."""
 
     def test_successful_run_invokes_engine(self, mock_components, mock_dotenv, capsys):
-        runner = RmpScrapeRunner("/test", 10, 5)
+        runner = RmpScrapeRunner(Path("/test"), 10, 5)
         mock_engine_inst = mock_components["engine"].return_value
 
         with patch(f"{_MODULE}.signal.signal"):
@@ -69,7 +69,7 @@ class TestRmpScrapeRunnerRun:
         assert "Completed RMP scraping" in captured.out
 
     def test_exception_re_raised_and_cancel_called(self, mock_components, mock_dotenv):
-        runner = RmpScrapeRunner("/test")
+        runner = RmpScrapeRunner(Path("/test"))
         mock_engine_inst = mock_components["engine"].return_value
         mock_engine_inst.run.side_effect = RuntimeError("Crash")
 
@@ -80,7 +80,7 @@ class TestRmpScrapeRunnerRun:
         mock_engine_inst.cancel.assert_called_once()
 
     def test_error_message_printed_on_exception(self, mock_components, mock_dotenv, capsys):
-        runner = RmpScrapeRunner("/test")
+        runner = RmpScrapeRunner(Path("/test"))
         mock_components["engine"].return_value.run.side_effect = Exception("Boom")
 
         with patch(f"{_MODULE}.signal.signal"):
@@ -91,7 +91,7 @@ class TestRmpScrapeRunnerRun:
         assert "An error occurred during scraping: Boom" in captured.out
 
     def test_signal_handler_calls_cancel_and_exits(self, mock_components, mock_dotenv):
-        runner = RmpScrapeRunner("/test")
+        runner = RmpScrapeRunner(Path("/test"))
         registered_handler = None
 
         def capture_signal(sig, handler):
@@ -111,7 +111,7 @@ class TestRmpScrapeRunnerRun:
         mock_exit.assert_called_once_with(1)
 
     def test_signal_handler_prints_interrupt_message(self, mock_components, mock_dotenv, capsys):
-        runner = RmpScrapeRunner("/test")
+        runner = RmpScrapeRunner(Path("/test"))
         registered_handler = None
 
         def capture_signal(sig, handler):

@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import patch
+from pathlib import Path
 
 from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 
@@ -23,11 +24,11 @@ def mock_sys_exit():
         yield mock_exit
 
 def test_prof_scrape_runner_init():
-    runner = ProfScrapeRunner("/test")
-    assert runner._output_dir == "/test"
+    runner = ProfScrapeRunner(Path("/test"))
+    assert runner._output_dir == Path("/test")
 
 def test_prof_scrape_runner_run_success(mock_components):
-    runner = ProfScrapeRunner("/test")
+    runner = ProfScrapeRunner(Path("/test"))
     
     mock_engine_inst = mock_components['engine'].return_value
     
@@ -35,13 +36,13 @@ def test_prof_scrape_runner_run_success(mock_components):
     
     mock_components['client'].assert_called_once()
     mock_components['parser'].assert_called_once()
-    mock_components['storage'].assert_called_once_with("/test")
+    mock_components['storage'].assert_called_once_with(Path("/test"))
     mock_components['engine'].assert_called_once()
     
     mock_engine_inst.run.assert_called_once()
 
 def test_prof_scrape_runner_run_exception(mock_components, capsys):
-    runner = ProfScrapeRunner("/test")
+    runner = ProfScrapeRunner(Path("/test"))
     
     mock_engine_inst = mock_components['engine'].return_value
     mock_engine_inst.run.side_effect = Exception("Crash")

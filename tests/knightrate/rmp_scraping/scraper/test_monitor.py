@@ -1,8 +1,6 @@
 import threading
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from knightrate.rmp_scraping.scraper.monitor import Monitor
 
 
@@ -32,7 +30,7 @@ class TestMonitor:
         with patch("knightrate.rmp_scraping.scraper.monitor.tqdm") as mock_tqdm:
             monitor.init_reviews(50)
             mock_tqdm.assert_called_once_with(
-                total=50, desc="Professor reviews fetched", position=1
+                total=50, desc="Professors whose reviews are all fetched", position=1
             )
         assert monitor._review_pbar is not None
 

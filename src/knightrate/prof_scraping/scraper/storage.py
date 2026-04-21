@@ -1,14 +1,15 @@
 import json
 import os
 from typing import List
+from pathlib import Path
 
-OUTPUT_FILENAME = "ucf_catalog_professors.json"
+OUTPUT_FILENAME = "catalog_professors.json"
 
 
 class DataStorage:
     """Writes parsed professor entries to a JSON file."""
 
-    def __init__(self, output_dir: str):
+    def __init__(self, output_dir: Path):
         """
         :param output_dir: Directory where the output JSON file will be written.
         """

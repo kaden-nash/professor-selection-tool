@@ -2,6 +2,7 @@ import json
 import os
 import threading
 from typing import List, Dict, Any, Tuple
+from pathlib import Path
 
 from .models import Professor, Rating
 
@@ -20,7 +21,7 @@ class DataStorage:
     call merges everything into a single ``rmp_data.json`` output.
     """
 
-    def __init__(self, output_dir: str | None = None) -> None:
+    def __init__(self, output_dir: Path | None = None) -> None:
         """Initialises storage pointing at the given output directory.
 
         Args:

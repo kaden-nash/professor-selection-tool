@@ -1,5 +1,6 @@
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
+from pathlib import Path
 
 from knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner, ROOT_URL
 
@@ -24,11 +25,11 @@ def mock_storage():
         yield mock_d
 
 def test_course_scrape_runner_init():
-    runner = CourseScrapeRunner("/test/dir")
-    assert runner._output_dir == "/test/dir"
+    runner = CourseScrapeRunner(Path("/test/dir"))
+    assert runner._output_dir == Path("/test/dir")
 
 def test_course_scrape_runner_run_success(mock_fetcher, mock_parser, mock_scraper, mock_storage, capsys):
-    runner = CourseScrapeRunner("/test/dir")
+    runner = CourseScrapeRunner(Path("/test/dir"))
     
     mock_fetcher_inst = mock_fetcher.return_value
     mock_scraper_inst = mock_scraper.return_value
@@ -45,7 +46,7 @@ def test_course_scrape_runner_run_success(mock_fetcher, mock_parser, mock_scrape
     mock_scraper.assert_called_once_with(mock_fetcher_inst, mock_parser.return_value)
     mock_scraper_inst.run_scraping.assert_called_once_with(ROOT_URL)
     
-    mock_storage.assert_called_once_with("/test/dir")
+    mock_storage.assert_called_once_with(Path("/test/dir"))
     mock_storage_inst.save_courses.assert_called_once_with(mock_courses)
     
     mock_fetcher_inst.close.assert_called_once()
@@ -55,7 +56,7 @@ def test_course_scrape_runner_run_success(mock_fetcher, mock_parser, mock_scrape
     assert "Successfully saved 2 courses." in captured.out
 
 def test_course_scrape_runner_run_empty_results(mock_fetcher, mock_parser, mock_scraper, mock_storage, capsys):
-    runner = CourseScrapeRunner("/test/dir")
+    runner = CourseScrapeRunner(Path("/test/dir"))
     
     mock_fetcher_inst = mock_fetcher.return_value
     mock_scraper_inst = mock_scraper.return_value
@@ -73,7 +74,7 @@ def test_course_scrape_runner_run_empty_results(mock_fetcher, mock_parser, mock_
     assert "Finished scraping but no courses were found." in captured.out
 
 def test_course_scrape_runner_run_exception(mock_fetcher, mock_scraper):
-    runner = CourseScrapeRunner("/test/dir")
+    runner = CourseScrapeRunner(Path("/test/dir"))
     mock_fetcher_inst = mock_fetcher.return_value
     mock_scraper_inst = mock_scraper.return_value
     

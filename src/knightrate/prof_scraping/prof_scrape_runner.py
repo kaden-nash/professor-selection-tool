@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from .scraper.client import CatalogClient
 from .scraper.parser import CatalogParser
 from .scraper.storage import DataStorage
@@ -7,7 +9,7 @@ from .scraper.engine import ScraperEngine, ScraperDependencies
 class ProfScrapeRunner:
     """Orchestrates the UCF professor catalog scraping pipeline."""
 
-    def __init__(self, output_dir: str):
+    def __init__(self, output_dir: Path):
         self._output_dir = output_dir
 
     def run(self) -> None:

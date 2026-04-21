@@ -2,6 +2,7 @@ import os
 import signal
 
 from dotenv import load_dotenv
+from pathlib import Path
 
 from .scraper.client import GraphQLClient
 from .scraper.engine import ScraperEngine
@@ -22,7 +23,7 @@ class RmpScrapeRunner:
 
     def __init__(
         self,
-        output_dir: str,
+        output_dir: Path,
         limit_professors: "int | None" = None,
         limit_reviews: "int | None" = None,
     ) -> None:

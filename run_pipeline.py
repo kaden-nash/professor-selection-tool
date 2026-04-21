@@ -7,7 +7,6 @@ Usage:
 Run `python run_pipeline.py --help` for full option descriptions.
 """
 import argparse
-import os
 import traceback
 from dataclasses import dataclass
 from typing import Optional
@@ -17,13 +16,12 @@ from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
 from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
-from knightrate.output_paths import create_output_dirs
+from knightrate.output_paths import create_output_dirs, RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
 
 
 @dataclass
 class PipelineConfig:
     """All configuration flags for the pipeline orchestrator."""
-    root_dir: str
     scrape_rmp: bool = False
     scrape_profs: bool = False
     scrape_courses: bool = False
@@ -67,7 +65,7 @@ class PipelineRunner:
         if not self._config.skip_fix:
             self._execute("Data Fixing", DataFixingRunner())
         if not self._config.skip_scoring:
-            self._execute("Professor Scoring", ProfessorScoringRunner(self._config.root_dir))
+            self._execute("Professor Scoring", ProfessorScoringRunner())
 
     def _execute(self, name: str, runner) -> None:
         """Runs a single stage, capturing any exception as a StageResult."""
@@ -93,15 +91,13 @@ class PipelineRunner:
         print(f"{'=' * 60}\n")
 
     def _build_rmp_runner(self) -> RmpScrapeRunner:
-        return RmpScrapeRunner(output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "rmp_scraping"))
+        return RmpScrapeRunner(output_dir=RMP_SCRAPING_OUTPUT_DIR)
 
     def _build_prof_runner(self) -> ProfScrapeRunner:
-        return ProfScrapeRunner(output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "prof_scraping"))
+        return ProfScrapeRunner(output_dir=PROF_SCRAPING_OUTPUT_DIR)
 
     def _build_course_runner(self) -> CourseScrapeRunner:
-        return CourseScrapeRunner(
-            output_dir=os.path.join(self._config.root_dir, "src", "knightrate", "course_scraping")
-        )
+        return CourseScrapeRunner(output_dir=COURSE_SCRAPING_OUTPUT_DIR)
 
 def _parse_args() -> argparse.Namespace:
     """Parses command-line arguments."""
@@ -140,7 +136,6 @@ def _parse_args() -> argparse.Namespace:
 def _build_config(args: argparse.Namespace) -> PipelineConfig:
     """Constructs a PipelineConfig from parsed CLI arguments."""
     return PipelineConfig(
-        root_dir=os.path.dirname(os.path.abspath(__file__)),
         scrape_rmp=args.scrape_rmp,
         scrape_profs=args.scrape_profs,
         scrape_courses=args.scrape_courses,
