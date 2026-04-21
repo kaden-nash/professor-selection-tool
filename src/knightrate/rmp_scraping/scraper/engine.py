@@ -17,7 +17,7 @@ from .queries import (
 from .scraper_config import ScraperConfig
 
 _BUFFER_FLUSH_SIZE = 50
-_MAX_REVIEW_WORKERS = 200
+_MAX_REVIEW_WORKERS = 100 # 200
 _NO_RATINGS = 0
 
 
