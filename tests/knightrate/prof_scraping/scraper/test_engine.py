@@ -7,13 +7,12 @@ FAKE_HTML = '<div class="style__contentBody___gEuR0"><p><strong>A, B</strong>, P
 FAKE_ENTRIES = ["A, B, Prof"]
 
 
-def _make_deps(client=None, parser=None, storage=None, monitor=None):
+def _make_deps(client=None, parser=None, storage=None):
     """Build a ScraperDependencies from mocks, filling defaults as needed."""
     client = client or MagicMock(fetch_html=MagicMock(return_value=FAKE_HTML))
     parser = parser or MagicMock(parse=MagicMock(return_value=FAKE_ENTRIES))
     storage = storage or MagicMock(output_path="/fake/path.json")
-    monitor = monitor or MagicMock()
-    return ScraperDependencies(client=client, parser=parser, storage=storage, monitor=monitor)
+    return ScraperDependencies(client=client, parser=parser, storage=storage)
 
 
 class TestScraperEngineRun:
@@ -33,21 +32,6 @@ class TestScraperEngineRun:
         deps = _make_deps()
         ScraperEngine(deps).run()
         deps.storage.save.assert_called_once_with(FAKE_ENTRIES)
-
-    def test_run_closes_monitor(self):
-        deps = _make_deps()
-        ScraperEngine(deps).run()
-        deps.monitor.close.assert_called_once()
-
-    def test_run_initialises_monitor_with_entry_count(self):
-        deps = _make_deps()
-        ScraperEngine(deps).run()
-        deps.monitor.init.assert_called_once_with(len(FAKE_ENTRIES))
-
-    def test_run_updates_monitor_with_entry_count(self):
-        deps = _make_deps()
-        ScraperEngine(deps).run()
-        deps.monitor.update.assert_called_once_with(len(FAKE_ENTRIES))
 
     def test_run_with_zero_entries_still_saves(self):
         empty_parser = MagicMock(parse=MagicMock(return_value=[]))
