@@ -1,5 +1,6 @@
 import os
 import signal
+from dataclasses import dataclass
 
 from dotenv import load_dotenv
 from pathlib import Path
@@ -13,6 +14,12 @@ from .scraper.storage import DataStorage
 
 _RMP_RATE = 5.0
 
+@dataclass
+class ScraperArgs:
+    """All configuration flags for the RMP scraper passed to the main pipeline orchestrator."""
+    reviews_only: bool = False
+    limit_profs: int | None = None
+    limit_reviews_per_prof: int | None = None
 
 class RmpScrapeRunner:
     """Orchestrates the RateMyProfessors scraping pipeline.
@@ -24,19 +31,18 @@ class RmpScrapeRunner:
     def __init__(
         self,
         output_dir: Path,
-        limit_professors: "int | None" = None,
-        limit_reviews: "int | None" = None,
+        scraper_args: ScraperArgs
     ) -> None:
         """Initialises the runner with output configuration and optional limits.
 
         Args:
             output_dir: Directory where all scraped output files are written.
-            limit_professors: Maximum number of professors to scrape. None for all.
-            limit_reviews: Maximum reviews per professor to scrape. None for all.
+            scraper_args: Dataclass containing all configuration information for running the scraper.
         """
         self._output_dir = output_dir
-        self._limit_professors = limit_professors
-        self._limit_reviews = limit_reviews
+        self._limit_professors = scraper_args.limit_profs
+        self._limit_reviews = scraper_args.limit_reviews_per_prof
+        self._reviews_only = scraper_args.reviews_only
 
     def run(self) -> None:
         """Runs the full RMP scraping pipeline (professors + reviews).
@@ -50,12 +56,23 @@ class RmpScrapeRunner:
         self._setup_signal_handler(engine)
         try:
             print("Beginning RMP scraping...")
-            engine.run()
+            self.choose_run_based_on_args(engine)
             print("Completed RMP scraping.")
         except Exception as exc:
             print(f"\n[!] An error occurred during scraping: {exc}")
             engine.cancel()
             raise
+
+    def choose_run_based_on_args(self, engine: ScraperEngine) -> None:
+        """Delegates to the appropriate engine run mode based on the reviews_only flag.
+
+        Args:
+            engine: The configured ScraperEngine to delegate to.
+        """
+        if self._reviews_only:
+            engine.run_reviews_only()
+        else:
+            engine.run()
 
     def _build_engine(self) -> ScraperEngine:
         """Constructs and wires all scraper components into a ScraperEngine.

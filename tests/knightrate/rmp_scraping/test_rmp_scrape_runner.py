@@ -1,10 +1,10 @@
 import signal
 
 import pytest
-from unittest.mock import patch
 from pathlib import Path
+from unittest.mock import patch
 
-from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
+from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner, ScraperArgs
 
 _MODULE = "knightrate.rmp_scraping.rmp_scrape_runner"
 
@@ -40,22 +40,32 @@ class TestRmpScrapeRunnerInit:
     """Tests for RmpScrapeRunner.__init__."""
 
     def test_stores_constructor_arguments(self):
-        runner = RmpScrapeRunner(Path("/test"), limit_professors=10, limit_reviews=5)
+        args = ScraperArgs(reviews_only=False, limit_profs=10, limit_reviews_per_prof=5)
+        runner = RmpScrapeRunner(Path("/test"), args)
         assert runner._output_dir == Path("/test")
         assert runner._limit_professors == 10
         assert runner._limit_reviews == 5
+        assert runner._reviews_only is False
 
     def test_defaults_limits_to_none(self):
-        runner = RmpScrapeRunner(Path("/test"))
+        args = ScraperArgs()
+        runner = RmpScrapeRunner(Path("/test"), args)
         assert runner._limit_professors is None
         assert runner._limit_reviews is None
+        assert runner._reviews_only is False
+
+    def test_reviews_only_flag_stored(self):
+        args = ScraperArgs(reviews_only=True)
+        runner = RmpScrapeRunner(Path("/test"), args)
+        assert runner._reviews_only is True
 
 
 class TestRmpScrapeRunnerRun:
     """Tests for RmpScrapeRunner.run()."""
 
     def test_successful_run_invokes_engine(self, mock_components, mock_dotenv, capsys):
-        runner = RmpScrapeRunner(Path("/test"), 10, 5)
+        args = ScraperArgs(limit_profs=10, limit_reviews_per_prof=5)
+        runner = RmpScrapeRunner(Path("/test"), args)
         mock_engine_inst = mock_components["engine"].return_value
 
         with patch(f"{_MODULE}.signal.signal"):
@@ -68,8 +78,19 @@ class TestRmpScrapeRunnerRun:
         assert "Beginning RMP scraping" in captured.out
         assert "Completed RMP scraping" in captured.out
 
+    def test_reviews_only_calls_run_reviews_only(self, mock_components, mock_dotenv):
+        args = ScraperArgs(reviews_only=True)
+        runner = RmpScrapeRunner(Path("/test"), args)
+        mock_engine_inst = mock_components["engine"].return_value
+
+        with patch(f"{_MODULE}.signal.signal"):
+            runner.run()
+
+        mock_engine_inst.run_reviews_only.assert_called_once()
+        mock_engine_inst.run.assert_not_called()
+
     def test_exception_re_raised_and_cancel_called(self, mock_components, mock_dotenv):
-        runner = RmpScrapeRunner(Path("/test"))
+        runner = RmpScrapeRunner(Path("/test"), ScraperArgs())
         mock_engine_inst = mock_components["engine"].return_value
         mock_engine_inst.run.side_effect = RuntimeError("Crash")
 
@@ -80,7 +101,7 @@ class TestRmpScrapeRunnerRun:
         mock_engine_inst.cancel.assert_called_once()
 
     def test_error_message_printed_on_exception(self, mock_components, mock_dotenv, capsys):
-        runner = RmpScrapeRunner(Path("/test"))
+        runner = RmpScrapeRunner(Path("/test"), ScraperArgs())
         mock_components["engine"].return_value.run.side_effect = Exception("Boom")
 
         with patch(f"{_MODULE}.signal.signal"):
@@ -91,7 +112,7 @@ class TestRmpScrapeRunnerRun:
         assert "An error occurred during scraping: Boom" in captured.out
 
     def test_signal_handler_calls_cancel_and_exits(self, mock_components, mock_dotenv):
-        runner = RmpScrapeRunner(Path("/test"))
+        runner = RmpScrapeRunner(Path("/test"), ScraperArgs())
         registered_handler = None
 
         def capture_signal(sig, handler):
@@ -111,7 +132,7 @@ class TestRmpScrapeRunnerRun:
         mock_exit.assert_called_once_with(1)
 
     def test_signal_handler_prints_interrupt_message(self, mock_components, mock_dotenv, capsys):
-        runner = RmpScrapeRunner(Path("/test"))
+        runner = RmpScrapeRunner(Path("/test"), ScraperArgs())
         registered_handler = None
 
         def capture_signal(sig, handler):

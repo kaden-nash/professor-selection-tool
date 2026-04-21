@@ -73,23 +73,36 @@ def test_pipeline_runner_run_default(mock_runners, capsys):
 
 def test_pipeline_runner_optional_stages(mock_runners):
     config = PipelineConfig(
-        scrape_rmp=True, 
-        scrape_profs=True, 
+        scrape_rmp=True,
+        scrape_profs=True,
         scrape_courses=True,
         skip_fix=True,
-        skip_scoring=True
+        skip_scoring=True,
+        reviews_only=True,
+        limit_profs=10,
+        limit_reviews_per_prof=5,
     )
     runner = PipelineRunner(config)
     runner.run()
-    
+
     # Required stages skipped
     mock_runners['data_fixing'].assert_not_called()
     mock_runners['scoring'].assert_not_called()
-    
-    mock_runners['rmp'].assert_called_once_with(output_dir=RMP_SCRAPING_OUTPUT_DIR)
-    mock_runners['prof'].assert_called_once_with(output_dir=PROF_SCRAPING_OUTPUT_DIR)
-    mock_runners['course'].assert_called_once_with(output_dir=COURSE_SCRAPING_OUTPUT_DIR)
-    
+
+    # Verify RmpScrapeRunner is called with both positional args
+    from knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
+    from knightrate.output_paths import RMP_SCRAPING_OUTPUT_DIR
+    call_args = mock_runners['rmp'].call_args
+    assert call_args.args[0] == RMP_SCRAPING_OUTPUT_DIR
+    scraper_args = call_args.args[1]
+    assert isinstance(scraper_args, ScraperArgs)
+    assert scraper_args.reviews_only is True
+    assert scraper_args.limit_profs == 10
+    assert scraper_args.limit_reviews_per_prof == 5
+
+    mock_runners['prof'].assert_called_once_with(PROF_SCRAPING_OUTPUT_DIR)
+    mock_runners['course'].assert_called_once_with(COURSE_SCRAPING_OUTPUT_DIR)
+
     assert len(runner._results) == 3
     assert runner._results[0].stage_name == "RMP Scraping"
 
@@ -114,12 +127,18 @@ def test_parse_args():
             scrape_profs=False,
             scrape_courses=False,
             skip_fix=True,
-            skip_scoring=False
+            skip_scoring=False,
+            reviews_only=True,
+            limit_profs=20,
+            limit_reviews=10,
         )
         args = _parse_args()
         assert args.scrape_rmp is True
         assert args.skip_fix is True
         assert args.skip_scoring is False
+        assert args.reviews_only is True
+        assert args.limit_profs == 20
+        assert args.limit_reviews == 10
 
 def test_build_config():
     args = argparse.Namespace(
@@ -127,7 +146,10 @@ def test_build_config():
         scrape_profs=False,
         scrape_courses=True,
         skip_fix=True,
-        skip_scoring=False
+        skip_scoring=False,
+        reviews_only=True,
+        limit_profs=15,
+        limit_reviews=7,
     )
     config = _build_config(args)
     assert config.scrape_rmp is True
@@ -135,6 +157,9 @@ def test_build_config():
     assert config.scrape_courses is True
     assert config.skip_fix is True
     assert config.skip_scoring is False
+    assert config.reviews_only is True
+    assert config.limit_profs == 15
+    assert config.limit_reviews_per_prof == 7
 
 def test_main():
     with patch('run_pipeline._parse_args') as mock_parse, \

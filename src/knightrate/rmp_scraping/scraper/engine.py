@@ -92,7 +92,7 @@ class ScraperEngine:
         print("Running in --reviews-only mode. Checking local JSON database...")
         professors, _ = self._config.storage.load_all()
         if not professors:
-            print("[!] No existing professors found. Please run --all first.")
+            print("[!] No existing professors found. Please run with professor scraping enabled first.")
             return
         professors = self._apply_professor_limit(professors)
         print(f"Loaded {len(professors)} professors from JSON. Fetching reviews...")

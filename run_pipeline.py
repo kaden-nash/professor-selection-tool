@@ -14,6 +14,7 @@ from typing import Optional
 from knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner
 from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
+from knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
 from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
 from knightrate.output_paths import create_output_dirs, RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
@@ -22,12 +23,17 @@ from knightrate.output_paths import create_output_dirs, RMP_SCRAPING_OUTPUT_DIR,
 @dataclass
 class PipelineConfig:
     """All configuration flags for the pipeline orchestrator."""
+    # Orchestration
     scrape_rmp: bool = False
     scrape_profs: bool = False
     scrape_courses: bool = False
     skip_fix: bool = False
     skip_scoring: bool = False
 
+    # RMP Scraping
+    reviews_only: bool = False
+    limit_profs: int | None = None
+    limit_reviews_per_prof: int | None = None
 
 @dataclass
 class StageResult:
@@ -53,8 +59,9 @@ class PipelineRunner:
 
     def _run_optional_stages(self) -> None:
         """Runs the network-bound scraping stages when opted in."""
+        scraper_args = ScraperArgs(self._config.reviews_only, self._config.limit_profs, self._config.limit_reviews_per_prof)
         if self._config.scrape_rmp:
-            self._execute("RMP Scraping", self._build_rmp_runner())
+            self._execute("RMP Scraping", self._build_rmp_runner(scraper_args))
         if self._config.scrape_profs:
             self._execute("Prof Scraping", self._build_prof_runner())
         if self._config.scrape_courses:
@@ -90,14 +97,14 @@ class PipelineRunner:
             print(f"  {status}  {result.stage_name}")
         print(f"{'=' * 60}\n")
 
-    def _build_rmp_runner(self) -> RmpScrapeRunner:
-        return RmpScrapeRunner(output_dir=RMP_SCRAPING_OUTPUT_DIR)
+    def _build_rmp_runner(self, scraper_args: ScraperArgs) -> RmpScrapeRunner:
+        return RmpScrapeRunner(RMP_SCRAPING_OUTPUT_DIR, scraper_args)
 
     def _build_prof_runner(self) -> ProfScrapeRunner:
-        return ProfScrapeRunner(output_dir=PROF_SCRAPING_OUTPUT_DIR)
+        return ProfScrapeRunner(PROF_SCRAPING_OUTPUT_DIR)
 
     def _build_course_runner(self) -> CourseScrapeRunner:
-        return CourseScrapeRunner(output_dir=COURSE_SCRAPING_OUTPUT_DIR)
+        return CourseScrapeRunner(COURSE_SCRAPING_OUTPUT_DIR)
 
 def _parse_args() -> argparse.Namespace:
     """Parses command-line arguments."""
@@ -130,6 +137,21 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Skip the professor scoring stage.",
     )
+    parser.add_argument(
+        "--reviews-only",
+        action="store_true",
+        help="Specifies that RMP scraping should only scrape reviews and not professors. Only applies if --scrape-rmp is also used."
+    )
+    parser.add_argument(
+        "--limit-profs",
+        type=int,
+        help="Sets a limit on the amount of professors to scrape. Only applies if --scrape-rmp is also used."
+    )
+    parser.add_argument(
+        "--limit-reviews",
+        type=int,
+        help="Sets a limit on the amount of reviews to scrape per professor. Only applies if --scrape-rmp is also used."
+    )
     return parser.parse_args()
 
 
@@ -141,6 +163,9 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         scrape_courses=args.scrape_courses,
         skip_fix=args.skip_fix,
         skip_scoring=args.skip_scoring,
+        reviews_only=args.reviews_only,
+        limit_profs=args.limit_profs,
+        limit_reviews_per_prof=args.limit_reviews
     )
 
 
