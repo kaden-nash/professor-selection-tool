@@ -2,7 +2,7 @@ import concurrent.futures
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple
 
-from .client import GraphQLClient, GraphQLRequest, GraphQLRequestError
+from .client import GraphQLRequest, GraphQLRequestError
 from .models import Professor, Rating
 from .parser import parse_professors, parse_ratings
 from .queries import (
