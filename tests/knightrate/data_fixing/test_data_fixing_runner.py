@@ -1,6 +1,6 @@
 import os
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 
@@ -31,14 +31,10 @@ def mock_os_path_exists():
         mock_exists.return_value = True
         yield mock_exists
 
-def test_data_fixing_runner_init():
-    runner = DataFixingRunner("/root")
-    assert runner._root_dir == "/root"
-
 def test_data_fixing_runner_run_full(
     mock_course_scrub, mock_rmp_scrub, mock_catalog_scrub, mock_correlator, mock_os_path_exists, capsys
 ):
-    runner = DataFixingRunner("/root")
+    runner = DataFixingRunner()
     
     cs_inst = mock_course_scrub.return_value
     cs_inst.get_data.return_value = ["course_data"]
@@ -74,7 +70,7 @@ def test_data_fixing_runner_run_full(
 def test_data_fixing_runner_missing_files(
     mock_course_scrub, mock_rmp_scrub, mock_catalog_scrub, mock_correlator, mock_os_path_exists, capsys
 ):
-    runner = DataFixingRunner("/root")
+    runner = DataFixingRunner()
     # All files missing
     mock_os_path_exists.return_value = False
     
