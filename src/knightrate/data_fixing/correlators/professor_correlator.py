@@ -151,7 +151,10 @@ class ProfessorCorrelator(DataCorrelator):
         if not reviews:
             return True
             
-        cutoff = datetime(2016, 6, 1)
+        year = datetime.now().year
+        month = datetime.now().month
+        day = datetime.now().day
+        cutoff = datetime(year-3, month, day)
         for r in reviews:
             dt = self._parse_date_str(r.get("date", ""))
             if dt and dt >= cutoff:
