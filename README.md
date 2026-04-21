@@ -54,6 +54,7 @@ Ensure you have activated your virtual environment and installed all the relevan
 | `--reviews-only` | Flag | (RMP) Only scrape reviews for professors already in the local database. Skip the search for new professors. |
 | `--limit-profs <N>` | Integer | (RMP) Stop searching for new professors after reaching this limit. |
 | `--limit-reviews <N>` | Integer | (RMP) Stop scraping reviews for each professor after reaching this limit per professor. |
+| `--clean-scrape` | Flag | (RMP) Clears every output file used by the RMP scraper for a fresh run. |
 
 ---
 
@@ -89,6 +90,12 @@ Ensure you have activated your virtual environment and installed all the relevan
 *   **What it does:** Scrapes UCF's own websites (faculty list and course catalog) and correlates them, but skips the RMP integration and scoring.
 *   **Why use it:** Useful if you only care about the internal UCF professor-to-course mapping.
 
+### 6. Absolute Fresh Start
+**Command:** `python run_pipeline.py --scrape-rmp --clean-scrape`
+
+*   **What it does:** Wipes all existing local JSON data (professors, reviews, and attribute caches) and starts a completely new scrape from scratch.
+*   **Why use it:** Use this when your local data has become "stale" (e.g., a professor's rating count is out of sync with their actual reviews) or if you want to ensure a perfectly clean database.
+
 ---
 
 > [!TIP]
@@ -102,7 +109,10 @@ Ensure you have activated your virtual environment and installed all the relevan
 
 **src/output_files**: contains subfolders corresponding to each stage of the pipeline with relevant files for each stage within.
 
+## Data Longevity
+When it is time to get new data from RMP, use the --clean-scrape flag to ensure that the data is not stale. Professor attributes besides reviews will not update if you don't do this. You may end up with a professor that has 43 actual reviews but their "numRatings" attribute is 20. That will mess up the entire algorithm.
 
+You may have noticed the "allReviewsScraped" flag on each professor. This flag is useful for picking up where you left off if the review scraping is interrupted by useless after completion of an entire scrape. It falls out of date as well. 
 
 ## Important constraints others working on this project should know.
 - Graduate classes should be scraped from the course catalog. Currently there is no validation of those courses. Whatever a student puts goes. 
