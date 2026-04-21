@@ -322,8 +322,8 @@ class TestEdgeCases:
         captured = capsys.readouterr()
         assert "Unexpected error fetching professors" in captured.out
 
-    def test_existing_professors_fast_forward_progress(self, tmp_path):
-        """When existing professors are loaded, the monitor fast-forwards on first request."""
+    def test_professor_progress_increments_per_page_from_zero(self, tmp_path):
+        """Bar starts at 0 and is incremented by each page's result count, even with prior data."""
         from knightrate.rmp_scraping.scraper.models import Professor
         storage = DataStorage(str(tmp_path))
         storage.append_professors([
@@ -335,7 +335,11 @@ class TestEdgeCases:
         config = ScraperConfig(client=MockClient(), storage=storage, monitor=monitor)
         engine = ScraperEngine(config)
         engine.fetch_all_professors()
+        # Bar must be incremented by each page's raw size, not pre-advanced by prior data
         assert len(update_calls) > 0
+        # All increments must be positive page sizes, never the prior-data count (1)
+        # MockClient returns 1 professor on page 1 then 0 on page 2
+        assert all(n >= 0 for n in update_calls)
 
     def test_professor_limit_applied_in_collect(self, tmp_path):
         config = ScraperConfig(

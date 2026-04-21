@@ -130,7 +130,8 @@ class ScraperEngine:
             except Exception as exc:
                 print(f"Unexpected error fetching professors: {exc}")
                 break
-            self._update_professor_progress_on_first(state, count)
+            page_size = len(profs)
+            self._update_professor_progress(state, count, page_size)
             self._collect_new_professors(profs, state)
             state.cursor = page_info.get("endCursor", "")
             state.has_next_page = page_info.get("hasNextPage", False)
@@ -193,23 +194,40 @@ class ScraperEngine:
         data = self._config.client.execute(request)
         return parse_professors(data)
 
-    def _update_professor_progress_on_first(
+    def _update_professor_progress(
+        self, state: _ProfessorFetchState, count: int, page_size: int
+    ) -> None:
+        """Initialises the progress bar on the first request, then advances it per page.
+
+        The bar always starts at 0 so real-time scraping progress is visible
+        even when professors were previously stored from a prior run.
+
+        Args:
+            state: The current fetch state (mutated: is_first_request set False on first call).
+            count: The total result count returned by the API (used only on first call).
+            page_size: Number of professors returned by this page (used to advance the bar).
+        """
+        if state.is_first_request:
+            self._init_professor_progress_bar(state, count)
+        self._config.monitor.update_professors(page_size)
+
+    def _init_professor_progress_bar(
         self, state: _ProfessorFetchState, count: int
     ) -> None:
-        """Initialises the professor progress bar on the first API response.
+        """Sizes the professor progress bar and prints a notice about any prior data.
 
         Args:
             state: The current fetch state (mutated: is_first_request set False).
-            count: The total result count returned by the API.
+            count: The total result count from the API, used to size the bar.
         """
-        if not state.is_first_request:
-            return
         limit = self._config.limit_professors
         self._result_count = min(count, limit) if limit is not None else count
         self._config.monitor.init_professors(self._result_count)
-        existing = min(state.total_count, self._result_count)
-        if existing > 0:
-            self._config.monitor.update_professors(existing)
+        if state.total_count > 0:
+            print(
+                f"{state.total_count} professors were previously scraped. "
+                "Progress bar starts at 0 and tracks only live request progress."
+            )
         state.is_first_request = False
 
     def _collect_new_professors(self, profs: List[Professor], state: _ProfessorFetchState) -> None:
