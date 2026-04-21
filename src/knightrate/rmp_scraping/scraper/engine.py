@@ -225,7 +225,7 @@ class ScraperEngine:
         self._config.monitor.init_professors(self._result_count)
         if state.total_count > 0:
             print(
-                f"{state.total_count} professors were previously scraped. "
+                f"\n{state.total_count} professors were previously scraped. "
                 "Progress bar starts at 0 and tracks only live request progress."
             )
         state.is_first_request = False
