@@ -1,18 +1,28 @@
 # RateMyProfessors Scraper
 
-This tool continuously scrapes professor profiles and individual student reviews from RateMyProfessors for the **University of Central Florida (UCF)**.
+This tool continuously scrapes professor profiles and individual student reviews from RateMyProfessors for the University of Central Florida (UCF).
 
-It handles rate limits, GraphQL pagination, unhandled data types, and utilizes multi-threading with residential proxy rotation to rapidly bypass Cloudflare blockages. It also supports **persistent auto-saving**, meaning any partial progress is saved, and interrupted runs can be picked up safely from where they left off without restarting from scratch.
+It handles rate limits, GraphQL pagination, unhandled data types, and utilizes multi-threading with residential proxy rotation to rapidly bypass Cloudflare blockages. It also supports persistent auto-saving, meaning any partial progress is saved. 
+
+However, all previous data must be rescraped to ensure there are no gaps in information. You should set aside 3-4 hours for RMP scraping to complete. Stopping midway will force you to start the 3-4 hours process all over.
+
+RMP scraping retrieves 6,000+ professors and all of their combined ~150,000+ individual reviews.
 
 ## Setup Requirements
 
-1. **Python 3.8+**
-2. **Environment variables via `.env`**
-3. **Python Packages** (install from root or via virtual environment):
+1. Python 3.13+
+2. Environment variables via `.env`
+3. A local virtual environment
+```bash
+python -m venv .venv
+```
+
+4. Python Packages (install from directory containing pyproject.toml):
    
 ```bash
-pip install requests python-dotenv pydantic
+pip install -e .
 ```
+- We do an editable install (-e) so you can make some edits without having to reinstall the package every time.
 
 ## Configuration
 
@@ -20,71 +30,80 @@ You must create a `.env` file in the root `Large-Project` directory (where you r
 
 **`.env` Example:**
 ```env
-PROXYRACK_URL=http://premium.residential.proxyrack.net:9000
+PROXYRACK_URL=http://premium.residential.proxyrack.net:10000
 PROXYRACK_USERNAME=YOUR_USERNAME
 PROXYRACK_PASSWORD=YOUR_PASSWORD
 ```
 
 ## Usage Instructions
 
-To run the scraper, navigate into the `rmp_scraping` directory (where the `.venv` virtual environment is located) and execute the `main.py` file.
+The `run_pipeline.py` script is the master orchestrator for the UCF Professor Scraper. It allows you to run specific stages of the data pipeline or execute the entire process from collection to scoring.
 
-```bash
-cd rmp_scraping
-```
 
-### 1. The Standard Scrape (Full Production)
+Ensure you have activated your virtual environment and installed all the relevant dependencies. See instructions above.
 
-This command initiates the complete scraping sequence of scanning 6,000+ professors and all of their combined ~50,000+ individual reviews.
+## Command-Line Arguments
 
-```bash
-python main.py --all
-```
-
-**What it does:**
-- Immediately loads any existing data from `ucf_professors_data.json` so you do not lose any past work.
-- Uses the RMP API to find every single UCF professor and compares them against your local JSON file. It ignores any professors you already have saved, while appending new professors securely.
-- Initiates 200 background threads to rapidly fetch reviews for those professors. 
-- Auto-saves the dataset to your hard drive every time an additional 10 professors are completed.
-
-**Interrupting & Resuming:**
-Because of the auto-save functionality, you can safely abort this script at any time using `CTRL+C` (Keyboard Interrupt) or simply closing your laptop. 
-When you rerun `python main.py --all`, it will resume from where it left off!
+| Argument | Type | Description |
+| :--- | :--- | :--- |
+| `--scrape-rmp` | Flag | Enables the RateMyProfessors scraping stage. This is a network-bound, long-running process. |
+| `--scrape-profs` | Flag | Enables the UCF Catalog professor scraping stage. |
+| `--scrape-courses` | Flag | Enables the UCF Course Catalog scraping stage. |
+| `--skip-fix` | Flag | Skips the data-fixing and professor-course correlation stage. |
+| `--skip-scoring` | Flag | Skips the final professor scoring stage. |
+| `--reviews-only` | Flag | (RMP) Only scrape reviews for professors already in the local database. Skip the search for new professors. |
+| `--limit-profs <N>` | Integer | (RMP) Stop searching for new professors after reaching this limit. |
+| `--limit-reviews <N>` | Integer | (RMP) Stop scraping reviews for each professor after reaching this limit per professor. |
 
 ---
 
-### 2. The Reviews-Only Scrape (Skip Professor Search)
+## Use Case Examples
 
-If you already have a populated list of UCF professors in `ucf_professors_data.json` and want to skip querying RateMyProfessors for new entries, you can force the script to start downloading reviews immediately:
+### 1. Minimal Test Run
+**Command:** `python run_pipeline.py --scrape-rmp --limit-profs 5 --limit-reviews 10`
 
-```bash
-python main.py --reviews-only
-```
+*   **What it does:** Runs the RMP scraper but caps it at the first 5 professors found, and only grabs 10 reviews per professor.
+*   **Why use it:** Perfect for verifying that your network connection and parser are working without waiting for a full 4,000+ professor scrape.
+
+### 2. Full Data Refresh
+**Command:** `python run_pipeline.py --scrape-rmp --scrape-profs --scrape-courses`
+
+*   **What it does:** Executes every scraping stage and follows through with data fixing and professor scoring.
+*   **Why use it:** Use this when you want to rebuild the entire database from scratch with current live data.
+
+### 3. Update Reviews for Existing Professors
+**Command:** `python run_pipeline.py --scrape-rmp --reviews-only --limit-reviews 50`
+
+*   **What it does:** Skips the initial UCF searches on RMP. Instead, it looks at the professors you already have in `rmp_professors.json` and fetches up to 50 *new* reviews for each.
+*   **Why use it:** Efficiently updates scores without re-scanning the entire UCF department list on RMP.
+
+### 4. Recalculate Scores Only
+**Command:** `python run_pipeline.py --skip-fix`
+
+*   **What it does:** Skips all scraping and data-fixing logic. It immediately jumps to the scoring engine to recalculate grades based on existing local JSON data.
+*   **Why use it:** If you've modified the scoring heuristics and want to see the new results instantly without hitting any network endpoints.
+
+### 5. Catalog Correlation Only
+**Command:** `python run_pipeline.py --scrape-profs --scrape-courses --skip-scoring`
+
+*   **What it does:** Scrapes UCF's own websites (faculty list and course catalog) and correlates them, but skips the RMP integration and scoring.
+*   **Why use it:** Useful if you only care about the internal UCF professor-to-course mapping.
 
 ---
 
-### 3. Testing Scrapes (Partial Output)
+> [!TIP]
+> You can combine any of these flags. If no `--scrape-...` flags are provided, the script defaults to running only the local processing stages (`Data Fixing` and `Scoring`).
 
-If you only want to test the scraper's functionality or capture a tiny subset of the latest data without waiting 45 minutes, use the `--limit-professors` and `--limit-reviews` flags.
+> [!IMPORTANT]
+> The `--limit-...` and `--reviews-only` flags have no effect unless `--scrape-rmp` is also enabled.
 
-```bash
-# Fetch exactly 25 professors, and 5 reviews each
-python main.py --all --limit-professors 25 --limit-reviews 5
-```
-
----
-
-### 4. Retrying Network Failures
-
-If the script lost internet connection or ProxyRack returned 407/500 errors, the scraper automatically saves those failed network requests to `failed_requests.json`. 
-
-You can instruct the scraper to attempt to re-download only those exact failed requests and weave them back into your main dataset without re-scraping the whole state:
-
-```bash
-python main.py --retry-failed
-```
 
 ## Output Locations
 
-* **`rmp_scraping/ucf_professors_data.json`**: This is the master database where all successful scraped objects land securely. You can actively read from this file while the scraper is running in another terminal.
-* **`rmp_scraping/failed_requests.json`**: This stores temporary GraphQL payload failures for retry attempts. It deletes itself once all retries succeed.
+**src/output_files**: contains subfolders corresponding to each stage of the pipeline with relevant files for each stage within.
+
+
+
+## Important constraints others working on this project should know.
+- Graduate classes should be scraped from the course catalog. Currently there is no validation of those courses. Whatever a student puts goes. 
+- Profs with <5 reviews are not on here currently
