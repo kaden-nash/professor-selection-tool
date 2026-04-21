@@ -1,5 +1,4 @@
 import argparse
-import os
 from unittest.mock import Mock, patch
 import pytest
 
@@ -11,6 +10,7 @@ from run_pipeline import (
     _build_config,
     main,
 )
+from knightrate.output_paths import RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
 
 @pytest.fixture
 def mock_runners():
@@ -28,8 +28,7 @@ def mock_runners():
         }
 
 def test_pipeline_config_defaults():
-    config = PipelineConfig(root_dir="/test")
-    assert config.root_dir == "/test"
+    config = PipelineConfig()
     assert not config.scrape_rmp
     assert not config.scrape_profs
     assert not config.scrape_courses
@@ -47,7 +46,7 @@ def test_stage_result():
     assert result.error == "Some error"
 
 def test_pipeline_runner_run_default(mock_runners, capsys):
-    config = PipelineConfig(root_dir="/test")
+    config = PipelineConfig()
     runner = PipelineRunner(config)
     runner.run()
     
@@ -57,8 +56,8 @@ def test_pipeline_runner_run_default(mock_runners, capsys):
     mock_runners['course'].assert_not_called()
     
     # Required stages SHOULD execute
-    mock_runners['data_fixing'].assert_called_once_with("/test")
-    mock_runners['scoring'].assert_called_once_with("/test")
+    mock_runners['data_fixing'].assert_called_once_with()
+    mock_runners['scoring'].assert_called_once_with()
     
     assert len(runner._results) == 2
     assert runner._results[0].stage_name == "Data Fixing"
@@ -74,7 +73,6 @@ def test_pipeline_runner_run_default(mock_runners, capsys):
 
 def test_pipeline_runner_optional_stages(mock_runners):
     config = PipelineConfig(
-        root_dir="/test", 
         scrape_rmp=True, 
         scrape_profs=True, 
         scrape_courses=True,
@@ -88,9 +86,9 @@ def test_pipeline_runner_optional_stages(mock_runners):
     mock_runners['data_fixing'].assert_not_called()
     mock_runners['scoring'].assert_not_called()
     
-    mock_runners['rmp'].assert_called_once_with(output_dir=os.path.join("/test", "src", "knightrate", "rmp_scraping"))
-    mock_runners['prof'].assert_called_once_with(output_dir=os.path.join("/test", "src", "knightrate", "prof_scraping"))
-    mock_runners['course'].assert_called_once_with(output_dir=os.path.join("/test", "src", "knightrate", "course_scraping"))
+    mock_runners['rmp'].assert_called_once_with(output_dir=RMP_SCRAPING_OUTPUT_DIR)
+    mock_runners['prof'].assert_called_once_with(output_dir=PROF_SCRAPING_OUTPUT_DIR)
+    mock_runners['course'].assert_called_once_with(output_dir=COURSE_SCRAPING_OUTPUT_DIR)
     
     assert len(runner._results) == 3
     assert runner._results[0].stage_name == "RMP Scraping"
@@ -99,7 +97,7 @@ def test_pipeline_runner_exception_handling(mock_runners):
     mock_df_instance = mock_runners['data_fixing'].return_value
     mock_df_instance.run.side_effect = ValueError("Mocked Failure")
     
-    config = PipelineConfig(root_dir="/test", skip_scoring=True)
+    config = PipelineConfig(skip_scoring=True)
     runner = PipelineRunner(config)
     
     with patch('run_pipeline.traceback.format_exc', return_value="Mock Traceback"):
@@ -131,14 +129,12 @@ def test_build_config():
         skip_fix=True,
         skip_scoring=False
     )
-    with patch('run_pipeline.os.path.abspath', return_value="/test/run_pipeline.py"):
-        config = _build_config(args)
-        assert config.root_dir == os.path.dirname("/test/run_pipeline.py")
-        assert config.scrape_rmp is True
-        assert config.scrape_profs is False
-        assert config.scrape_courses is True
-        assert config.skip_fix is True
-        assert config.skip_scoring is False
+    config = _build_config(args)
+    assert config.scrape_rmp is True
+    assert config.scrape_profs is False
+    assert config.scrape_courses is True
+    assert config.skip_fix is True
+    assert config.skip_scoring is False
 
 def test_main():
     with patch('run_pipeline._parse_args') as mock_parse, \

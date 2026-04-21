@@ -1,34 +1,35 @@
 import json
 import os
+from pathlib import Path
 
 from .engine.engine_factory import ScoringEngineFactory
 from .models import Professor, GlobalStatistics
 from .send_to_db import MongoUploader
+from ..output_paths import PROFESSOR_DATA_PATH, PROFESSOR_RATINGS_PATH, GLOBAL_STATISTICS_PATH
 
 class ProfessorScoringRunner:
     """Orchestrates the professor scoring pipeline."""
 
-    def __init__(self, root_dir: str):
-        self._root_dir = root_dir
+    def __init__(self):
+        pass
 
     def run(self) -> None:
         """Runs the full professor scoring pipeline."""
-        input_path = os.path.join(self._root_dir, "src", "knightrate", "data_fixing", "professor_data.json")
-        self.output_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "professor_ratings.json")
-        self.stats_path = os.path.join(self._root_dir, "src", "knightrate", "professor_scoring", "global_statistics.json")
+        input_path = PROFESSOR_DATA_PATH
+        self.output_path = PROFESSOR_RATINGS_PATH
+        self.stats_path = GLOBAL_STATISTICS_PATH
 
         data = self._load_data(input_path)
         data = self._run_scoring(data)
         global_stats = self._calculate_statistics(data)
         data = self._run_scoring_with_global_stats(data, global_stats)
 
-
         self._save_data(self.output_path, data)
         self._save_statistics(self.stats_path, global_stats)
         self._send_to_mongodb(data, global_stats)
         print(f"Scoring complete. Results saved to {self.output_path} and {self.stats_path} and pushed to database.")
 
-    def _load_data(self, path: str) -> list:
+    def _load_data(self, path: Path) -> list:
         """Loads the professor JSON data from disk."""
         abs_path = os.path.abspath(path)
         with open(abs_path, "r", encoding="utf-8") as f:
@@ -60,7 +61,7 @@ class ProfessorScoringRunner:
         print("Finished.")
         return temp
 
-    def _save_data(self, path: str, data: list) -> None:
+    def _save_data(self, path: Path, data: list) -> None:
         """Saves the processed professor data to JSON."""
         print("Saving scoring data...")
         with open(path, "w", encoding="utf-8") as f:
@@ -84,7 +85,7 @@ class ProfessorScoringRunner:
         print("Finished.")
 
 
-    def _save_statistics(self, path: str, stats: GlobalStatistics) -> None:
+    def _save_statistics(self, path: Path, stats: GlobalStatistics) -> None:
         """Saves the global statistics to JSON."""
         with open(path, "w", encoding="utf-8") as f:
             json.dump(stats.model_dump(), f, indent=4)

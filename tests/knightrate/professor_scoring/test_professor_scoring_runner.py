@@ -1,4 +1,3 @@
-import os
 import json
 import pytest
 from unittest.mock import Mock, patch, mock_open
@@ -28,12 +27,8 @@ def mock_professor():
         "metrics": {"overall_score": 0.0}
     }
 
-def test_professor_scoring_runner_init():
-    runner = ProfessorScoringRunner("/root")
-    assert runner._root_dir == "/root"
-
 def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
-    runner = ProfessorScoringRunner("/root")
+    runner = ProfessorScoringRunner()
     
     # Set up the factory mock and its nested engines
     factory_inst = mock_factory.return_value
@@ -96,7 +91,7 @@ def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
     mock_uploader_inst.upload_global_statistics.assert_called_once_with(mock_stats.model_dump())
 
 def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, capsys):
-    runner = ProfessorScoringRunner("/root")
+    runner = ProfessorScoringRunner()
     
     # If a dict is passed directly without conversion? The code converts it.
     m_open = mock_open(read_data=json.dumps([mock_professor, "not_a_dict_but_a_string"]))
@@ -129,7 +124,7 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
     assert mock_engine.process_data.call_count == 3
 
 def test_professor_scoring_runner_send_to_mongodb():
-    runner = ProfessorScoringRunner("/root")
+    runner = ProfessorScoringRunner()
     
     prof = Professor(id="prof1", first_name="A", last_name="B")
     stats = GlobalStatistics(average_overall=4.0)
