@@ -1,5 +1,7 @@
 import json
 import re
+from pathlib import Path
+
 from typing import Any, List, Dict
 from ..core.scrubber_interface import DataScrubber
 
@@ -8,7 +10,7 @@ class RmpScrubber(DataScrubber):
         self.raw_data: List[Dict[str, Any]] = []
         self.scrubbed_data: List[Dict[str, Any]] = []
 
-    def load(self, filepath: str) -> None:
+    def load(self, filepath: str | Path) -> None:
         with open(filepath, 'r', encoding='utf-8') as f:
             self.raw_data = json.load(f)
 
@@ -54,7 +56,7 @@ class RmpScrubber(DataScrubber):
             
         return "unknown"
 
-    def save(self, filepath: str) -> None:
+    def save(self, filepath: str | Path) -> None:
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(self.scrubbed_data, f, indent=4)
 

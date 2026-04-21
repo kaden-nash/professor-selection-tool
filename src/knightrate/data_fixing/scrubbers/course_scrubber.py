@@ -1,5 +1,7 @@
 import json
 import re
+from pathlib import Path
+
 from typing import List, Optional
 from ..core.scrubber_interface import DataScrubber
 from ..models.models import Course
@@ -9,7 +11,7 @@ class CourseScrubber(DataScrubber):
         self.raw_data: List[str] = []
         self.scrubbed_data: List[Course] = []
 
-    def load(self, filepath: str) -> None:
+    def load(self, filepath: str | Path) -> None:
         with open(filepath, 'r', encoding='utf-8') as f:
             self.raw_data = json.load(f)
 
@@ -66,7 +68,7 @@ class CourseScrubber(DataScrubber):
             hasLab=has_lab
         )
 
-    def save(self, filepath: str) -> None:
+    def save(self, filepath: str | Path) -> None:
         output_data = [c.to_dict() for c in self.scrubbed_data]
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(output_data, f, indent=4)

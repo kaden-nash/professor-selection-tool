@@ -1,43 +1,31 @@
 import os
 from typing import Optional, List, Any
+from pathlib import Path
 
 from .scrubbers.course_scrubber import CourseScrubber
 from .scrubbers.rmp_scrubber import RmpScrubber
 from .scrubbers.catalog_scrubber import CatalogScrubber
 from .correlators.professor_correlator import ProfessorCorrelator
+from ..output_paths import COURSES_PATH, COURSES_CLEANED_PATH, CATALOG_PROFESSORS_PATH,CATALOG_PROFESSORS_CLEANED_PATH, RMP_DATA_PATH, RMP_DATA_CLEANED_PATH, PROFESSOR_DATA_PATH
 
 
 class DataFixingRunner:
     """Orchestrates the data scrubbing and professor correlation pipeline."""
 
-    def __init__(self, root_dir: str):
-        self._root_dir = root_dir
+    def __init__(self):
+        pass
 
     def run(self) -> None:
         "Manages scrubbing and correlation."
         print("Beginning data preprocessing...")
         """Runs the complete data fixing pipeline."""
-        paths = self._build_paths()
-        course_data = self._run_course_scrubber(paths["courses_raw"], paths["courses_clean"])
-        rmp_data = self._run_rmp_scrubber(paths["rmp_raw"], paths["rmp_clean"])
-        catalog_data = self._run_catalog_scrubber(paths["catalog_raw"], paths["catalog_clean"])
-        self._run_correlator(rmp_data, catalog_data, course_data, paths["prof_out"])
+        course_data = self._run_course_scrubber(COURSES_PATH, COURSES_CLEANED_PATH)
+        rmp_data = self._run_rmp_scrubber(RMP_DATA_PATH, RMP_DATA_CLEANED_PATH)
+        catalog_data = self._run_catalog_scrubber(CATALOG_PROFESSORS_PATH, CATALOG_PROFESSORS_CLEANED_PATH)
+        self._run_correlator(rmp_data, catalog_data, course_data, PROFESSOR_DATA_PATH)
         print("Data preprocessing complete.")
 
-    def _build_paths(self) -> dict:
-        """Constructs all input/output paths relative to root_dir."""
-        r = self._root_dir
-        return {
-            "courses_raw": os.path.join(r, "src", "knightrate", "course_scraping", "courses.json"),
-            "rmp_raw": os.path.join(r, "src", "knightrate", "rmp_scraping", "rmp_data.json"),
-            "catalog_raw": os.path.join(r, "src", "knightrate", "prof_scraping", "ucf_catalog_professors.json"),
-            "courses_clean": os.path.join(r, "src", "knightrate", "data_fixing", "courses_cleaned.json"),
-            "rmp_clean": os.path.join(r, "src", "knightrate", "data_fixing", "rmp_data_cleaned.json"),
-            "catalog_clean": os.path.join(r, "src", "knightrate", "data_fixing", "ucf_catalog_professors_cleaned.json"),
-            "prof_out": os.path.join(r, "src", "knightrate", "data_fixing", "professor_data.json"),
-        }
-
-    def _run_course_scrubber(self, raw_path: str, clean_path: str) -> Optional[List[Any]]:
+    def _run_course_scrubber(self, raw_path: Path, clean_path: Path) -> Optional[List[Any]]:
         """Loads, scrubs, and saves course data."""
         print("Scrubbing UCF course catalog course data...")
         if not os.path.exists(raw_path):
@@ -51,7 +39,7 @@ class DataFixingRunner:
         print("Finished.")
         return data
 
-    def _run_rmp_scrubber(self, raw_path: str, clean_path: str) -> Optional[List[Any]]:
+    def _run_rmp_scrubber(self, raw_path: Path, clean_path: Path) -> Optional[List[Any]]:
         """Loads, scrubs, and saves RMP data."""
         print("Scrubbing RMP data...")
         if not os.path.exists(raw_path):
@@ -65,7 +53,7 @@ class DataFixingRunner:
         print("Finished.")
         return data
 
-    def _run_catalog_scrubber(self, raw_path: str, clean_path: str) -> Optional[List[Any]]:
+    def _run_catalog_scrubber(self, raw_path: Path, clean_path: Path) -> Optional[List[Any]]:
         """Loads, scrubs, and saves catalog data."""
         print("Scrubbing UCF course catalog professor data...")
         if not os.path.exists(raw_path):
@@ -80,7 +68,7 @@ class DataFixingRunner:
         return data
 
     def _run_correlator(
-        self, rmp_data: Any, catalog_data: Any, courses_data: Any, out_path: str
+        self, rmp_data: Any, catalog_data: Any, courses_data: Any, out_path: Path
     ) -> None:
         """Correlates professor data from RMP and catalog sources."""
         print("Correlating all data...")

@@ -17,6 +17,7 @@ from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
 from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
+from knightrate.output_paths import create_output_dirs
 
 
 @dataclass
@@ -47,6 +48,7 @@ class PipelineRunner:
 
     def run(self) -> None:
         """Executes enabled pipeline stages and prints a summary."""
+        create_output_dirs()
         self._run_optional_stages()
         self._run_required_stages()
         self._print_summary()
@@ -63,7 +65,7 @@ class PipelineRunner:
     def _run_required_stages(self) -> None:
         """Runs the data-fixing and scoring stages unless skipped."""
         if not self._config.skip_fix:
-            self._execute("Data Fixing", DataFixingRunner(self._config.root_dir))
+            self._execute("Data Fixing", DataFixingRunner())
         if not self._config.skip_scoring:
             self._execute("Professor Scoring", ProfessorScoringRunner(self._config.root_dir))
 

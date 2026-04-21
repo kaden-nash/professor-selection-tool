@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
-from typing import Any, List, Dict, Optional, Set
+from typing import Any, List, Dict, Optional
+from pathlib import Path
+
 from ..core.correlator_interface import DataCorrelator
 from ..models.models import CatalogProfessor, UnifiedProfessor, Course
 
@@ -157,7 +159,7 @@ class ProfessorCorrelator(DataCorrelator):
                 
         return False
 
-    def save(self, filepath: str) -> None:
+    def save(self, filepath: Path) -> None:
         out_data = [u.to_dict() for u in self.unified_data]
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(out_data, f, indent=4)

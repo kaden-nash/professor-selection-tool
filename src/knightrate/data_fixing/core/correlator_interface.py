@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
+from pathlib import Path
 
 class DataCorrelator(ABC):
     """
@@ -17,6 +18,6 @@ class DataCorrelator(ABC):
         pass
 
     @abstractmethod
-    def save(self, filepath: str) -> None:
+    def save(self, filepath: Path) -> None:
         """Saves the correlated data to the given filepath."""
         pass

@@ -2,6 +2,8 @@ import json
 import re
 from datetime import datetime
 from typing import List, Optional, Tuple
+from pathlib import Path
+
 from ..core.scrubber_interface import DataScrubber
 from ..models.models import CatalogProfessor
 
@@ -10,7 +12,7 @@ class CatalogScrubber(DataScrubber):
         self.raw_data: List[str] = []
         self.scrubbed_data: List[CatalogProfessor] = []
 
-    def load(self, filepath: str) -> None:
+    def load(self, filepath: str | Path) -> None:
         with open(filepath, 'r', encoding='utf-8') as f:
             self.raw_data = json.load(f)
 
@@ -115,7 +117,7 @@ class CatalogScrubber(DataScrubber):
         
         return level, grad_from
 
-    def save(self, filepath: str) -> None:
+    def save(self, filepath: str | Path) -> None:
         out_data = [p.to_dict() for p in self.scrubbed_data]
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(out_data, f, indent=4)
