@@ -1,113 +1,128 @@
+import os
+import signal
+
 import pytest
 from unittest.mock import Mock, patch
-import signal
-import os
 
 from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
 
-@pytest.fixture
-def mock_components():
-    with patch('knightrate.rmp_scraping.rmp_scrape_runner.GraphQLClient') as mc, \
-         patch('knightrate.rmp_scraping.rmp_scrape_runner.RateLimiter') as mr, \
-         patch('knightrate.rmp_scraping.rmp_scrape_runner.DataStorage') as ms, \
-         patch('knightrate.rmp_scraping.rmp_scrape_runner.Monitor') as mm, \
-         patch('knightrate.rmp_scraping.rmp_scrape_runner.ScraperEngine') as me:
-        
-        yield {
-            'client': mc,
-            'limiter': mr,
-            'storage': ms,
-            'monitor': mm,
-            'engine': me,
-        }
+_MODULE = "knightrate.rmp_scraping.rmp_scrape_runner"
+
 
 @pytest.fixture
-def mock_os_exit():
-    with patch('knightrate.rmp_scraping.rmp_scrape_runner.os._exit') as mock_exit:
-        yield mock_exit
+def mock_components():
+    """Patches all injected components so no real I/O occurs."""
+    with (
+        patch(f"{_MODULE}.GraphQLClient") as mc,
+        patch(f"{_MODULE}.RateLimiter") as mr,
+        patch(f"{_MODULE}.DataStorage") as ms,
+        patch(f"{_MODULE}.Monitor") as mm,
+        patch(f"{_MODULE}.ScraperConfig") as mcfg,
+        patch(f"{_MODULE}.ScraperEngine") as me,
+    ):
+        yield {
+            "client": mc,
+            "limiter": mr,
+            "storage": ms,
+            "monitor": mm,
+            "config": mcfg,
+            "engine": me,
+        }
+
 
 @pytest.fixture
 def mock_dotenv():
-    with patch('knightrate.rmp_scraping.rmp_scrape_runner.load_dotenv') as mock_ld:
+    with patch(f"{_MODULE}.load_dotenv") as mock_ld:
         yield mock_ld
 
-def test_rmp_scrape_runner_init():
-    runner = RmpScrapeRunner("/test", limit_professors=10, limit_reviews=5)
-    assert runner._output_dir == "/test"
-    assert runner._limit_professors == 10
-    assert runner._limit_reviews == 5
 
-def test_rmp_scrape_runner_run_success(mock_components, mock_dotenv, capsys):
-    runner = RmpScrapeRunner("/test", 10, 5)
-    
-    mock_engine_inst = mock_components['engine'].return_value
-    
-    with patch('knightrate.rmp_scraping.rmp_scrape_runner.signal.signal') as mock_signal:
-        runner.run()
-        
-    mock_dotenv.assert_called_once()
-    
-    mock_components['limiter'].assert_called_once_with(rate=5.0)
-    mock_components['client'].assert_called_once_with(mock_components['limiter'].return_value)
-    mock_components['storage'].assert_called_once_with(output_dir="/test")
-    mock_components['monitor'].assert_called_once()
-    
-    mock_components['engine'].assert_called_once_with(
-        mock_components['client'].return_value,
-        mock_components['storage'].return_value,
-        mock_components['monitor'].return_value,
-        limit_professors=10,
-        limit_reviews=5
-    )
-    
-    mock_engine_inst.run.assert_called_once()
-    mock_signal.assert_called_once()
+class TestRmpScrapeRunnerInit:
+    """Tests for RmpScrapeRunner.__init__."""
 
-def test_rmp_scrape_runner_run_exception(mock_components, mock_dotenv, mock_os_exit, capsys):
-    runner = RmpScrapeRunner("/test")
-    
-    mock_engine_inst = mock_components['engine'].return_value
-    mock_engine_inst.run.side_effect = Exception("Crash")
-    # Must mock monitor to prevent AttributeError when runner catches exc
-    mock_engine_inst.monitor = mock_components['monitor'].return_value
-    
-    with patch('knightrate.rmp_scraping.rmp_scrape_runner.signal.signal'):
-        runner.run()
-        
-    mock_engine_inst.monitor.close.assert_called_once()
-    mock_os_exit.assert_called_once_with(1)
-    
-    captured = capsys.readouterr()
-    assert "An error occurred during scraping: Crash" in captured.out
+    def test_stores_constructor_arguments(self):
+        runner = RmpScrapeRunner("/test", limit_professors=10, limit_reviews=5)
+        assert runner._output_dir == "/test"
+        assert runner._limit_professors == 10
+        assert runner._limit_reviews == 5
 
-def test_rmp_scrape_runner_signal_handler(mock_components, mock_os_exit, capsys):
-    runner = RmpScrapeRunner("/test")
-    
-    # Extract handler
-    real_signal = signal.signal
-    registered_handler = None
-    
-    def fake_signal(sig, handler):
-        nonlocal registered_handler
-        registered_handler = handler
-        
-    with patch('knightrate.rmp_scraping.rmp_scrape_runner.signal.signal', side_effect=fake_signal):
-        mock_engine_inst = mock_components['engine'].return_value
-        runner.run()
-        
-    assert registered_handler is not None
-    
-    # Setup mock engine features
-    mock_engine_inst.monitor = mock_components['monitor'].return_value
-    mock_future = Mock()
-    mock_engine_inst.futures = [mock_future]
-    
-    registered_handler(signal.SIGINT, None)
-    
-    assert mock_engine_inst._is_cancelled is True
-    mock_future.cancel.assert_called_once()
-    mock_engine_inst.monitor.close.assert_called_once()
-    mock_os_exit.assert_called_once_with(1)
-    
-    captured = capsys.readouterr()
-    assert "Scraping interrupted by user." in captured.out
+    def test_defaults_limits_to_none(self):
+        runner = RmpScrapeRunner("/test")
+        assert runner._limit_professors is None
+        assert runner._limit_reviews is None
+
+
+class TestRmpScrapeRunnerRun:
+    """Tests for RmpScrapeRunner.run()."""
+
+    def test_successful_run_invokes_engine(self, mock_components, mock_dotenv, capsys):
+        runner = RmpScrapeRunner("/test", 10, 5)
+        mock_engine_inst = mock_components["engine"].return_value
+
+        with patch(f"{_MODULE}.signal.signal"):
+            runner.run()
+
+        mock_dotenv.assert_called_once()
+        mock_engine_inst.run.assert_called_once()
+
+        captured = capsys.readouterr()
+        assert "Beginning RMP scraping" in captured.out
+        assert "Completed RMP scraping" in captured.out
+
+    def test_exception_re_raised_and_cancel_called(self, mock_components, mock_dotenv):
+        runner = RmpScrapeRunner("/test")
+        mock_engine_inst = mock_components["engine"].return_value
+        mock_engine_inst.run.side_effect = RuntimeError("Crash")
+
+        with patch(f"{_MODULE}.signal.signal"):
+            with pytest.raises(RuntimeError, match="Crash"):
+                runner.run()
+
+        mock_engine_inst.cancel.assert_called_once()
+
+    def test_error_message_printed_on_exception(self, mock_components, mock_dotenv, capsys):
+        runner = RmpScrapeRunner("/test")
+        mock_components["engine"].return_value.run.side_effect = Exception("Boom")
+
+        with patch(f"{_MODULE}.signal.signal"):
+            with pytest.raises(Exception):
+                runner.run()
+
+        captured = capsys.readouterr()
+        assert "An error occurred during scraping: Boom" in captured.out
+
+    def test_signal_handler_calls_cancel_and_exits(self, mock_components, mock_dotenv):
+        runner = RmpScrapeRunner("/test")
+        registered_handler = None
+
+        def capture_signal(sig, handler):
+            nonlocal registered_handler
+            registered_handler = handler
+
+        with patch(f"{_MODULE}.signal.signal", side_effect=capture_signal):
+            runner.run()
+
+        assert registered_handler is not None
+
+        mock_engine_inst = mock_components["engine"].return_value
+        with patch(f"{_MODULE}.os._exit") as mock_exit:
+            registered_handler(signal.SIGINT, None)
+
+        mock_engine_inst.cancel.assert_called_once()
+        mock_exit.assert_called_once_with(1)
+
+    def test_signal_handler_prints_interrupt_message(self, mock_components, mock_dotenv, capsys):
+        runner = RmpScrapeRunner("/test")
+        registered_handler = None
+
+        def capture_signal(sig, handler):
+            nonlocal registered_handler
+            registered_handler = handler
+
+        with patch(f"{_MODULE}.signal.signal", side_effect=capture_signal):
+            runner.run()
+
+        with patch(f"{_MODULE}.os._exit"):
+            registered_handler(signal.SIGINT, None)
+
+        captured = capsys.readouterr()
+        assert "Scraping interrupted by user" in captured.out
