@@ -3,10 +3,10 @@ from typing import Dict, Any
 
 import pytest
 
-from knightrate.rmp_scraping.scraper.client import GraphQLRequest
-from knightrate.rmp_scraping.scraper.engine import ScraperEngine
-from knightrate.rmp_scraping.scraper.scraper_config import ScraperConfig
-from knightrate.rmp_scraping.scraper.storage import DataStorage
+from src.knightrate.rmp_scraping.scraper.client import GraphQLRequest
+from src.knightrate.rmp_scraping.scraper.engine import ScraperEngine
+from src.knightrate.rmp_scraping.scraper.scraper_config import ScraperConfig
+from src.knightrate.rmp_scraping.scraper.storage import DataStorage
 
 # ---------------------------------------------------------------------------
 # Stubs
@@ -115,7 +115,7 @@ class ErrorClient:
     """A client that always raises GraphQLRequestError."""
 
     def execute(self, request: GraphQLRequest):
-        from knightrate.rmp_scraping.scraper.client import GraphQLRequestError
+        from src.knightrate.rmp_scraping.scraper.client import GraphQLRequestError
         raise GraphQLRequestError("always fails", payload={}, last_error="mock error")
 
 
@@ -198,7 +198,7 @@ class TestScraperEngineFetchAllProfessors:
         assert professors == []
 
     def test_fetch_reviews_skips_cancelled(self, tmp_path):
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
         engine = ScraperEngine(_make_config(tmp_path))
         engine._is_cancelled = True
         prof = Professor(id="P1", firstName="A", lastName="B", numRatings=5, avgDifficulty=1.0, avgRating=1.0)
@@ -206,14 +206,14 @@ class TestScraperEngineFetchAllProfessors:
         assert engine._completed_professors == 0
 
     def test_fetch_reviews_skips_zero_rating_professor(self, tmp_path):
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
         engine = ScraperEngine(_make_config(tmp_path))
         prof = Professor(id="P2", firstName="A", lastName="B", numRatings=0, avgDifficulty=1.0, avgRating=1.0)
         engine.fetch_reviews_for_professor(prof)
         assert engine._completed_professors == 1
 
     def test_fetch_reviews_skips_already_scraped_professor(self, tmp_path):
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
         engine = ScraperEngine(_make_config(tmp_path))
         prof = Professor(
             id="P3", firstName="A", lastName="B",
@@ -234,7 +234,7 @@ class TestRetryFailedRequests:
         assert captured.out == ""
 
     def test_retries_professor_payload(self, tmp_path):
-        from knightrate.rmp_scraping.scraper.queries import (
+        from src.knightrate.rmp_scraping.scraper.queries import (
             PROFESSOR_QUERY_STRING,
             INITIAL_CURSOR,
         )
@@ -250,8 +250,8 @@ class TestRetryFailedRequests:
         assert storage.get_failed_requests() == []
 
     def test_retries_ratings_payload(self, tmp_path, capsys):
-        from knightrate.rmp_scraping.scraper.queries import RATINGS_QUERY_STRING, INITIAL_CURSOR
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.queries import RATINGS_QUERY_STRING, INITIAL_CURSOR
+        from src.knightrate.rmp_scraping.scraper.models import Professor
         storage = DataStorage(str(tmp_path))
         prof = Professor(id="T1", firstName="A", lastName="B", numRatings=1, avgDifficulty=1.0, avgRating=1.0)
         storage.append_professors([prof])
@@ -266,7 +266,7 @@ class TestRetryFailedRequests:
         assert storage.get_failed_requests() == []
 
     def test_keeps_payload_when_retry_fails_with_graphql_error(self, tmp_path, capsys):
-        from knightrate.rmp_scraping.scraper.client import GraphQLRequestError
+        from src.knightrate.rmp_scraping.scraper.client import GraphQLRequestError
         storage = DataStorage(str(tmp_path))
         payload = {"query": "bad", "variables": {}, "operationName": "TeacherSearchPaginationQuery"}
         storage.save_failed_request(payload)
@@ -324,7 +324,7 @@ class TestEdgeCases:
 
     def test_professor_progress_increments_per_page_from_zero(self, tmp_path):
         """Bar starts at 0 and is incremented by each page's result count, even with prior data."""
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
         storage = DataStorage(str(tmp_path))
         storage.append_professors([
             Professor(id="P_existing", firstName="X", lastName="Y", numRatings=0, avgDifficulty=1.0, avgRating=1.0)
@@ -353,8 +353,8 @@ class TestEdgeCases:
         assert len(professors) == 1
 
     def test_review_error_breaks_loop(self, tmp_path, capsys):
-        from knightrate.rmp_scraping.scraper.client import GraphQLRequestError
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.client import GraphQLRequestError
+        from src.knightrate.rmp_scraping.scraper.models import Professor
 
         class ProfOkReviewsErrorClient:
             _call_count = 0
@@ -379,7 +379,7 @@ class TestEdgeCases:
         assert "Failed to fetch reviews" in captured.out
 
     def test_review_generic_exception_breaks_loop(self, tmp_path, capsys):
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
 
         class ProfOkReviewsExplodeClient:
             def execute(self, request):
@@ -399,7 +399,7 @@ class TestEdgeCases:
         assert "Unexpected fault" in captured.out
 
     def test_review_limit_stops_paging(self, tmp_path):
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
         config = ScraperConfig(
             client=MockClient(),
             storage=DataStorage(str(tmp_path)),
@@ -413,7 +413,7 @@ class TestEdgeCases:
 
     def test_finalize_without_all_reviews_scraped_flag(self, tmp_path):
         """When has_next_page remains True (limit hit), allReviewsScraped should not be saved."""
-        from knightrate.rmp_scraping.scraper.models import Professor
+        from src.knightrate.rmp_scraping.scraper.models import Professor
 
         class MultiPageReviewClient:
             _call_count = 0

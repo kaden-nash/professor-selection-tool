@@ -1,8 +1,8 @@
 import json
 import os
 import pytest
-from knightrate.prof_scraping.scraper.models import ProfessorEntry
-from knightrate.prof_scraping.scraper.storage import DataStorage, OUTPUT_FILENAME
+from src.knightrate.prof_scraping.scraper.models import ProfessorEntry
+from src.knightrate.prof_scraping.scraper.storage import DataStorage, OUTPUT_FILENAME
 
 
 class TestDataStorageSave:

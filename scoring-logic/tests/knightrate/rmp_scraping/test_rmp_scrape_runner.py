@@ -4,7 +4,7 @@ import pytest
 from pathlib import Path
 from unittest.mock import patch
 
-from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner, ScraperArgs
+from src.knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner, ScraperArgs
 
 _MODULE = "knightrate.rmp_scraping.rmp_scrape_runner"
 

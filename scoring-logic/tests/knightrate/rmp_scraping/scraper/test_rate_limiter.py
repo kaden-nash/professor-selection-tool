@@ -3,7 +3,7 @@ import threading
 
 import pytest
 
-from knightrate.rmp_scraping.scraper.rate_limiter import RateLimiter
+from src.knightrate.rmp_scraping.scraper.rate_limiter import RateLimiter
 
 
 class TestRateLimiter:

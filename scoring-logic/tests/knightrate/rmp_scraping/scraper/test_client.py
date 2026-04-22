@@ -3,12 +3,12 @@ import os
 import pytest
 import requests_mock as req_mock_lib
 
-from knightrate.rmp_scraping.scraper.client import (
+from src.knightrate.rmp_scraping.scraper.client import (
     GraphQLClient,
     GraphQLRequest,
     GraphQLRequestError,
 )
-from knightrate.rmp_scraping.scraper.rate_limiter import RateLimiter
+from src.knightrate.rmp_scraping.scraper.rate_limiter import RateLimiter
 
 _ENDPOINT = "https://www.ratemyprofessors.com/graphql"
 

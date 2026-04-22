@@ -1,6 +1,6 @@
 import pytest
 import json
-from knightrate.data_fixing.scrubbers.catalog_scrubber import CatalogScrubber
+from src.knightrate.data_fixing.scrubbers.catalog_scrubber import CatalogScrubber
 
 @pytest.fixture
 def dummy_catalog_file(tmp_path):

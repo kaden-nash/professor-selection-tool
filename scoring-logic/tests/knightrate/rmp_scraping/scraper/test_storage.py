@@ -3,8 +3,8 @@ import os
 
 import pytest
 
-from knightrate.rmp_scraping.scraper.models import Professor, Rating
-from knightrate.rmp_scraping.scraper.storage import DataStorage
+from src.knightrate.rmp_scraping.scraper.models import Professor, Rating
+from src.knightrate.rmp_scraping.scraper.storage import DataStorage
 
 
 def _make_professor(prof_id: str = "P1", num_ratings: int = 1) -> Professor:

@@ -1,7 +1,7 @@
 import threading
 from unittest.mock import MagicMock, patch
 
-from knightrate.rmp_scraping.scraper.monitor import Monitor
+from src.knightrate.rmp_scraping.scraper.monitor import Monitor
 
 
 class TestMonitor:

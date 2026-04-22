@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.difficulty_scorer import RawDifficultyScorer
-from knightrate.professor_scoring.models import Professor
+from src.knightrate.professor_scoring.strategies.difficulty_scorer import RawDifficultyScorer
+from src.knightrate.professor_scoring.models import Professor
 
 class TestDifficultyScorer:
     def test_difficulty_scorer_initialization(self):

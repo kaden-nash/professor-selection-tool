@@ -1,9 +1,9 @@
 import pytest
-from knightrate.professor_scoring.models import Professor, Scores
-from knightrate.professor_scoring.global_stats.average_overall_stat import AverageOverallStat
-from knightrate.professor_scoring.global_stats.average_quality_stat import AverageQualityStat
-from knightrate.professor_scoring.global_stats.average_difficulty_stat import AverageDifficultyStat
-from knightrate.professor_scoring.global_stats.average_wta_stat import AverageWouldTakeAgainStat
+from src.knightrate.professor_scoring.models import Professor, Scores
+from src.knightrate.professor_scoring.global_stats.average_overall_stat import AverageOverallStat
+from src.knightrate.professor_scoring.global_stats.average_quality_stat import AverageQualityStat
+from src.knightrate.professor_scoring.global_stats.average_difficulty_stat import AverageDifficultyStat
+from src.knightrate.professor_scoring.global_stats.average_wta_stat import AverageWouldTakeAgainStat
 
 class TestGlobalStats:
     def test_average_overall_stat(self):

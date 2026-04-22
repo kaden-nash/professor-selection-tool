@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
 
-from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
+from src.knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 
 @pytest.fixture
 def mock_course_scrub():

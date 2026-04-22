@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.top_3_tags_scorer import Top3TagsScorer
-from knightrate.professor_scoring.models import Professor, Review
+from src.knightrate.professor_scoring.strategies.top_3_tags_scorer import Top3TagsScorer
+from src.knightrate.professor_scoring.models import Professor, Review
 
 class TestTop3TagsScorer:
     def test_initialization(self):

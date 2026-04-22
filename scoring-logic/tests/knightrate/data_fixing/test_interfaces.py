@@ -1,5 +1,5 @@
-from knightrate.data_fixing.core.scrubber_interface import DataScrubber
-from knightrate.data_fixing.core.correlator_interface import DataCorrelator
+from src.knightrate.data_fixing.core.scrubber_interface import DataScrubber
+from src.knightrate.data_fixing.core.correlator_interface import DataCorrelator
 from typing import Any
 
 class DummyScrubber(DataScrubber):

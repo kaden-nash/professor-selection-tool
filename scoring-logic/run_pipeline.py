@@ -11,14 +11,14 @@ import traceback
 from dataclasses import dataclass
 from typing import Optional
 
-from knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner
-from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
-from knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
-from knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
-from knightrate.data_fixing.data_fixing_runner import DataFixingRunner
-from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
-from knightrate.output_paths import create_output_dirs, RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
-from knightrate.output_paths import RMP_REVIEW_DATA_PATH, RMP_PROF_DATA_PATH, RMP_PROF_ATTRS_PATH, FAILED_REQUEST_PATH, COURSES_PATH, CATALOG_PROFESSORS_PATH
+from src.knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner
+from src.knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
+from src.knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner
+from src.knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
+from src.knightrate.data_fixing.data_fixing_runner import DataFixingRunner
+from src.knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
+from src.knightrate.output_paths import create_output_dirs, RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
+from src.knightrate.output_paths import RMP_REVIEW_DATA_PATH, RMP_PROF_DATA_PATH, RMP_PROF_ATTRS_PATH, FAILED_REQUEST_PATH, COURSES_PATH, CATALOG_PROFESSORS_PATH
 
 
 @dataclass

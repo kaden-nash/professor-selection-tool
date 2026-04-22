@@ -1,5 +1,5 @@
 import pytest
-from knightrate.course_scraping.scraper.parser import Parser
+from src.knightrate.course_scraping.scraper.parser import Parser
 
 @pytest.fixture
 def parser():

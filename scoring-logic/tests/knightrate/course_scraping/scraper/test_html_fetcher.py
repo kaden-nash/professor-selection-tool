@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from knightrate.course_scraping.scraper.html_fetcher import HtmlFetcher
+from src.knightrate.course_scraping.scraper.html_fetcher import HtmlFetcher
 
 @pytest.fixture
 def fetcher():

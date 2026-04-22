@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from pathlib import Path
 
-from knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner, ROOT_URL
+from src.knightrate.course_scraping.course_scrape_runner import CourseScrapeRunner, ROOT_URL
 
 @pytest.fixture
 def mock_fetcher():

@@ -1,7 +1,7 @@
 import os
 import json
 import pytest
-from knightrate.course_scraping.storage.data_storage import DataStorage
+from src.knightrate.course_scraping.storage.data_storage import DataStorage
 
 def test_save_courses_creates_file(tmp_path):
     storage = DataStorage(directory=str(tmp_path))

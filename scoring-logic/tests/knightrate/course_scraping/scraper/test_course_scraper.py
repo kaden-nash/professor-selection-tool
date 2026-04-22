@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from knightrate.course_scraping.scraper.course_scraper import CourseScraper
+from src.knightrate.course_scraping.scraper.course_scraper import CourseScraper
 
 @pytest.fixture
 def mocks():

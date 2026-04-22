@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.time_last_taught_scorer import TimeLastTaughtScorer
-from knightrate.professor_scoring.models import Professor, Review
+from src.knightrate.professor_scoring.strategies.time_last_taught_scorer import TimeLastTaughtScorer
+from src.knightrate.professor_scoring.models import Professor, Review
 
 class TestTimeLastTaughtScorer:
     def test_initialization(self):

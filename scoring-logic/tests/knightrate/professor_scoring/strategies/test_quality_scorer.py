@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.quality_scorer import QualityScorer
-from knightrate.professor_scoring.models import Professor, Scores
+from src.knightrate.professor_scoring.strategies.quality_scorer import QualityScorer
+from src.knightrate.professor_scoring.models import Professor, Scores
 
 class TestQualityScorer:
     def test_initialization(self):

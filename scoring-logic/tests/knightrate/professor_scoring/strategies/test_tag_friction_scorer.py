@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.tag_friction_scorer import TagFrictionScorer
-from knightrate.professor_scoring.models import Professor, Review
+from src.knightrate.professor_scoring.strategies.tag_friction_scorer import TagFrictionScorer
+from src.knightrate.professor_scoring.models import Professor, Review
 
 class TestTagFrictionScorer:
     def test_initialization(self):

@@ -1,5 +1,5 @@
 import pytest
-from knightrate.rmp_scraping.scraper.parser import (
+from src.knightrate.rmp_scraping.scraper.parser import (
     parse_professors,
     parse_ratings,
     _normalize_rating_tags,

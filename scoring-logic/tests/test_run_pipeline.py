@@ -10,7 +10,7 @@ from run_pipeline import (
     _build_config,
     main,
 )
-from knightrate.output_paths import RMP_SCRAPING_OUTPUT_DIR, COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
+from src.knightrate.output_paths import COURSE_SCRAPING_OUTPUT_DIR, PROF_SCRAPING_OUTPUT_DIR
 
 @pytest.fixture
 def mock_runners():
@@ -94,8 +94,8 @@ def test_pipeline_runner_optional_stages(mock_runners):
     mock_runners['scoring'].assert_not_called()
 
     # Verify RmpScrapeRunner is called with both positional args
-    from knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
-    from knightrate.output_paths import RMP_SCRAPING_OUTPUT_DIR
+    from src.knightrate.rmp_scraping.rmp_scrape_runner import ScraperArgs
+    from src.knightrate.output_paths import RMP_SCRAPING_OUTPUT_DIR
     call_args = mock_runners['rmp'].call_args
     assert call_args.args[0] == RMP_SCRAPING_OUTPUT_DIR
     scraper_args = call_args.args[1]

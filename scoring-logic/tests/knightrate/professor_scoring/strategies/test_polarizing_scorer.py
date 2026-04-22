@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.polarizing_scorer import PolarizingScorer
-from knightrate.professor_scoring.models import Professor, Review
+from src.knightrate.professor_scoring.strategies.polarizing_scorer import PolarizingScorer
+from src.knightrate.professor_scoring.models import Professor, Review
 
 class TestPolarizingScorer:
     def test_initialization(self):

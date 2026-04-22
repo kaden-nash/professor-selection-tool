@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from knightrate.prof_scraping.scraper.client import CatalogClient, UCF_CATALOG_URL, CONTENT_SELECTOR
+from src.knightrate.prof_scraping.scraper.client import CatalogClient, UCF_CATALOG_URL, CONTENT_SELECTOR
 
 
 class TestCatalogClientFetchHtml:

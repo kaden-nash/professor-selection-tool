@@ -2,8 +2,8 @@ import json
 import pytest
 from unittest.mock import Mock, patch, mock_open
 
-from knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
-from knightrate.professor_scoring.models import Professor, GlobalStatistics
+from src.knightrate.professor_scoring.professor_scoring_runner import ProfessorScoringRunner
+from src.knightrate.professor_scoring.models import Professor, GlobalStatistics
 
 @pytest.fixture
 def mock_factory():

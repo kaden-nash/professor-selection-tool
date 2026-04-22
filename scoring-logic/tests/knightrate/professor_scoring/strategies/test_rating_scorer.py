@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.rating_scorer import RatingScorer
-from knightrate.professor_scoring.models import Professor
+from src.knightrate.professor_scoring.strategies.rating_scorer import RatingScorer
+from src.knightrate.professor_scoring.models import Professor
 
 class TestRatingScorer:
     def test_rating_scorer_initialization(self):

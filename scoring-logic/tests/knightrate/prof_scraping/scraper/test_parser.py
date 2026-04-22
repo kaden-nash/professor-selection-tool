@@ -1,5 +1,5 @@
 import pytest
-from knightrate.prof_scraping.scraper.parser import CatalogParser
+from src.knightrate.prof_scraping.scraper.parser import CatalogParser
 
 CONTENT_DIV = '<div class="style__contentBody___gEuR0">{}</div>'
 

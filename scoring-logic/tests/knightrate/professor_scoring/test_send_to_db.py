@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import Mock, patch, mock_open
 from pymongo.errors import BulkWriteError
 
-from knightrate.professor_scoring.send_to_db import MongoUploader
+from src.knightrate.professor_scoring.send_to_db import MongoUploader
 
 @pytest.fixture
 def mock_env():

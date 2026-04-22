@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.engine.scoring_engine import ScoringEngine
-from knightrate.professor_scoring.models import Professor, Scores
+from src.knightrate.professor_scoring.engine.scoring_engine import ScoringEngine
+from src.knightrate.professor_scoring.models import Professor, Scores
 
 class MockStrategy:
     def __init__(self, metric_name, score):

@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from pathlib import Path
 
-from knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
+from src.knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 
 @pytest.fixture
 def mock_components():

@@ -1,16 +1,16 @@
 import pytest
-from knightrate.professor_scoring.engine.engine_factory import ScoringEngineFactory
-from knightrate.professor_scoring.engine.scoring_engine import ScoringEngine
-from knightrate.professor_scoring.strategies.difficulty_scorer import RawDifficultyScorer
-from knightrate.professor_scoring.strategies.rating_scorer import RatingScorer
-from knightrate.professor_scoring.strategies.would_take_again_scorer import WouldTakeAgainScorer
-from knightrate.professor_scoring.strategies.tag_friction_scorer import TagFrictionScorer
-from knightrate.professor_scoring.strategies.tag_quality_scorer import TagQualityScorer
+from src.knightrate.professor_scoring.engine.engine_factory import ScoringEngineFactory
+from src.knightrate.professor_scoring.engine.scoring_engine import ScoringEngine
+from src.knightrate.professor_scoring.strategies.difficulty_scorer import RawDifficultyScorer
+from src.knightrate.professor_scoring.strategies.rating_scorer import RatingScorer
+from src.knightrate.professor_scoring.strategies.would_take_again_scorer import WouldTakeAgainScorer
+from src.knightrate.professor_scoring.strategies.tag_friction_scorer import TagFrictionScorer
+from src.knightrate.professor_scoring.strategies.tag_quality_scorer import TagQualityScorer
 
-from knightrate.professor_scoring.strategies.combined_difficulty_scorer import DifficultyScorer
-from knightrate.professor_scoring.strategies.quality_scorer import QualityScorer
-from knightrate.professor_scoring.strategies.overall_scorer import OverallScorer
-from knightrate.professor_scoring.strategies.archetype_scorer import ArchetypeScorer
+from src.knightrate.professor_scoring.strategies.combined_difficulty_scorer import DifficultyScorer
+from src.knightrate.professor_scoring.strategies.quality_scorer import QualityScorer
+from src.knightrate.professor_scoring.strategies.overall_scorer import OverallScorer
+from src.knightrate.professor_scoring.strategies.archetype_scorer import ArchetypeScorer
 
 class TestScoringEngineFactory:
     def test_create_first_round_engine(self):

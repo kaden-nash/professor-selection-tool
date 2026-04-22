@@ -1,6 +1,6 @@
 import pytest
 import json
-from knightrate.data_fixing.scrubbers.rmp_scrubber import RmpScrubber
+from src.knightrate.data_fixing.scrubbers.rmp_scrubber import RmpScrubber
 
 @pytest.fixture
 def dummy_rmp_file(tmp_path):

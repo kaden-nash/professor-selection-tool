@@ -1,6 +1,6 @@
 import pytest
-from knightrate.professor_scoring.strategies.archetype_scorer import ArchetypeScorer
-from knightrate.professor_scoring.models import Professor, Scores, GlobalStatistics
+from src.knightrate.professor_scoring.strategies.archetype_scorer import ArchetypeScorer
+from src.knightrate.professor_scoring.models import Professor, Scores, GlobalStatistics
 
 class TestArchetypeScorer:
     def test_initialization(self):

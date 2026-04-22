@@ -1,7 +1,7 @@
 import pytest
 import json
-from knightrate.data_fixing.models.models import CatalogProfessor, Course
-from knightrate.data_fixing.correlators.professor_correlator import ProfessorCorrelator
+from src.knightrate.data_fixing.models.models import CatalogProfessor, Course
+from src.knightrate.data_fixing.correlators.professor_correlator import ProfessorCorrelator
 
 def test_professor_correlator(tmp_path):
     rmp_data = [

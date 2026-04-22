@@ -1,6 +1,6 @@
 import pytest # type: ignore
 from unittest.mock import MagicMock
-from knightrate.prof_scraping.scraper.engine import ScraperEngine, ScraperDependencies
+from src.knightrate.prof_scraping.scraper.engine import ScraperEngine, ScraperDependencies
 
 
 FAKE_HTML = '<div class="style__contentBody___gEuR0"><p><strong>A, B</strong>, Prof</p></div>'

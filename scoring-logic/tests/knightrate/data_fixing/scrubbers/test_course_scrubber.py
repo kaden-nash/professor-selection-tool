@@ -1,7 +1,7 @@
 import pytest
 import os
 import json
-from knightrate.data_fixing.scrubbers.course_scrubber import CourseScrubber
+from src.knightrate.data_fixing.scrubbers.course_scrubber import CourseScrubber
 
 @pytest.fixture
 def dummy_courses_file(tmp_path):

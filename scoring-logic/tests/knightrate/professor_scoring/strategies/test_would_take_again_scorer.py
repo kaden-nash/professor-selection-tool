@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
-from knightrate.professor_scoring.strategies.would_take_again_scorer import WouldTakeAgainScorer
-from knightrate.professor_scoring.models import Professor, Review
+from src.knightrate.professor_scoring.strategies.would_take_again_scorer import WouldTakeAgainScorer
+from src.knightrate.professor_scoring.models import Professor, Review
 
 class TestWouldTakeAgainScorer:
     def test_initialization(self):
