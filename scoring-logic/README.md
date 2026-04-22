@@ -33,6 +33,10 @@ You must create a `.env` file in the root `scoring-logic` directory (where you r
 PROXYRACK_URL=http://premium.residential.proxyrack.net:10000
 PROXYRACK_USERNAME=YOUR_USERNAME
 PROXYRACK_PASSWORD=YOUR_PASSWORD
+MONGO_URI="mongodb+srv://<username>:<password>@backend.1gwytlo.mongodb.net/backend?retryWrites=true&w=majority"
+MONGO_DB="backend"
+MONGO_COLLECTION_PROFESSORS="rawProfessorData"
+MONGO_COLLECTION_STATISTICS="rawGlobalStatistics"
 ```
 
 ## Usage Instructions
