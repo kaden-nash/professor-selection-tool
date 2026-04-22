@@ -100,7 +100,7 @@ Ensure you have activated your virtual environment and installed all the relevan
 
 
 ## Output Locations
-
+Running `run_pipeline.py` will result in a new subfolder being created locally under the src directory.
 **src/output_files**: contains subfolders corresponding to each stage of the pipeline with relevant files for each stage within.
 
 ## Data Longevity
