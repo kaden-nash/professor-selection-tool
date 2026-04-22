@@ -26,7 +26,7 @@ pip install -e .
 
 ## Configuration
 
-You must create a `.env` file in the root `Large-Project` directory (where you run the script from) containing your ProxyRack credentials. This is vital to prevent IP bans.
+You must create a `.env` file in the root `scoring-logic` directory (where you run the script from) containing your ProxyRack credentials. This is vital to prevent IP bans.
 
 **`.env` Example:**
 ```env
@@ -64,10 +64,10 @@ Ensure you have activated your virtual environment and installed all the relevan
 **Command:** `python run_pipeline.py --scrape-rmp --limit-profs 5 --limit-reviews 10`
 
 *   **What it does:** Runs the RMP scraper but caps it at the first 5 professors found, and only grabs 10 reviews per professor.
-*   **Why use it:** Perfect for verifying that your network connection and parser are working without waiting for a full 4,000+ professor scrape.
+*   **Why use it:** Verifying that your network connection and parser are working without waiting for a full scrape.
 
 ### 2. Full Data Refresh
-**Command:** `python run_pipeline.py --scrape-rmp --scrape-profs --scrape-courses`
+**Command:** `python run_pipeline.py --scrape-rmp --scrape-profs --scrape-courses --clean-scrape`
 
 *   **What it does:** Executes every scraping stage and follows through with data fixing and professor scoring.
 *   **Why use it:** Use this when you want to rebuild the entire database from scratch with current live data.
@@ -90,12 +90,6 @@ Ensure you have activated your virtual environment and installed all the relevan
 *   **What it does:** Scrapes UCF's own websites (faculty list and course catalog) and correlates them, but skips the RMP integration and scoring.
 *   **Why use it:** Useful if you only care about the internal UCF professor-to-course mapping.
 
-### 6. Absolute Fresh Start
-**Command:** `python run_pipeline.py --scrape-rmp --clean-scrape`
-
-*   **What it does:** Wipes all existing local JSON data (professors, reviews, and attribute caches) and starts a completely new scrape from scratch.
-*   **Why use it:** Use this when your local data has become "stale" (e.g., a professor's rating count is out of sync with their actual reviews) or if you want to ensure a perfectly clean database.
-
 ---
 
 > [!TIP]
@@ -116,4 +110,5 @@ You may have noticed the "allReviewsScraped" flag on each professor. This flag i
 
 ## Important constraints others working on this project should know.
 - Graduate classes should be scraped from the course catalog. Currently there is no validation of those courses. Whatever a student puts goes. 
-- Profs with <5 reviews are not on here currently
+- Profs with <5 reviews are excluded from scoring.
+- Profs that have not had a review in > 3 years are excluded from scoring.
