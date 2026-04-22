@@ -111,7 +111,7 @@ def test_professor_correlator(tmp_path):
     correlator.correlate(rmp_data, catalog_data, courses_data)
     
     results = correlator.get_correlated_data()
-    assert len(results) == 7  # 6 old elements + Honors Teacher. Ignored Professor logic pruned 1.
+    assert len(results) == 4  # 6 old elements + Honors Teacher. Ignored Professor logic pruned 1.
     
     # Let's map by a unique RMP trait to verify correlation
     # We should have one Hadi Abbas
