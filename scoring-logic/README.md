@@ -112,3 +112,8 @@ You may have noticed the "allReviewsScraped" flag on each professor. This flag i
 - Graduate classes should be scraped from the course catalog. Currently there is no validation of those courses. Whatever a student puts goes. 
 - Profs with <5 reviews are excluded from scoring.
 - Profs that have not had a review in > 3 years are excluded from scoring.
+
+# AI Disclaimer
+A majority of the code was written by AI models such as Gemini 3.1 Pro and Claude Sonnet 4.6. 
+However, each and every line of the source code was reviewed and approved by the contributer to this portion of knightrate, Kaden Nash.
+A majority of testing files were also reviewed to ensure high levels of code coverage and reliability.
