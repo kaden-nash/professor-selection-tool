@@ -1,0 +1,13 @@
+*.txt
+.env
+.venv
+.pytest_cache
+.vscode
+.pyre_configuration
+.coverage
+__pycache__
+*.json
+planning (deprecated)/
+*.png 
+linecount.py
+*.egg-info/
