@@ -18,12 +18,12 @@ def mock_env():
 
 @pytest.fixture
 def mock_mongo_client():
-    with patch("knightrate.professor_scoring.send_to_db.MongoClient") as mock_client:
+    with patch("src.knightrate.professor_scoring.send_to_db.MongoClient") as mock_client:
         yield mock_client
 
 @pytest.fixture
 def mock_dotenv():
-    with patch("knightrate.professor_scoring.send_to_db.load_dotenv") as mock_ld:
+    with patch("src.knightrate.professor_scoring.send_to_db.load_dotenv") as mock_ld:
         yield mock_ld
 
 def test_mongo_uploader_init(mock_env, mock_mongo_client, mock_dotenv):

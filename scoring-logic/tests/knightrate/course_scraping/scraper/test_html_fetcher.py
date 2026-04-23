@@ -4,7 +4,7 @@ from src.knightrate.course_scraping.scraper.html_fetcher import HtmlFetcher
 
 @pytest.fixture
 def fetcher():
-    with patch('knightrate.course_scraping.scraper.html_fetcher.sync_playwright') as mock_sync_pw:
+    with patch('src.knightrate.course_scraping.scraper.html_fetcher.sync_playwright') as mock_sync_pw:
         mock_pw = mock_sync_pw.return_value.start.return_value
         mock_browser = mock_pw.chromium.launch.return_value
         mock_context = mock_browser.new_context.return_value

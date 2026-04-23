@@ -26,33 +26,33 @@ class TestCatalogClientFetchHtml:
 
     def test_fetch_html_returns_page_content(self):
         mock_pw, _, _ = self._make_mock_playwright("<html>test</html>")
-        with patch("knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
+        with patch("src.knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
             result = CatalogClient().fetch_html()
         assert result == "<html>test</html>"
 
     def test_fetch_html_navigates_to_correct_url(self):
         mock_pw, _, mock_page = self._make_mock_playwright()
-        with patch("knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
+        with patch("src.knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
             CatalogClient().fetch_html()
         args, _ = mock_page.goto.call_args
         assert args[0] == UCF_CATALOG_URL
 
     def test_fetch_html_waits_for_content_selector(self):
         mock_pw, _, mock_page = self._make_mock_playwright()
-        with patch("knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
+        with patch("src.knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
             CatalogClient().fetch_html()
         args, _ = mock_page.wait_for_selector.call_args
         assert args[0] == CONTENT_SELECTOR
 
     def test_fetch_html_closes_browser_on_success(self):
         mock_pw, mock_browser, _ = self._make_mock_playwright()
-        with patch("knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
+        with patch("src.knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
             CatalogClient().fetch_html()
         mock_browser.close.assert_called_once()
 
     def test_fetch_html_launches_headless(self):
         mock_pw, _, _ = self._make_mock_playwright()
-        with patch("knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
+        with patch("src.knightrate.prof_scraping.scraper.client.sync_playwright", return_value=mock_pw):
             CatalogClient().fetch_html()
         _, launch_kwargs = mock_pw.chromium.launch.call_args
         assert launch_kwargs.get("headless") is True

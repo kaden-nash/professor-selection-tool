@@ -9,7 +9,7 @@ class TestMonitor:
 
     def test_init_professors_creates_pbar(self):
         monitor = Monitor()
-        with patch("knightrate.rmp_scraping.scraper.monitor.tqdm") as mock_tqdm:
+        with patch("src.knightrate.rmp_scraping.scraper.monitor.tqdm") as mock_tqdm:
             monitor.init_professors(100)
             mock_tqdm.assert_called_once_with(total=100, desc="Professors fetched", position=0)
         assert monitor._prof_pbar is not None
@@ -27,7 +27,7 @@ class TestMonitor:
 
     def test_init_reviews_creates_pbar(self):
         monitor = Monitor()
-        with patch("knightrate.rmp_scraping.scraper.monitor.tqdm") as mock_tqdm:
+        with patch("src.knightrate.rmp_scraping.scraper.monitor.tqdm") as mock_tqdm:
             monitor.init_reviews(50)
             mock_tqdm.assert_called_once_with(
                 total=50, desc="Professors whose reviews are all fetched", position=1
@@ -68,7 +68,7 @@ class TestMonitor:
 
     def test_operations_are_thread_safe(self):
         monitor = Monitor()
-        with patch("knightrate.rmp_scraping.scraper.monitor.tqdm"):
+        with patch("src.knightrate.rmp_scraping.scraper.monitor.tqdm"):
             monitor.init_professors(10)
 
         errors = []

@@ -6,10 +6,10 @@ from src.knightrate.prof_scraping.prof_scrape_runner import ProfScrapeRunner
 
 @pytest.fixture
 def mock_components():
-    with patch('knightrate.prof_scraping.prof_scrape_runner.CatalogClient') as mc, \
-         patch('knightrate.prof_scraping.prof_scrape_runner.CatalogParser') as mp, \
-         patch('knightrate.prof_scraping.prof_scrape_runner.DataStorage') as ms, \
-         patch('knightrate.prof_scraping.prof_scrape_runner.ScraperEngine') as me:
+    with patch('src.knightrate.prof_scraping.prof_scrape_runner.CatalogClient') as mc, \
+         patch('src.knightrate.prof_scraping.prof_scrape_runner.CatalogParser') as mp, \
+         patch('src.knightrate.prof_scraping.prof_scrape_runner.DataStorage') as ms, \
+         patch('src.knightrate.prof_scraping.prof_scrape_runner.ScraperEngine') as me:
         
         yield {
             'client': mc,
@@ -20,7 +20,7 @@ def mock_components():
 
 @pytest.fixture
 def mock_sys_exit():
-    with patch('knightrate.prof_scraping.prof_scrape_runner.sys.exit') as mock_exit:
+    with patch('src.knightrate.prof_scraping.prof_scrape_runner.sys.exit') as mock_exit:
         yield mock_exit
 
 def test_prof_scrape_runner_init():

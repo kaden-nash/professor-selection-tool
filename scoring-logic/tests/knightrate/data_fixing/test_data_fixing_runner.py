@@ -5,22 +5,22 @@ from src.knightrate.data_fixing.data_fixing_runner import DataFixingRunner
 
 @pytest.fixture
 def mock_course_scrub():
-    with patch('knightrate.data_fixing.data_fixing_runner.CourseScrubber') as mock_cs:
+    with patch('src.knightrate.data_fixing.data_fixing_runner.CourseScrubber') as mock_cs:
         yield mock_cs
 
 @pytest.fixture
 def mock_rmp_scrub():
-    with patch('knightrate.data_fixing.data_fixing_runner.RmpScrubber') as mock_rs:
+    with patch('src.knightrate.data_fixing.data_fixing_runner.RmpScrubber') as mock_rs:
         yield mock_rs
 
 @pytest.fixture
 def mock_catalog_scrub():
-    with patch('knightrate.data_fixing.data_fixing_runner.CatalogScrubber') as mock_cts:
+    with patch('src.knightrate.data_fixing.data_fixing_runner.CatalogScrubber') as mock_cts:
         yield mock_cts
 
 @pytest.fixture
 def mock_correlator():
-    with patch('knightrate.data_fixing.data_fixing_runner.ProfessorCorrelator') as mock_pc:
+    with patch('src.knightrate.data_fixing.data_fixing_runner.ProfessorCorrelator') as mock_pc:
         yield mock_pc
 
 @pytest.fixture
