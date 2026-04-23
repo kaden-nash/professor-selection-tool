@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const professorSchema = new mongoose.Schema({
+  pid:             { type: String, required: true},
   firstName:       { type: String, required: true },
   lastName:        { type: String, required: true },
   isPolarizing:    { type: Boolean, default: false },

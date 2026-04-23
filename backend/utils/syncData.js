@@ -15,11 +15,13 @@ const syncProfessors = async () => {
       return;
     }
 
+    const validIds = rawData.map((raw) => raw.id);
     console.log(`Processing ${rawData.length} professors...`);
 
     // 2. Map the raw JSON fields to clean Schema keys
     const ops = rawData.map((raw) => {
       const transformed = {
+        pid:             raw.id,
         firstName:       raw.firstName,
         lastName:        raw.lastName,
         isPolarizing:    raw.scores?.isPolarizing ?? false,
@@ -37,7 +39,7 @@ const syncProfessors = async () => {
       // This looks for a professor by name; if found, it updates; if not, it inserts (upsert)
       return {
         updateOne: {
-          filter: { firstName: transformed.firstName, lastName: transformed.lastName },
+          filter: { pid: transformed.pid },
           update: { $set: transformed },
           upsert: true,
         },
@@ -46,11 +48,13 @@ const syncProfessors = async () => {
 
     // 4. Execute all operations in one database trip
     const result = await Professor.bulkWrite(ops);
+    const purgeResult = await Professor.deleteMany({ pid: { $nin: validIds } });
 
     console.log("-----------------------------------------");
     console.log(`SYNC COMPLETE`);
     console.log(`📊 Matched:  ${result.matchedCount}`);
     console.log(`✨ New/Upserted: ${result.upsertedCount}`);
+    console.log(`💀 Purged: ${purgeResult.deletedCount}`);
     console.log("-----------------------------------------");
 
   } catch (err) {
