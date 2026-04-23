@@ -6,22 +6,22 @@ from src.knightrate.course_scraping.course_scrape_runner import CourseScrapeRunn
 
 @pytest.fixture
 def mock_fetcher():
-    with patch('knightrate.course_scraping.course_scrape_runner.HtmlFetcher') as mock_f:
+    with patch('src.knightrate.course_scraping.course_scrape_runner.HtmlFetcher') as mock_f:
         yield mock_f
 
 @pytest.fixture
 def mock_parser():
-    with patch('knightrate.course_scraping.course_scrape_runner.Parser') as mock_p:
+    with patch('src.knightrate.course_scraping.course_scrape_runner.Parser') as mock_p:
         yield mock_p
 
 @pytest.fixture
 def mock_scraper():
-    with patch('knightrate.course_scraping.course_scrape_runner.CourseScraper') as mock_s:
+    with patch('src.knightrate.course_scraping.course_scrape_runner.CourseScraper') as mock_s:
         yield mock_s
 
 @pytest.fixture
 def mock_storage():
-    with patch('knightrate.course_scraping.course_scrape_runner.DataStorage') as mock_d:
+    with patch('src.knightrate.course_scraping.course_scrape_runner.DataStorage') as mock_d:
         yield mock_d
 
 def test_course_scrape_runner_init():

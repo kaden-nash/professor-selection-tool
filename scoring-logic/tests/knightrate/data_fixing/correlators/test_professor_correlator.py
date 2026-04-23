@@ -1,5 +1,5 @@
-import pytest
 import json
+from pathlib import Path
 from src.knightrate.data_fixing.models.models import CatalogProfessor, Course
 from src.knightrate.data_fixing.correlators.professor_correlator import ProfessorCorrelator
 
@@ -16,7 +16,7 @@ def test_professor_correlator(tmp_path):
         # Match 3: No Catalog match
         {
             "firstName": "Unknown", "lastName": "Professor", "avgRating": 1.0, "numRatings": 10,
-            "reviews": [{"class": "CHM2210H", "date": "2022-12-06 05:34:18 +0000 UTC"}]
+            "reviews": [{"class": "CHM2210H", "date": "2024-12-06 05:34:18 +0000 UTC"}]
         },
         
         # Match 4: Date edge cases (ratings list and bad dates)
@@ -24,7 +24,7 @@ def test_professor_correlator(tmp_path):
             "firstName": "Bad", "lastName": "Date", "id": "b1",
             "firstReviewDate": "invalid-format",
             "numRatings": 10,
-            "reviews": [{"date": "2023-01-01T12:00:00Z"}, {"date": "invalid"}, {"date": "2022-01-01T12:00:00Z"}, {"nodate": True}]
+            "reviews": [{"date": "2024-01-01T12:00:00Z"}, {"date": "invalid"}, {"date": "2024-01-01T12:00:00Z"}, {"nodate": True}]
         },
         {
             "firstName": "Bad", "lastName": "Date", "id": "b2", "numRatings": 10
@@ -39,7 +39,7 @@ def test_professor_correlator(tmp_path):
         # Match 6: Honors course validation
         {
              "firstName": "Honors", "lastName": "Teacher", "numRatings": 10,
-             "reviews": [{"class": "CHM2210H", "date": "2020-01-01T12:00:00Z"}, {"class": "MAC2311H", "date": "2020-01-01T12:00:00Z"}]
+             "reviews": [{"class": "CHM2210H", "date": "2024-01-01T12:00:00Z"}, {"class": "MAC2311H", "date": "2024-01-01T12:00:00Z"}]
         },
         
         # Match 7: Pre-2016 activity validation (should prune)
@@ -111,7 +111,7 @@ def test_professor_correlator(tmp_path):
     correlator.correlate(rmp_data, catalog_data, courses_data)
     
     results = correlator.get_correlated_data()
-    assert len(results) == 4  # 6 old elements + Honors Teacher. Ignored Professor logic pruned 1.
+    assert len(results) == 7  # 7 elements survive the >5 ratings and <3 years old filters
     
     # Let's map by a unique RMP trait to verify correlation
     # We should have one Hadi Abbas
@@ -162,6 +162,6 @@ def test_professor_correlator(tmp_path):
     assert "MAC2311H" not in honors_teacher.courses_taught
 
     out_file = tmp_path / "professor_data.json"
-    correlator.save(str(out_file))
+    correlator.save(Path(out_file))
     saved_data = json.loads(out_file.read_text())
     assert len(saved_data) == 7

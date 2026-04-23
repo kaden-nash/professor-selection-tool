@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from src.knightrate.rmp_scraping.rmp_scrape_runner import RmpScrapeRunner, ScraperArgs
 
-_MODULE = "knightrate.rmp_scraping.rmp_scrape_runner"
+_MODULE = "src.knightrate.rmp_scraping.rmp_scrape_runner"
 
 
 @pytest.fixture

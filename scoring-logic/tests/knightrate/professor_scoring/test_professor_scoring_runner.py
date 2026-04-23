@@ -7,7 +7,7 @@ from src.knightrate.professor_scoring.models import Professor, GlobalStatistics
 
 @pytest.fixture
 def mock_factory():
-    with patch('knightrate.professor_scoring.professor_scoring_runner.ScoringEngineFactory') as mock_f:
+    with patch('src.knightrate.professor_scoring.professor_scoring_runner.ScoringEngineFactory') as mock_f:
         yield mock_f
 
 @pytest.fixture
@@ -15,8 +15,8 @@ def mock_professor():
     # A dummy professor dict
     return {
         "id": "1",
-        "first_name": "Test",
-        "last_name": "Prof",
+        "firstName": "Test",
+        "lastName": "Prof",
         "department": "CS",
         "base_rating": 4.0,
         "base_difficulty": 3.0,
@@ -50,17 +50,17 @@ def test_professor_scoring_runner_run(mock_factory, mock_professor, capsys):
     mock_third_engine.process_data.return_value = [prof_model]
     # Stat modifications
     mock_stats = GlobalStatistics(
-        average_overall=50.0,
-        average_quality=3.0,
-        average_difficulty=3.0,
-        average_would_take_again=70.0
+        avgOverall=50.0,
+        avgQuality=3.0,
+        avgDifficulty=3.0,
+        avgWouldTakeAgain=70.0
     )
     mock_stat_engine.calculate_statistics.return_value = mock_stats
 
     # Mock file I/O
     m_open = mock_open(read_data=json.dumps([mock_professor]))
     with patch('builtins.open', m_open), \
-         patch('knightrate.professor_scoring.professor_scoring_runner.MongoUploader') as mock_uploader:
+         patch('src.knightrate.professor_scoring.professor_scoring_runner.MongoUploader') as mock_uploader:
         runner.run()
         
     # Assertions
@@ -106,14 +106,14 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
     mock_stat_engine = Mock()
     factory_inst.create_global_stat_engine.return_value = mock_stat_engine
     mock_stat_engine.calculate_statistics.return_value = GlobalStatistics(
-        average_overall=50.0,
-        average_quality=3.0,
-        average_difficulty=3.0,
-        average_would_take_again=70.0
+        avgOverall=50.0,
+        avgQuality=3.0,
+        avgDifficulty=3.0,
+        avgWouldTakeAgain=70.0
     )
     
     with patch('builtins.open', m_open), \
-         patch('knightrate.professor_scoring.professor_scoring_runner.MongoUploader'):
+         patch('src.knightrate.professor_scoring.professor_scoring_runner.MongoUploader'):
         runner.run()
         
     # Should handle fallback save paths without dying (the raw string should be written)
@@ -126,10 +126,10 @@ def test_professor_scoring_runner_untyped_dict(mock_factory, mock_professor, cap
 def test_professor_scoring_runner_send_to_mongodb():
     runner = ProfessorScoringRunner()
     
-    prof = Professor(id="prof1", first_name="A", last_name="B")
-    stats = GlobalStatistics(average_overall=4.0)
+    prof = Professor(id="prof1", firstName="A", lastName="B")
+    stats = GlobalStatistics(avgOverall=4.0)
     
-    with patch('knightrate.professor_scoring.professor_scoring_runner.MongoUploader') as mock_uploader:
+    with patch('src.knightrate.professor_scoring.professor_scoring_runner.MongoUploader') as mock_uploader:
         runner._send_to_mongodb([prof], stats)
         
     mock_inst = mock_uploader.return_value

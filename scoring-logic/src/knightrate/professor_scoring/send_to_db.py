@@ -10,16 +10,26 @@ class MongoUploader:
     def __init__(self):
         load_dotenv()
         self.db = MongoClient(os.getenv("MONGO_URI"))[os.getenv("MONGO_DB")] # type: ignore
-
+    
     def upload_professor_scores(self, data: list):
-        """Uploads professor scores."""
+        if not data:
+            return
+
+        valid_ids = [item["id"] for item in data]
+        print("Upserting professor data...")
         ops = [
             UpdateOne({"id": item["id"]}, {"$set": item}, upsert=True)
             for item in data
         ]
-        collection = os.getenv("MONGO_COLLECTION_PROFESSORS")
+        
+        collection_name = os.getenv("MONGO_COLLECTION_PROFESSORS")
+        collection = self.db[collection_name] # type: ignore
+
         try:
-            self.db[collection].bulk_write(ops, ordered=False) # type: ignore
+            collection.bulk_write(ops, ordered=False)
+            result = collection.delete_many({"id": {"$nin": valid_ids}})
+            print(f"Purged {result.deleted_count} stale professors.")
+            
         except BulkWriteError as e:
             print(e.details)
 

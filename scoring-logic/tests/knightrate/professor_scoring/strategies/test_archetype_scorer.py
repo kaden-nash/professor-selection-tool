@@ -13,28 +13,28 @@ class TestArchetypeScorer:
     def test_analyze_mastermind(self):
         scorer = ArchetypeScorer()
         prof = Professor()
-        prof.scores = Scores(quality=55.0, difficulty=55.0)  # Q>=55, D>=45
+        prof.scores = Scores(quality=50.0, difficulty=45.0)  # Q>=50, D>=45
         result = scorer.analyze(prof, self._get_dummy_stats())
         assert result["archetype"] == "The Mastermind"
 
     def test_analyze_unicorn(self):
         scorer = ArchetypeScorer()
         prof = Professor()
-        prof.scores = Scores(quality=55.0, difficulty=40.0)  # Q>=55, D<45
+        prof.scores = Scores(quality=50.0, difficulty=44.9)  # Q>=50, D<45
         result = scorer.analyze(prof, self._get_dummy_stats())
         assert result["archetype"] == "The Unicorn"
 
     def test_analyze_saboteur(self):
         scorer = ArchetypeScorer()
         prof = Professor()
-        prof.scores = Scores(quality=40.0, difficulty=60.0)  # Q<55, D>=57.5
+        prof.scores = Scores(quality=49.9, difficulty=57.5)  # Q<50, D>=57.5
         result = scorer.analyze(prof, self._get_dummy_stats())
         assert result["archetype"] == "The Saboteur"
 
     def test_analyze_npc(self):
         scorer = ArchetypeScorer()
         prof = Professor()
-        prof.scores = Scores(quality=40.0, difficulty=40.0)  # Q<55, D<57.5
+        prof.scores = Scores(quality=49.9, difficulty=57.4)  # Q<50, D<57.5
         result = scorer.analyze(prof, self._get_dummy_stats())
         assert result["archetype"] == "The NPC"
 
