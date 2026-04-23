@@ -18,7 +18,7 @@ class ArchetypeScorer(ScoringStrategy):
         global_avg_difficulty = global_stats.avg_difficulty
         global_avg_quality = global_stats.avg_quality
         arbitrary_value = 5
-        if q_score >= global_avg_quality + arbitrary_value:
+        if q_score >= global_avg_quality:
             return "The Mastermind" if d_score >= global_avg_difficulty - arbitrary_value else "The Unicorn"
         else: # if d_score >= global_avg_difficulty - 5
             return "The Saboteur" if d_score >= global_avg_difficulty + (arbitrary_value + (arbitrary_value/2)) else "The NPC" # if d_score >= global_avg_difficulty + 7.5
