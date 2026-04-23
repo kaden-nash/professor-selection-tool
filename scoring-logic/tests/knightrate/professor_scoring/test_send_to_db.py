@@ -51,6 +51,9 @@ def test_upload_professor_scores_success(mock_env, mock_mongo_client, mock_doten
     assert isinstance(ops[0], UpdateOne)
     
     assert call_args[1]["ordered"] is False
+    
+    # Check delete_many call
+    mock_collection.delete_many.assert_called_once_with({"id": {"$nin": ["prof_1", "prof_2"]}})
 
 def test_upload_professor_scores_bulk_write_error(mock_env, mock_mongo_client, mock_dotenv, capsys):
     uploader = MongoUploader()

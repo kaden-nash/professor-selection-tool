@@ -80,7 +80,9 @@ class ProfessorScoringRunner:
         stats_dict = stats.model_dump()
         
         uploader = MongoUploader()
+        print("Sending professor scores...")
         uploader.upload_professor_scores(json_data)
+        print("Sending global statistics...")
         uploader.upload_global_statistics(stats_dict)
         print("Finished.")
 
