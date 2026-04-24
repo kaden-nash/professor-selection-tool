@@ -2,11 +2,9 @@
 
 This tool continuously scrapes professor profiles and individual student reviews from RateMyProfessors for the University of Central Florida (UCF).
 
-It handles rate limits, GraphQL pagination, unhandled data types, and utilizes multi-threading with residential proxy rotation to rapidly bypass Cloudflare blockages. It also supports persistent auto-saving, meaning any partial progress is saved. 
+It handles rate limits, GraphQL pagination, unhandled data types, and utilizes multi-threading with residential proxy rotation to rapidly bypass Cloudflare blockages. It also supports persistent auto-saving, meaning any partial progress is saved. However, all previous data must be rescraped to ensure there are no gaps in information. You should set aside 3-4 hours for RMP scraping to complete. Stopping midway will force you to start the 3-4 hours process all over.
 
-However, all previous data must be rescraped to ensure there are no gaps in information. You should set aside 3-4 hours for RMP scraping to complete. Stopping midway will force you to start the 3-4 hours process all over.
-
-RMP scraping retrieves 6,000+ professors and all of their combined ~150,000+ individual reviews.
+As of April 2026, RMP scraping retrieves ~6,000 professors and their combined ~150,000 individual reviews.
 
 ## Setup Requirements
 
@@ -85,19 +83,13 @@ Ensure you have activated your virtual environment and installed all the relevan
 ### 4. Recalculate Scores Only
 **Command:** `python run_pipeline.py --skip-fix`
 
-*   **What it does:** Skips all scraping and data-fixing logic. It immediately jumps to the scoring engine to recalculate grades based on existing local JSON data.
+*   **What it does:** Skips all scraping and data preprocessing logic. It immediately jumps to the scoring engine to recalculate grades based on existing local JSON data.
 *   **Why use it:** If you've modified the scoring heuristics and want to see the new results instantly without hitting any network endpoints.
-
-### 5. Catalog Correlation Only
-**Command:** `python run_pipeline.py --scrape-profs --scrape-courses --skip-scoring`
-
-*   **What it does:** Scrapes UCF's own websites (faculty list and course catalog) and correlates them, but skips the RMP integration and scoring.
-*   **Why use it:** Useful if you only care about the internal UCF professor-to-course mapping.
 
 ---
 
 > [!TIP]
-> You can combine any of these flags. If no `--scrape-...` flags are provided, the script defaults to running only the local processing stages (`Data Fixing` and `Scoring`).
+> If no `--scrape-...` flags are provided, the script defaults to running only the local processing stages (`Data Fixing` and `Scoring`).
 
 > [!IMPORTANT]
 > The `--limit-...` and `--reviews-only` flags have no effect unless `--scrape-rmp` is also enabled.
@@ -105,14 +97,14 @@ Ensure you have activated your virtual environment and installed all the relevan
 
 ## Output Locations
 Running `run_pipeline.py` will result in a new subfolder being created locally under the src directory.
-**src/output_files**: contains subfolders corresponding to each stage of the pipeline with relevant files for each stage within.
+- **src/output_files**: contains subfolders corresponding to each stage of the pipeline with relevant files for each stage within.
 
 ## Data Longevity
-When it is time to get new data from RMP, use the --clean-scrape flag to ensure that the data is not stale. Professor attributes besides reviews will not update if you don't do this. You may end up with a professor that has 43 actual reviews but their "numRatings" attribute is 20. That will mess up the entire algorithm.
+When it is time to get new data from RMP, use the `--clean-scrape` flag to ensure that the data is not stale. Professor attributes besides reviews will not update if you don't do this. You may end up with a professor that has 43 actual reviews but their `numRatings` attribute is 20. That will mess up the entire algorithm.
 
-You may have noticed the "allReviewsScraped" flag on each professor. This flag is useful for picking up where you left off if the review scraping is interrupted by useless after completion of an entire scrape. It falls out of date as well. 
+You may have noticed the `allReviewsScraped` flag on each professor. This flag is useful for picking up where you left off if the review scraping is interrupted, but useless after completion of an entire scrape. It falls out of date as well. 
 
-## Important constraints others working on this project should know.
+## Important constraints others working on this project should know
 - Graduate classes should be scraped from the course catalog. Currently there is no validation of those courses. Whatever a student puts goes. 
 - Profs with <5 reviews are excluded from scoring.
 - Profs that have not had a review in > 3 years are excluded from scoring.
