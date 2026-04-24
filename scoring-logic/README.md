@@ -37,6 +37,8 @@ MONGO_COLLECTION_PROFESSORS="rawProfessorData"
 MONGO_COLLECTION_STATISTICS="rawGlobalStatistics"
 ```
 
+> **NOTE:** the proxyrack credentials are only necessary if you plan on scraping RateMyProfessors.
+
 ## Usage Instructions
 
 The `run_pipeline.py` script is the master orchestrator for the UCF Professor Scraper. It allows you to run specific stages of the data pipeline or execute the entire process from collection to scoring.
