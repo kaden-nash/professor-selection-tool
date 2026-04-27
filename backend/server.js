@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-// const { syncProfessors } = require('./utils/syncData');
+const { syncProfessors } = require('./utils/syncData');
 
 const app = express();
 
@@ -33,9 +33,9 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 // to run the syncData script
-// mongoose.connection.once('open', async () => {
-//     await syncProfessors(); 
-// });
+mongoose.connection.once('open', async () => {
+    await syncProfessors(); 
+});
 
 // starts backend server
 app.listen(PORT, () => {
